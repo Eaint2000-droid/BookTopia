@@ -4,8 +4,13 @@ import com.collab.g5.demo.entity.User;
 import com.collab.g5.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+=======
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+>>>>>>> 0ae9450470517a876ad6033a43645475ce8744cb
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
