@@ -1,9 +1,13 @@
 package com.collab.g5.demo.entity;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
 @Entity
+
 public class User {
 
     @Id
