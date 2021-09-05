@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/com")
 public class CompanyController {
     @Autowired
     CompanyService companyService = new CompanyServiceImpl();
