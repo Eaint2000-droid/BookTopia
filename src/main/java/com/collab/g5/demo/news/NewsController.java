@@ -1,12 +1,9 @@
 package com.collab.g5.demo.news;
 
-import com.collab.g5.demo.news.News;
-import com.collab.g5.demo.news.NewsService;
-import com.collab.g5.demo.news.NewsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +17,38 @@ public class NewsController {
     public List<News> getNews(){
         return newsService.getAllNews();
     }
+
+    //retrieves news by nID
+    @GetMapping("/com/collab/g5/demo/news/{nID}")
+    public News getNewsById(@PathVariable int nID)
+    {
+        return newsService.getNewsById(nID);
+    }
+
+    //add new news
+    @PostMapping("/com/collab/g5/demo/news/addNewBook")
+    @ResponseStatus(HttpStatus.CREATED)
+    public News addBook(@RequestBody News news){
+        return newsService.addNews(news);
+    }
+
+    //update news
+    @PutMapping("/com/collab/g5/demo/news/updateNews{nID}")
+    public News updateNews(@PathVariable int nID, @RequestBody News newNewsInfo){
+        News news = newsService.updateNews(nID, newNewsInfo);
+        if(news == null) throw new NewsNotFoundException(nID);
+        return news;
+    }
+
+    //delete news
+    @DeleteMapping("/com/collab/g5/demo/news/deleteNews{nID}")
+    public void deleteNews(@PathVariable int nID, @RequestBody News newNewsInfo){
+        try{
+            newsService.deleteNews(nID);
+        }catch(EmptyResultDataAccessException e) {
+            throw new NewsNotFoundException(nID);
+        }
+    }
+
 }
+
