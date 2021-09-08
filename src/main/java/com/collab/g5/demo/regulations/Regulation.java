@@ -1,5 +1,6 @@
 package com.collab.g5.demo.regulations;
 
+import lombok.*;
 import org.hibernate.service.spi.InjectService;
 
 import javax.persistence.*;
@@ -7,6 +8,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Regulation {
 
     @Id
@@ -19,26 +26,4 @@ public class Regulation {
 //   foreign key
     @OneToMany(mappedBy="regulation",cascade= CascadeType.ALL)
     private List<RegulationLimit> regulationLimits;
-
-//    public Regulation(RegulationId regulationId, int percentage) {
-//        this.regulationId = regulationId;
-//        this.percentage = percentage;
-//    }
-//
-//    public LocalDate getStartDate() {
-//        return regulationId.getStartDate();
-//    }
-//
-//    public LocalDate getEndDate(){
-//        return regulationId.getEndDate();
-//    }
-
-
-    public int getPercentage() {
-        return percentage;
-    }
-
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
-    }
 }
