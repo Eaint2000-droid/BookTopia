@@ -3,23 +3,20 @@ package com.collab.g5.demo.regulations;
 import com.collab.g5.demo.companies.Company;
 import org.apache.tomcat.jni.Local;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Embeddable
+
 public class RegulationLimitKey implements Serializable {
-
-   Regulation regulation;
-
+   @Column(name="regulation_startDate")
+   private LocalDate startDate;
    @Column(name="company_cid")
-   Long cid;
+   private int cid;
 
-   public RegulationLimitKey(Regulation regulation, Long cid) {
-      this.regulation = regulation;
+   public RegulationLimitKey(LocalDate startDate, int cid) {
+      this.startDate = startDate;
       this.cid = cid;
    }
 }

@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "com/collab/g5/demo/bookings")
 public class Bookings {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

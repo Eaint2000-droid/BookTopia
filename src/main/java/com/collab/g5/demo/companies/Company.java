@@ -23,8 +23,8 @@ public class Company {
     @OneToMany(mappedBy="company",cascade= CascadeType.ALL)
     private List<User> users;
 
-    @OneToOne(mappedBy="company",cascade = CascadeType.ALL)
-    private News news;
+    @OneToMany(mappedBy="company",cascade = CascadeType.ALL)
+    private List<News> news;
 
     @OneToMany(mappedBy="company", cascade=CascadeType.ALL)
     private List<RegulationLimit> regulationLimitList;

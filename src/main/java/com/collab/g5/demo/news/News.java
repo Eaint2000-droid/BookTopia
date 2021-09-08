@@ -16,13 +16,16 @@ public class News {
     private String title;
     private String content;
 
-    @OneToOne
+    //foreign keys
+    @ManyToOne
     @JoinColumn(name="company_cid")
     private Company company;
 
     @ManyToOne
     @JoinColumn(name="user_userEmail")
     private User user;
+
+
 
     public News(int nID, LocalDate date, String title, String content, Company company, User user) {
         this.nID = nID;

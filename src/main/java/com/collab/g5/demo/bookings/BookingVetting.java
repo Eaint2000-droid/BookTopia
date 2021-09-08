@@ -10,18 +10,24 @@ public class BookingVetting {
     @EmbeddedId
     BookingVettingKey id;
 
-    @ManyToOne
-    @MapsId("bookingsId")
-    @JoinColumn(name="bookings_bid")
-    private Bookings booking;
+    private String bookingResult;
+    private String comment;
 
     @ManyToOne
     @MapsId("courseId")
-    @JoinColumn(name="user_userEmail")
+    @JoinColumn(name = "user_userEmail", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
     private User user;
 
-    private String bookingResult;
-    private String comment;
+//    foreign key
+
+    @ManyToOne
+    @MapsId("bookingsId")
+    @JoinColumn(name = "bookings_bid", foreignKey = @ForeignKey(name = "fk2_bookingVetting"))
+    private Bookings booking;
+
+
+
+
 
     public void setId(BookingVettingKey id) {
         this.id = id;
