@@ -23,6 +23,7 @@ public class RegulationLimit {
     @JoinColumn(name = "regulation_startDate", foreignKey = @ForeignKey(name = "fk1_regulationLimit"))
     private Regulation regulation;
 
+
     @ManyToOne
     @MapsId("companyId")
     @JoinColumn(name = "company_cid", foreignKey = @ForeignKey(name = "fk2_regulationLimit"))

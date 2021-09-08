@@ -27,14 +27,17 @@ public class Company {
     private long size;
 
     //a company contains many users
+    @Transient
     @OneToMany(mappedBy="company",cascade= CascadeType.ALL)
     private List<User> users;
 
     //company has one or more news.
+    @Transient
     @OneToMany(mappedBy="company",cascade = CascadeType.ALL)
     private List<News> news;
 
     //regulation company foreign key
+    @Transient
     @OneToMany(mappedBy="company", cascade=CascadeType.ALL)
     private List<RegulationLimit> regulationLimitList;
 }

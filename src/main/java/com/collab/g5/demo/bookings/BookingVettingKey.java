@@ -21,4 +21,20 @@ public class BookingVettingKey implements Serializable {
 
     @Column(name="useremail")
     String useremail;
+
+    public int getBid() {
+        return bid;
+    }
+
+    public String getUseremail() {
+        return useremail;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingVettingKey{" +
+                "bid=" + bid +
+                ", useremail='" + useremail + '\'' +
+                '}';
+    }
 }

@@ -19,9 +19,10 @@ import java.util.List;
 @EqualsAndHashCode
 @Table(name="user")
 public class User {
+
     @Id
-    @Column(name="userEmail",nullable=false)
-    private String userEmail;
+    @Column(name="useremail",nullable=false)
+    private String useremail;
     private boolean HR;
     private String password;
     private String fname;
@@ -29,19 +30,24 @@ public class User {
     private String dept;
     private String role;
 
+    public String getUseremail() {
+        return useremail;
+    }
+
     @ManyToOne
-    @JoinColumn(name="company_cid",foreignKey = @ForeignKey(name = "fk_user_company"))
+    @JoinColumn(name="cid",foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
 
 //    foreign keys
-
+     @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<News> newsList;
 
     //user vet bookings
+    @Transient
     @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
     private List<BookingVetting> bookingVetting;
-
+    @Transient
     @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
     private List<Bookings> bookings;
 }

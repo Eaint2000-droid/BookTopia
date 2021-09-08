@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/com")
+@RequestMapping("/companies")
 public class CompanyController {
     @Autowired
     CompanyService companyService = new CompanyServiceImpl();
 
-    @GetMapping("/com")
+    @GetMapping("/")
     public List<Company> getCompany(){
         return companyService.getAllCompanies();
     }

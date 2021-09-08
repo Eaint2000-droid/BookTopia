@@ -20,7 +20,7 @@ public class Bookings {
     private int bid;
 
     @ManyToOne
-    @JoinColumn(name="user_userEmail", foreignKey = @ForeignKey(name="fk1_bookings"))
+    @JoinColumn(name="user_useremail", foreignKey = @ForeignKey(name="fk1_bookings"))
     private User user;
 
     private LocalDate bDate;
