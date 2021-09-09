@@ -1,9 +1,10 @@
 package com.collab.g5.demo.users;
 
+import com.collab.g5.demo.exceptions.users.InsertUserException;
+import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class UserController {
     @DeleteMapping("/del/{email}")
     void deleteUser(@PathVariable String email ){
         User user= userService.getUserByEmail(email);
-        if(user!=null){
+        if(user==null){
             // throw an exception
             throw new UserNotFoundException(email);
         }
