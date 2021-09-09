@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 public class BookingsController {
     @Autowired
-    BookingService bookingService = new BookingServiceImpl();
+    private BookingService bookingService;
 
     @GetMapping("/booking")
     public List<Bookings> getBookings() {
