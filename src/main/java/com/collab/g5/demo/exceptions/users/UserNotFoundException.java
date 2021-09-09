@@ -1,10 +1,10 @@
-package com.collab.g5.demo.users;
+package com.collab.g5.demo.exceptions.users;
 
 public class UserNotFoundException extends RuntimeException{
-    UserNotFoundException(String email){
+    public UserNotFoundException(String email){
         super("Could not find User email: "+ email);
     }
-    UserNotFoundException(){
+    public UserNotFoundException(){
         super("No users found");
     }
 }
