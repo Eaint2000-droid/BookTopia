@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/News")
 public class NewsController {
     @Autowired
-    NewsService newsService = new NewsServiceImpl();
+    private NewsService newsService;
 
     @GetMapping("/com/collab/g5/demo/news")
     public List<News> getNews(){

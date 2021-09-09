@@ -12,7 +12,7 @@ import java.util.List;
 public class BookingVetController {
 
     @Autowired
-    BookingVetService bookingVetService = new BookingVetImpl();
+    private BookingVetService bookingVetService;
 
     @GetMapping("/bookingsAdmin")
     public List<BookingVetting> getBookingsAdmin(){

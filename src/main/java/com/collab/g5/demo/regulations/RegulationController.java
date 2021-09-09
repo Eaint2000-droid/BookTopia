@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping ("/regulation")
 public class RegulationController {
     @Autowired
-    RegulationService regulationService = new RegulationServiceImpl();
+    private RegulationService regulationService;
 
     @GetMapping("/")
     public List<Regulation> getRegulation() {

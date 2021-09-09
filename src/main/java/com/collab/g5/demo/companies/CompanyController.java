@@ -11,11 +11,12 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
     @Autowired
-    CompanyService companyService = new CompanyServiceImpl();
+    private CompanyService companyService;
 
     @GetMapping("/")
     public List<Company> getCompany(){
         return companyService.getAllCompanies();
     }
+
 
 }
