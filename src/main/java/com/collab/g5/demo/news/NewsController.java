@@ -1,5 +1,6 @@
 package com.collab.g5.demo.news;
 
+import com.collab.g5.demo.exceptions.news.NewsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

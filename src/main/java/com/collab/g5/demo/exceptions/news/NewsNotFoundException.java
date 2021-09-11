@@ -1,4 +1,4 @@
-package com.collab.g5.demo.news;
+package com.collab.g5.demo.exceptions.news;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
