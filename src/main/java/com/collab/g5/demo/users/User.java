@@ -35,6 +35,7 @@ public class User {
         return useremail;
     }
 
+
     @ManyToOne
     @JoinColumn(name="cid",foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;

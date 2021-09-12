@@ -7,6 +7,7 @@ import java.util.List;
 
 @Service
 public class CompanyServiceImpl implements CompanyService{
+
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -14,4 +15,26 @@ public class CompanyServiceImpl implements CompanyService{
     public List<Company> getAllCompanies(){
         return companyRepository.findAll();
     }
+
+    @Override
+    public Company getCompanyById(int cid) {
+        Company company = companyRepository.findById(cid).orElse(null);
+        return company;
+    }
+
+    @Override
+    public boolean containsCompany(int cid) {
+        return companyRepository.findById(cid)!=null;
+    }
+
+    @Override
+    public Company save(Company newCompany) {
+        return companyRepository.save(newCompany);
+    }
+
+    @Override
+    public void delete(Company company) {
+        companyRepository.delete(company);
+    }
+
 }
