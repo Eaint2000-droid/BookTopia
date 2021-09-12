@@ -1,6 +1,7 @@
 package com.collab.g5.demo.bookings;
 
 import com.collab.g5.demo.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
