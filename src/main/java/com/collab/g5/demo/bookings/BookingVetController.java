@@ -1,6 +1,6 @@
 package com.collab.g5.demo.bookings;
 
-import com.collab.g5.demo.exceptions.bookings.BookingVettingNotFoundException;
+import com.collab.g5.demo.exceptions.bookingVetting.BookingVettingNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
