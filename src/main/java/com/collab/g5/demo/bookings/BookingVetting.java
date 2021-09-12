@@ -7,6 +7,12 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class BookingVetting {
     @EmbeddedId
     BookingVettingKey bookingVettingKey;
