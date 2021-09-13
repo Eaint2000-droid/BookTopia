@@ -3,8 +3,10 @@ package com.collab.g5.demo.bookings;
 import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
@@ -17,6 +19,7 @@ public class BookingsController {
     private BookingService bookingService;
 
     @GetMapping("/booking")
+    @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingService.getAllBookings();
     }

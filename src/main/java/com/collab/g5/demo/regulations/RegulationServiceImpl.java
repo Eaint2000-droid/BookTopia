@@ -12,4 +12,29 @@ public class RegulationServiceImpl implements RegulationService {
 
     @Override
     public List<Regulation> getAllRegulation() {return regulationRepository.findAll();}
+
+    @Override
+    public Regulation getRegulationBy(int id) {
+        return null;
+    }
+
+    @Override
+    public Regulation addRegulation(RegulationLimit regulation) {
+        return null;
+    }
+
+    @Override
+    public Regulation addRegulation(Regulation regulation) {
+        return null;
+    }
+
+    @Override
+    public Regulation updateRegulation(int cid, Regulation regulation) {
+        return null;
+    }
+
+    @Override
+    public void deleteRegulation(int id) {
+
+    }
 }
