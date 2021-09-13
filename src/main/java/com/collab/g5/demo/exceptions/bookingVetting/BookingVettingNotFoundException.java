@@ -1,7 +1,7 @@
 package com.collab.g5.demo.exceptions.bookingVetting;
 
 public class BookingVettingNotFoundException extends RuntimeException {
-    public BookingVettingNotFoundException(){
+    public BookingVettingNotFoundException() {
         super("NotFound");
     }
 }

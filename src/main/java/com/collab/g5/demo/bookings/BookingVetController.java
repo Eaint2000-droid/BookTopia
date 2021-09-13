@@ -20,11 +20,11 @@ public class BookingVetController {
     public List<BookingVetting> getBookingsAdmin(){
         ArrayList<String> toReturn= new ArrayList<>();
 
-        if(bookingVetService.getAllBookings().size()==0){
+        if(bookingVetService.getAllBookingVetting().size()==0){
             throw new BookingVettingNotFoundException();
         }
 
-        return bookingVetService.getAllBookings();
+        return bookingVetService.getAllBookingVetting();
     }
 
 

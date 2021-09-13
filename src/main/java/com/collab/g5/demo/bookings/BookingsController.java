@@ -41,7 +41,7 @@ public class BookingsController {
         if(bookings == null){
             throw new BookingNotFoundException(id);
         }
-//        bookingService.delete(getBookingsById(id));
+        bookingService.delete(getBookingsById(id));
     }
 
 }

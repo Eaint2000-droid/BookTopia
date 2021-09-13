@@ -10,12 +10,12 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("/News")
+@RequestMapping("/news")
 public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @GetMapping("/com/collab/g5/demo/news")
+    @GetMapping("/")
     public List<News> getNews(){
         return newsService.getAllNews();
     }
@@ -46,7 +46,7 @@ public class NewsController {
     @DeleteMapping("/com/collab/g5/demo/news/deleteNews{nID}")
     public void deleteNews(@PathVariable int nID, @RequestBody News newNewsInfo){
         try{
-            newsService.deleteNews(nID);
+            newsService.deleteNewsById(nID);
         }catch(EmptyResultDataAccessException e) {
             throw new NewsNotFoundException(nID);
         }
