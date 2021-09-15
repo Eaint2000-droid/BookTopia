@@ -17,7 +17,7 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     @Override
-    public RegulationLimit getRegulationLimitBy(int cid, LocalDate statDate) {
+    public RegulationLimit getRegulationLimitByCidAndStartDate(int cid, LocalDate statDate) {
         return null;
     }
 
