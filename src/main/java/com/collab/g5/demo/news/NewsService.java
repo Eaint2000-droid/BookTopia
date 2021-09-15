@@ -9,7 +9,7 @@ public interface NewsService {
 
     News addNews(News news); //save
 
-    News updateNews(int nID, News news);
+    News updateNews(int nid, News news);
 
     void deleteNewsById(int id);
 

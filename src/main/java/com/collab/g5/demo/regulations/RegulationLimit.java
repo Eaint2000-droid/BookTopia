@@ -19,7 +19,7 @@ public class RegulationLimit {
     RegulationLimitKey regulationLimitKey;
 
     @ManyToOne
-    @MapsId("regulationId")
+    @MapsId("regulationid")
     @JoinColumn(name = "regulation_startDate", foreignKey = @ForeignKey(name = "fk1_regulationLimit"))
     private Regulation regulation;
 
