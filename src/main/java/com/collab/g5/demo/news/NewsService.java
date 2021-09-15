@@ -5,13 +5,13 @@ import java.util.List;
 public interface NewsService {
     List<News> getAllNews();
 
-    News getNewsById(int id);
+    News getNewsById(int nid);
 
     News addNews(News news); //save
 
-    News updateNews(int nID, News news);
+    News updateNews(int nid, News news);
 
-    void deleteNewsById(int id);
+    void deleteNewsById(int nid);
 
     void delete(News news);
 }
