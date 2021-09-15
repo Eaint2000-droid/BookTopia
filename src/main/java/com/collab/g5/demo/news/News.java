@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int nID;
+    private int nid;
 
     private LocalDate date;
     private String title;

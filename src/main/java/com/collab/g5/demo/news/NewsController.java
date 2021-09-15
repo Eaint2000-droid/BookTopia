@@ -15,15 +15,16 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @GetMapping("/")
+    @GetMapping("" +
+            "")
     public List<News> getNews() {
         return newsService.getAllNews();
     }
 
-    //retrieves news by nID
-    @GetMapping("/com/collab/g5/demo/news/{nID}")
-    public News getNewsById(@PathVariable int nID) {
-        return newsService.getNewsById(nID);
+    //retrieves news by nid
+    @GetMapping("/com/collab/g5/demo/news/{nid}")
+    public News getNewsById(@PathVariable int nid) {
+        return newsService.getNewsById(nid);
     }
 
     //add new news
@@ -34,20 +35,20 @@ public class NewsController {
     }
 
     //update news
-    @PutMapping("/com/collab/g5/demo/news/updateNews{nID}")
-    public News updateNews(@PathVariable int nID, @RequestBody News newNewsInfo) {
-        News news = newsService.updateNews(nID, newNewsInfo);
-        if (news == null) throw new NewsNotFoundException(nID);
+    @PutMapping("/com/collab/g5/demo/news/updateNews{nid}")
+    public News updateNews(@PathVariable int nid, @RequestBody News newNewsInfo) {
+        News news = newsService.updateNews(nid, newNewsInfo);
+        if (news == null) throw new NewsNotFoundException(nid);
         return news;
     }
 
     //delete news
-    @DeleteMapping("/com/collab/g5/demo/news/deleteNews{nID}")
-    public void deleteNews(@PathVariable int nID, @RequestBody News newNewsInfo) {
+    @DeleteMapping("/com/collab/g5/demo/news/deleteNews{nid}")
+    public void deleteNews(@PathVariable int nid, @RequestBody News newNewsInfo) {
         try {
-            newsService.deleteNewsById(nID);
+            newsService.deleteNewsById(nid);
         } catch (EmptyResultDataAccessException e) {
-            throw new NewsNotFoundException(nID);
+            throw new NewsNotFoundException(nid);
         }
     }
 

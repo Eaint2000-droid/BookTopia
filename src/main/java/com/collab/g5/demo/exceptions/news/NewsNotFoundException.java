@@ -10,8 +10,8 @@ public class NewsNotFoundException extends RuntimeException{
      */
     private static final long serialVersionUID = 1L;
 
-    public NewsNotFoundException(int nID) {
-        super("Could not find book " + nID);
+    public NewsNotFoundException(int nid) {
+        super("Could not find book " + nid);
     }
 
 }
