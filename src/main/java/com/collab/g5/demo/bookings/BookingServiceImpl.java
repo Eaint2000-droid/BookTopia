@@ -28,12 +28,20 @@ public class BookingServiceImpl implements BookingService{
         return bookings;
     }
 
+    @Override
+    public Bookings updateBookings(int id, Bookings bookings) {
+        return null;
+    }
+
 
     @Override
     public void delete(Bookings bookings) {
-        if(bookingExists(bookings.getBid())){
-            bookingsRepository.delete(bookings);
-        }
+        bookingsRepository.delete(bookings);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        bookingsRepository.deleteById(id);
     }
 
     @Override

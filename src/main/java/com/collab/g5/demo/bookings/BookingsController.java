@@ -3,6 +3,7 @@ package com.collab.g5.demo.bookings;
 import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class BookingsController {
     private BookingService bookingService;
 
     @GetMapping("/booking")
+    @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingService.getAllBookings();
     }
@@ -42,7 +44,7 @@ public class BookingsController {
         if(bookings == null){
             throw new BookingNotFoundException(id);
         }
-//        bookingService.delete(getBookingsById(id));
+        bookingService.delete(getBookingsById(id));
     }
 
 }

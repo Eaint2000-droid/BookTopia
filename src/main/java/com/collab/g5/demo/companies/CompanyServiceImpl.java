@@ -37,4 +37,14 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.delete(company);
     }
 
+    @Override
+    //TODO
+    public Company updateCompany(int cid, Company bookings) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(int cid) {
+        companyRepository.deleteById(cid);
+    }
 }

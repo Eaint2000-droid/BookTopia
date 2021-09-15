@@ -8,9 +8,13 @@ public interface UserService {
 
     User getUserByEmail(String Email);
 
+    User save(User newUser);
+
     void delete(User user);
+
+    void deleteById(String userEmail);
 
     boolean containsUser(String userEmail);
 
-    User save(User newUser);
+
 }
