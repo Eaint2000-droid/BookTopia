@@ -27,9 +27,7 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
         //To Do
         RegulationLimitKey regulationLimitKey=new RegulationLimitKey(dateID,cid);
         return regulationLimitRepository.getById(regulationLimitKey);
-
     }
-
 
 
     @Override

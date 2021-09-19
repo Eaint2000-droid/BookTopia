@@ -37,7 +37,7 @@ public class User {
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(
-          name = "user_id", referencedColumnName = "id"),
+          name = "user_useremail", referencedColumnName = "useremail"),
         inverseJoinColumns = @JoinColumn(
           name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
@@ -47,7 +47,7 @@ public class User {
     private Company company;
 
 //    foreign keys
-     @Transient
+    @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<News> newsList;
 

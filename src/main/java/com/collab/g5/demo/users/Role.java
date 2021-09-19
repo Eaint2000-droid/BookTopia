@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-//@Table(name="Role")
+@Table(name="role")
 //if we include this need to create database for this as well
 public class Role {
     @Id
