@@ -7,5 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface RegulationLimitRepository extends JpaRepository<RegulationLimit, RegulationLimitKey> {
+
 //    List<Map<String, Object>> getByRegulationLimitKey(LocalDate startDate, int cid);
 }
