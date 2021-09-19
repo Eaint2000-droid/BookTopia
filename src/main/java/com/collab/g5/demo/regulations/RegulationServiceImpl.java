@@ -1,5 +1,6 @@
 package com.collab.g5.demo.regulations;
 
+import com.collab.g5.demo.news.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +13,24 @@ public class RegulationServiceImpl implements RegulationService {
     private RegulationRepository regulationRepository;
 
     @Override
-    public List<Regulation> getAllRegulation() {return regulationRepository.findAll();}
-
-    @Override
-    public Regulation updateRegulation(int cid, Regulation regulation) {
-        return null;
-    }
-
-    @Override
     public Regulation save(Regulation newRegulation) {
         return regulationRepository.save(newRegulation);
     }
 
     @Override
-    public Regulation getRegulationById(LocalDate dateID) {
-        return regulationRepository.getById(dateID);
+    public List<Regulation> getAllRegulation() {return regulationRepository.findAll();}
+
+    @Override
+    public Regulation getRegulationById(LocalDate startDate) {
+        return regulationRepository.getById(startDate);
+    }
+
+    @Override
+    public Regulation updateRegulation(LocalDate startDate, Regulation newRegulation) {
+        Regulation tempRegulation = regulationRepository.findById(startDate)
+                .orElseThrow(() -> new IllegalStateException("Regulation with Start Date " + startDate + " does not exist"));
+        tempRegulation.setPercentage(newRegulation.getPercentage());
+        return tempRegulation;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class RegulationServiceImpl implements RegulationService {
     }
 
     @Override
-    public void deleteById(LocalDate dateID) {
-        regulationRepository.deleteById(dateID);
+    public void deleteById(LocalDate startDate) {
+        regulationRepository.deleteById(startDate);
     }
 }

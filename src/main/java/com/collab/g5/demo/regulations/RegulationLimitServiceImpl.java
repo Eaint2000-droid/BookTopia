@@ -17,27 +17,31 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     @Override
-    public List<RegulationLimit> getAllRegulation() {
-        return null;
+    public List<RegulationLimit> getAllRegulationLimit() {
+        return regulationLimitRepository.findAll();
     }
 
     @Override
     public RegulationLimit getRegulationById(LocalDate dateID) {
+        //To Do
+        //return regulationLimitRepository.getByRegulationLimitKey(startDate, cid);
+
         return null;
     }
 
     @Override
     public RegulationLimit updateRegulation(int cid, Regulation newRegulation) {
+        //To DO
         return null;
     }
 
     @Override
     public void delete(RegulationLimit regulation) {
-
+        //To DO
     }
 
     @Override
     public void deleteById(RegulationLimitKey regulationLimitKey) {
-
+        //To DO
     }
 }

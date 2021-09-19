@@ -15,6 +15,6 @@ public class RegulationLimitController {
 
     @GetMapping("/")
     public List<RegulationLimit> getRegulationLimit() {
-        return regulationLimitService.getAllRegulation();
+        return regulationLimitService.getAllRegulationLimit();
     }
 }

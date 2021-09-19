@@ -1,9 +1,7 @@
 package com.collab.g5.demo.regulations;
 
-import com.collab.g5.demo.companies.Company;
-import org.apache.tomcat.jni.Local;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDate;
 

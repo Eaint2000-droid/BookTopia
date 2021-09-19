@@ -8,7 +8,7 @@ public interface RegulationLimitService {
     RegulationLimit save(RegulationLimit newRegulation);
 
     //READ
-    List<RegulationLimit> getAllRegulation();
+    List<RegulationLimit> getAllRegulationLimit();
 
     RegulationLimit getRegulationById(LocalDate dateID);
 
