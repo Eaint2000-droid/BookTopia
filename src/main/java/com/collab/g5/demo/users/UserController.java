@@ -1,5 +1,6 @@
 package com.collab.g5.demo.users;
 
+import com.collab.g5.demo.exceptions.users.EmailExistsException;
 import com.collab.g5.demo.exceptions.users.InsertUserException;
 import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,15 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRegistration userRegistration;
 
-    @GetMapping("/")
+    @GetMapping("/get")
     public List<User> getUsers(){
         List<User> toReturn=userService.getAllUsers();
-
         if(toReturn.size()==0){
             throw new UserNotFoundException();
         }
-
         return toReturn;
     }
 
@@ -37,14 +38,6 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/{newUser}")
-    public User newUser(@RequestBody User newUser){
-        String userEmail=newUser.getUseremail();
-        if(userService.containsUser(userEmail)){
-            throw new InsertUserException(userEmail);
-        }
-        return userService.save(newUser);
-    }
 
     @DeleteMapping("/del/{email}")
     void deleteUser(@PathVariable String email ){
@@ -56,6 +49,24 @@ public class UserController {
         userService.delete(user);
     }
 
+
+//    @PostMapping("/post/{newUser}")
+//    public User newUser(@RequestBody User newUser){
+//        String userEmail=newUser.getUseremail();
+//        if(userService.containsUser(userEmail)){
+//            throw new InsertUserException(userEmail);
+//        }
+////        User toadd = new User();
+////
+////        toadd.setFname(user.getFname());
+////        toadd.setLname(user.getLname());
+////        toadd.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+////        toadd.setEmail(accountDto.getEmail());
+////
+////        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+////        userService.save(user);
+//        return userService.save(newUser);
+//    }
 
 
 

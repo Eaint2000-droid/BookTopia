@@ -15,6 +15,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user==null){
             throw new UserNotFoundException(email);
         }
-        return user;
+        return new UserDetailsSecurity(user);
     }
 }

@@ -21,23 +21,26 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name="user")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @Column(name="useremail",nullable=false)
     private String useremail;
+//    username for an account will be the useremail
     private boolean HR;
     private String password;
     private String fname;
     private String lname;
     private String dept;
-    private String role;
 
-    public String getUseremail() {
-
-        return useremail;
-    }
-
+    @ManyToMany
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = @JoinColumn(
+          name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(
+          name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     @ManyToOne
     @JoinColumn(name="cid",foreignKey = @ForeignKey(name = "fk_user_company"))
@@ -56,33 +59,40 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
     private List<Bookings> bookings;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+
+    public String getUseremail() {
+
+        return useremail;
     }
 
-    @Override
-    public String getUsername() {
-        return null;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
+    public void setUseremail(String useremail) {
+        this.useremail = useremail;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
+    public void setHR(boolean HR) {
+        this.HR = HR;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public void setLname(String lname) {
+        this.lname = lname;
     }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+
+
+
+
+
 }
