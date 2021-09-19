@@ -5,8 +5,11 @@ import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.news.News;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -18,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name="user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name="useremail",nullable=false)
@@ -52,4 +55,34 @@ public class User {
     @Transient
     @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
     private List<Bookings> bookings;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
