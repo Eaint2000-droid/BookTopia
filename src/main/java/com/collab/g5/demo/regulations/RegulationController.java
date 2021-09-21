@@ -22,7 +22,7 @@ public class RegulationController {
     }
 
     //retrieves news by startDate
-    @GetMapping("/com/collab/g5/demo/regulation/{nid}")
+    @GetMapping("/com/collab/g5/demo/regulation/{startDate}")
     public Regulation getRegulationById(@PathVariable LocalDate startDate) {
         return regulationService.getRegulationById(startDate);
     }
