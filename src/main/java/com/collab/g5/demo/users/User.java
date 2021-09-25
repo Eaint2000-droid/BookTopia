@@ -62,7 +62,7 @@ public class User {
 
 
     public String getUseremail() {
-
+        System.out.println(useremail);
         return useremail;
     }
 

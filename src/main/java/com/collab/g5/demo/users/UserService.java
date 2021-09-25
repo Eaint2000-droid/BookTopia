@@ -16,5 +16,8 @@ public interface UserService {
 
     boolean containsUser(String userEmail);
 
+    String getUserRole(String Email);
+
+
 
 }
