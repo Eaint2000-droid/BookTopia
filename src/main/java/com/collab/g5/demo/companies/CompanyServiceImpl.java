@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CompanyServiceImpl implements CompanyService{
+public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -28,8 +28,8 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company save(Company newCompany) {
-        return companyRepository.save(newCompany);
+    public void addNewCompany(Company newCompany) {
+        companyRepository.save(newCompany);
     }
 
     @Override
@@ -47,4 +47,5 @@ public class CompanyServiceImpl implements CompanyService{
     public void deleteById(int cid) {
         companyRepository.deleteById(cid);
     }
+
 }

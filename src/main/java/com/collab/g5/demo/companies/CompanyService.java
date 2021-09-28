@@ -1,14 +1,11 @@
 package com.collab.g5.demo.companies;
 
-
-import com.collab.g5.demo.bookings.Bookings;
-import com.collab.g5.demo.companies.Company;
-
 import java.util.List;
 
 public interface CompanyService {
+
     //CREATE
-    Company save(Company newCompany);
+    void addNewCompany(Company newCompany);
 
     //READ
     List<Company> getAllCompanies();
@@ -24,6 +21,5 @@ public interface CompanyService {
     void deleteById(int cid);
 
     boolean containsCompany(int cid);
-
 
 }
