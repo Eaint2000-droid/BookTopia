@@ -22,29 +22,29 @@ public class RegulationLimitController {
 
 
 
-    @GetMapping("/get/{regulationLimit}")
-    public RegulationLimit getRegulationLimitById(@PathVariable RegulationLimit toadd ){
-
-        RegulationLimit regulationLimit= regulationLimitService.getRegulationLimitById(toadd.getRegulation().getStartDate(), toadd.getCompany().getCid());
-
-        if(regulationLimit==null){
-            // throw an exception
-            throw new regulationLimitNotFoundException();
-        }
-        return regulationLimit;
-    }
-
-
-    @DeleteMapping("/del/{regulationLimit}")
-    void deleteRegulationLimit(@PathVariable RegulationLimit toadd ){
-        RegulationLimit regulationLimit= regulationLimitService.getRegulationLimitById(toadd.getRegulation().getStartDate(), toadd.getCompany().getCid());
-        if(regulationLimit==null){
-            // throw an exception
-            throw new regulationLimitNotFoundException();
-        }
-        regulationLimitService.delete(regulationLimit);
-    }
-
+//    @GetMapping("/get/{regulationLimit}")
+//    public RegulationLimit getRegulationLimitById(@PathVariable RegulationLimit toadd ){
+//
+//        RegulationLimit regulationLimit= regulationLimitService.getRegulationLimitById(toadd.getRegulation().getStartDate(), toadd.getCompany().getCid());
+//
+//        if(regulationLimit==null){
+//            // throw an exception
+//            throw new regulationLimitNotFoundException();
+//        }
+//        return regulationLimit;
+//    }
+//
+//
+//    @DeleteMapping("/del/{regulationLimit}")
+//    void deleteRegulationLimit(@PathVariable RegulationLimit toadd ){
+//        RegulationLimit regulationLimit= regulationLimitService.getRegulationLimitById(toadd.getRegulation().getStartDate(), toadd.getCompany().getCid());
+//        if(regulationLimit==null){
+//            // throw an exception
+//            throw new regulationLimitNotFoundException();
+//        }
+//        regulationLimitService.delete(regulationLimit);
+//    }
+//
 
 
 

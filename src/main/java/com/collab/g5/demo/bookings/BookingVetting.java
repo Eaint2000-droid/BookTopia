@@ -27,15 +27,6 @@ public class BookingVetting {
     @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
     private User user;
 
-    @Override
-    public String toString() {
-        return "BookingVetting{" +
-                bookingVettingKey.getBid()+
-                ", user"+ bookingVettingKey.getUseremail()+
-                ", bookingResult='" + bookingResult + '\'' +
-                ", comment='" + comment + '\'' + '}';
-    }
-
     //    foreign key
 
     @ManyToOne
