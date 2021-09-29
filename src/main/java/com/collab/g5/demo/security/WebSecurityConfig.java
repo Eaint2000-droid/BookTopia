@@ -3,6 +3,7 @@ package com.collab.g5.demo.security;
 
 import com.collab.g5.demo.users.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,9 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    private final UserServiceImpl userServiceImpl;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserServiceImpl userServiceImpl;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -30,11 +30,4 @@ public class BookingVettingKey implements Serializable {
         return useremail;
     }
 
-    @Override
-    public String toString() {
-        return "BookingVettingKey{" +
-                "bid=" + bid +
-                ", useremail='" + useremail + '\'' +
-                '}';
-    }
 }
