@@ -10,10 +10,10 @@ public interface RegulationLimitService {
     //READ
     List<RegulationLimit> getAllRegulationLimit();
 
-    RegulationLimit getRegulationById(LocalDate dateID);
+    RegulationLimit getRegulationLimitById(LocalDate dateID,int cid);
 
     //UPDATE
-    RegulationLimit updateRegulation(int cid, Regulation newRegulation);
+    RegulationLimit updateRegulationLimit(int cid, Regulation newRegulation);
 
     //DELETE
     void delete(RegulationLimit regulation);

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode
 
+
 public class RegulationLimit {
     @EmbeddedId
     RegulationLimitKey regulationLimitKey;
@@ -30,4 +31,5 @@ public class RegulationLimit {
     private Company company;
 
     private int dailyLimit;
+
 }

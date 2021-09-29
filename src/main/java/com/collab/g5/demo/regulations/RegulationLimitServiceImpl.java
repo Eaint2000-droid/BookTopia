@@ -22,15 +22,16 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     @Override
-    public RegulationLimit getRegulationById(LocalDate dateID) {
-        //To Do
-        //return regulationLimitRepository.getByRegulationLimitKey(startDate, cid);
 
-        return null;
+    public RegulationLimit getRegulationLimitById(LocalDate dateID, int cid) {
+        //To Do
+        RegulationLimitKey regulationLimitKey=new RegulationLimitKey(dateID,cid);
+        return regulationLimitRepository.getById(regulationLimitKey);
     }
 
+
     @Override
-    public RegulationLimit updateRegulation(int cid, Regulation newRegulation) {
+    public RegulationLimit updateRegulationLimit(int cid, Regulation newRegulation) {
         //To DO
         return null;
     }

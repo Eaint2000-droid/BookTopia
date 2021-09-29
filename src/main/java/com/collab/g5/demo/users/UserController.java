@@ -1,7 +1,6 @@
 package com.collab.g5.demo.users;
 
-import com.collab.g5.demo.exceptions.users.InsertUserException;
-import com.collab.g5.demo.exceptions.users.UserNotFoundException;
+import com.collab.g5.demo.exceptions.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,54 +8,29 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
+
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/")
+    //HR METHODS
+    //To view all employees records
+    @GetMapping("/hr/getAll")
     public List<User> getUsers(){
-        List<User> toReturn=userService.getAllUsers();
-
+        List<User> toReturn=userServiceImpl.getAllUsers();
         if(toReturn.size()==0){
             throw new UserNotFoundException();
         }
-
         return toReturn;
     }
 
-
-    @GetMapping("/get/{email}")
-    public User getUserById(@PathVariable String email){
-        User user=userService.getUserByEmail(email);
-
-        if(user==null){
-            // throw an exception
-            throw new UserNotFoundException(email);
-        }
-        return user;
+    //To add new user
+    @PostMapping("/hr/create/{newUser}")
+    public void newUser(@RequestBody User newUser){
+        userServiceImpl.addNewUser(newUser);
     }
 
-    @PostMapping("/{newUser}")
-    public User newUser(@RequestBody User newUser){
-        String userEmail=newUser.getUseremail();
-        if(userService.containsUser(userEmail)){
-            throw new InsertUserException(userEmail);
-        }
-        return userService.save(newUser);
-    }
-
-    @DeleteMapping("/del/{email}")
-    void deleteUser(@PathVariable String email ){
-        User user= userService.getUserByEmail(email);
-        if(user==null){
-            // throw an exception
-            throw new UserNotFoundException(email);
-        }
-        userService.delete(user);
-    }
-
-
-
+    //EMPLOYEE METHODS
 
 }
