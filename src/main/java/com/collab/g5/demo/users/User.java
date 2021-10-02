@@ -18,6 +18,7 @@ import java.util.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class User implements UserDetails {
 
     //user attributes ; stored in db
