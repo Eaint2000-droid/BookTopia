@@ -13,7 +13,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
-
+    @Autowired
+    private UserService userService;
     //HR METHODS
     //To view all employees records
     @GetMapping("/hr/getAll")
@@ -32,5 +33,34 @@ public class UserController {
     }
 
     //EMPLOYEE METHODS
+    @GetMapping("/get/{email}")
+    public User getUserByEmail(@PathVariable String email){
+        User user=userService.getUserByEmail(email);
+
+        if(user==null){
+            // throw an exception
+            throw new UserNotFoundException(email);
+        }
+        return user;
+    }
+
+
+    @DeleteMapping("/del/{email}")
+    void deleteUser(@PathVariable String email ){
+        User user= userService.getUserByEmail(email);
+        if(user==null){
+            // throw an exception
+            throw new UserNotFoundException(email);
+        }
+        userService.delete(user);
+    }
+
+
+
+//    @PutMapping("updatePassword/{email}")
+//    public void updatePassword(@PathVariable String email){
+//
+//    }
+
 
 }
