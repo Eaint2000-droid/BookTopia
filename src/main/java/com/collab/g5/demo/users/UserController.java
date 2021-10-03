@@ -22,6 +22,7 @@ public class UserController {
         List<User> toReturn=userServiceImpl.getAllUsers();
         if(toReturn.size()==0){
             throw new UserNotFoundException();
+//            System.out.println("HERE");
         }
         return toReturn;
     }

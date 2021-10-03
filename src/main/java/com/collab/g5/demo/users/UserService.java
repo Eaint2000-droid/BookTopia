@@ -15,5 +15,5 @@ public interface UserService {
 
     void deleteById(String userEmail);
 
-    boolean containsUser(String userEmail);
+//    boolean containsUser(String userEmail);
 }
