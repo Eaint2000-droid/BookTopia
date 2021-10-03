@@ -19,7 +19,7 @@ public class BookingVettingKey implements Serializable {
     @Column(name="bid")
     int bid;
 
-    @Column(name="useremail")
+    @Column(name="user_email")
     String useremail;
 
     public int getBid() {

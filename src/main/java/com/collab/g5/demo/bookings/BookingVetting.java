@@ -23,8 +23,8 @@ public class BookingVetting {
 
     @ManyToOne
     @JsonIgnore
-    @MapsId("useremail")
-    @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
+    @MapsId("email")
+    @JoinColumn(name = "user_email", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
     private User user;
 
     //    foreign key

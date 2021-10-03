@@ -1,5 +1,7 @@
 package com.collab.g5.demo.users;
 
+import com.collab.g5.demo.bookings.BookingVetting;
+import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,7 +14,6 @@ import javax.persistence.*;
 import java.util.*;
 
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -23,7 +24,7 @@ public class User implements UserDetails {
 
     //user attributes ; stored in db
     @Id
-    @Column(name="email",nullable=false)
+    @Column(name = "email", nullable = false)
     private String email;
     private String fname;
     private String lname;
@@ -34,12 +35,12 @@ public class User implements UserDetails {
     private Boolean enabled = true;
 
     // user constructor
-    public User (String email,
-                 String fname,
-                 String lname,
-                 String password,
-                 UserRole userRole,
-                 Company company){
+    public User(String email,
+                String fname,
+                String lname,
+                String password,
+                UserRole userRole,
+                Company company) {
         this.email = email;
         this.fname = fname;
         this.lname = lname;
@@ -51,9 +52,16 @@ public class User implements UserDetails {
     //mappings to other entities
 
     @ManyToOne
-    @JsonIgnoreProperties({"name","size"})
-    @JoinColumn(name="cid",foreignKey = @ForeignKey(name = "fk_user_company"))
+    @JsonIgnoreProperties({"name", "size"})
+    @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BookingVetting> bookingVetting;
+
+    @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
+    private List<Bookings> bookings;
+
 
     //necessary methods from UserDetails Implementation
     @Override
@@ -69,7 +77,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 

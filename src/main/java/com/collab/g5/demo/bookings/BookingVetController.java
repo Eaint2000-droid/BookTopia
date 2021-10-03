@@ -16,18 +16,19 @@ public class BookingVetController {
     @Autowired
     private BookingVetService bookingVetService;
 
-    @GetMapping("/")
+    @GetMapping("/hr")
     public List<BookingVetting> getBookingVetting() {
         return bookingVetService.getAllBookingVetting();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/get/{id}")
+    @GetMapping("/hr/get/{id}")
     public BookingVetting getBookingVettingById(@RequestBody BookingVettingKey id) {
         return bookingVetService.getById(id);
     }
 
-    @PostMapping("/add/{bookingVet}")
+    //this one might not need to be included? How does this method works?
+    @PostMapping("/hr/add/{bookingVet}")
     public BookingVetting addBookingVetting(@RequestBody BookingVetting bkVet) {
         if (bookingVetService.getById(bkVet.getBookingVettingKey()) != null) {
             throw new IllegalStateException();
@@ -35,7 +36,7 @@ public class BookingVetController {
         return bookingVetService.save(bkVet);
     }
 
-    @DeleteMapping("/del/{bookingVet}")
+    @DeleteMapping("/hr/del/{bookingVet}")
     public void delBookingVetting(@RequestBody BookingVetting bkVet) {
         bookingVetService.delete(bkVet);
     }

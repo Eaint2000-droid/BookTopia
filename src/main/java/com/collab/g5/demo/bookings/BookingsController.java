@@ -25,13 +25,15 @@ public class BookingsController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    //when admin wants to receive all the information
+    @GetMapping("/hr/getAll")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingService.getAllBookings();
     }
 
-    @GetMapping("/get/{bid}")
+    //when employee want to retrieve their own booking. TODO
+    @GetMapping("/emp/getAll")
     public Bookings getBookingsById(@PathVariable int bid) {
         if (!bookingService.bookingExists(bid)) {
             throw new BookingNotFoundException(bid);
@@ -40,21 +42,20 @@ public class BookingsController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{newBooking}")
+    @PostMapping("/emp/{newBooking}")
     public Bookings addBooking(@RequestBody Bookings newBooking) {
         /*
          * This one maybe can delete? Cause I was using postman to test it out and i realized that
          * by using postman, it will allow some invalid userEmail to be added into the console
          * and postman will still*/
-        //Uncomment it out once Charlene adds back her methods.
-//        Optional<User> a = userService.findByEmail(newBooking.getUser().getEmail());
-//        if (a.isEmpty()) {
-//            throw new UserNotFoundException();
-//        }
+        User a = userService.getUserByEmail(newBooking.getUser().getEmail());
+        if (a == null) {
+            throw new UserNotFoundException();
+        }
         return bookingService.save(newBooking);
     }
 
-    @DeleteMapping("/del/{id}")
+    @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@PathVariable int id) {
         Bookings bookings = bookingService.getBookingsById(id);
         if (bookings == null) {
