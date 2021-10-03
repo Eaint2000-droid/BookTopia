@@ -1,33 +1,30 @@
 package com.collab.g5.demo.companies;
 
-import com.collab.g5.demo.exceptions.companies.CompaniesNotFoundException;
-import com.collab.g5.demo.exceptions.companies.InsertCompanyException;
+import com.collab.g5.demo.exceptions.companies.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/api/com")
 public class CompanyController {
     @Autowired
-    private CompanyService companyService;
+    private CompanyServiceImpl companyServiceImpl;
 
 
-    @GetMapping("/")
+    @GetMapping("/hr/getAll")
     public List<Company> getCompany(){
-        List<Company> toReturn=companyService.getAllCompanies();
-
+        List<Company> toReturn=companyServiceImpl.getAllCompanies();
         if(toReturn.size()==0){
             throw new CompaniesNotFoundException();
         }
-
         return toReturn;
     }
 
-    @GetMapping("/get/{cid}")
+    @GetMapping("/hr/get/{cid}")
     public Company getCompanyById(@PathVariable int cid){
-        Company company = companyService.getCompanyById(cid);
+        Company company = companyServiceImpl.getCompanyById(cid);
 
         if(company==null){
             // throw an exception
@@ -36,24 +33,23 @@ public class CompanyController {
         return company;
     }
 
-    @PostMapping("/{newCompany}")
-    public Company newCompany(@RequestBody Company newCompany){
+    @PostMapping("/hr/create/{newCompany}")
+    public void newCompany(@RequestBody Company newCompany){
         int cid = newCompany.getCid();
-        if(companyService.containsCompany(cid)){
+        if(companyServiceImpl.containsCompany(cid)){
             throw new InsertCompanyException(cid);
         }
-        return companyService.save(newCompany);
+        companyServiceImpl.addNewCompany(newCompany);
     }
 
 
-    @DeleteMapping("/del/{name}")
+    @DeleteMapping("/hr/del/{name}")
     void deleteCompany(@PathVariable int cid){
-        Company company= companyService.getCompanyById(cid);
+        Company company= companyServiceImpl.getCompanyById(cid);
         if(company==null){
             // throw an exception
             throw new CompaniesNotFoundException(cid);
         }
-        companyService.delete(company);
+        companyServiceImpl.delete(company);
     }
-
 }

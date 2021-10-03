@@ -19,7 +19,7 @@ public class BookingVettingKey implements Serializable {
     @Column(name="bid")
     int bid;
 
-    @Column(name="useremail")
+    @Column(name="user_email")
     String useremail;
 
     public int getBid() {
@@ -30,11 +30,4 @@ public class BookingVettingKey implements Serializable {
         return useremail;
     }
 
-    @Override
-    public String toString() {
-        return "BookingVettingKey{" +
-                "bid=" + bid +
-                ", useremail='" + useremail + '\'' +
-                '}';
-    }
 }

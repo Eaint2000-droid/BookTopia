@@ -1,7 +1,5 @@
 package com.collab.g5.demo.bookings;
 
-import com.collab.g5.demo.bookings.BookingVetting;
-
 import java.util.List;
 
 public interface BookingVetService {
@@ -11,7 +9,7 @@ public interface BookingVetService {
     //READ
     List<BookingVetting> getAllBookingVetting();
 
-    BookingVetting getBookingVettingById(BookingVettingKey id);
+    BookingVetting getById(BookingVettingKey id);
 
     //UPDATE
     BookingVetting updateBookings(int id, BookingVetting bookings);
