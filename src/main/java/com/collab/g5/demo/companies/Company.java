@@ -1,6 +1,7 @@
 package com.collab.g5.demo.companies;
 
 
+import com.collab.g5.demo.regulations.RegulationLimit;
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -28,6 +29,9 @@ public class Company {
     @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<User> users;
+
+    @OneToMany(mappedBy = "company" , cascade = CascadeType.ALL)
+    private List<RegulationLimit> regulationLimit;
 
 
 }

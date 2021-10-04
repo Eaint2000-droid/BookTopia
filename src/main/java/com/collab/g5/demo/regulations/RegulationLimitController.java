@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping ("/regulationlimit")
 public class RegulationLimitController {
     @Autowired
-    RegulationLimitService regulationLimitService = new RegulationLimitServiceImpl();
+    RegulationLimitService regulationLimitService;
 
     @GetMapping("/")
     public List<RegulationLimit> getRegulationLimit() {

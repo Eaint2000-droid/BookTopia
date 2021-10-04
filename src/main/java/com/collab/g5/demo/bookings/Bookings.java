@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class Bookings {
     @ManyToOne
     @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookings"))
     @Autowired
+    @NotNull
     private User user;
 
     private LocalDate bDate;
