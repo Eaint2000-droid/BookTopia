@@ -16,18 +16,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class BookingVettingKey implements Serializable {
-    @Column(name="bid")
+//    @Column(name="bid")
     int bid;
 
-    @Column(name="user_email")
-    String useremail;
-
-    public int getBid() {
-        return bid;
-    }
-
-    public String getUseremail() {
-        return useremail;
-    }
+//    @Column(name="user_email")
+    String email;
 
 }

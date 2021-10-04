@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class BookingVetting {
 
+    @NotNull
     @EmbeddedId
     BookingVettingKey bookingVettingKey;
     private String bookingResult;

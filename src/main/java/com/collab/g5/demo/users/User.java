@@ -3,6 +3,7 @@ package com.collab.g5.demo.users;
 import com.collab.g5.demo.bookings.BookingVetting;
 import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
+import com.collab.g5.demo.news.News;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -62,6 +63,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
     private List<Bookings> bookings;
 
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    private List<News> newsList;
 
     //necessary methods from UserDetails Implementation
     @Override

@@ -73,10 +73,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.deleteById(userEmail);
     }
 
-    @Override
-    public boolean containsUser(String userEmail) {
-        return userRepository.existsById(userEmail);
-    }
+//    @Override
+//    public boolean containsUser(String userEmail) {
+//        return userRepository.existsById(userEmail);
+//    }
 
 
 }
