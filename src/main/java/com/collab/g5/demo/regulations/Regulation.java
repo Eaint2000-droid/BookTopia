@@ -1,5 +1,6 @@
 package com.collab.g5.demo.regulations;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.service.spi.InjectService;
 
@@ -23,7 +24,7 @@ public class Regulation {
 
     private int percentage;
 
-//   foreign key
-    @OneToMany(mappedBy="regulation",cascade= CascadeType.ALL)
+    //   foreign key
+    @OneToMany(mappedBy = "regulation", cascade = CascadeType.ALL)
     private List<RegulationLimit> regulationLimits;
 }

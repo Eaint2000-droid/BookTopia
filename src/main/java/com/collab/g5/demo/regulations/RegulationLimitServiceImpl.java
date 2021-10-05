@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,27 +18,37 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     @Override
-    public List<RegulationLimit> getAllRegulation() {
-        return null;
+    public List<RegulationLimit> getAllRegulationLimit() {
+//        List<RegulationLimit> a =  regulationLimitRepository.findAll();
+//        System.out.println(a.size());
+//        if(a.size() != 0)
+//            System.out.println(a);
+        return regulationLimitRepository.findAll();
+
     }
 
     @Override
-    public RegulationLimit getRegulationById(LocalDate dateID) {
-        return null;
+
+    public RegulationLimit getRegulationLimitById(LocalDate dateID, int cid) {
+        //To Do
+        RegulationLimitKey regulationLimitKey=new RegulationLimitKey(dateID,cid);
+        return regulationLimitRepository.getById(regulationLimitKey);
     }
 
+
     @Override
-    public RegulationLimit updateRegulation(int cid, Regulation newRegulation) {
+    public RegulationLimit updateRegulationLimit(int cid, Regulation newRegulation) {
+        //To DO
         return null;
     }
 
     @Override
     public void delete(RegulationLimit regulation) {
-
+        //To DO
     }
 
     @Override
     public void deleteById(RegulationLimitKey regulationLimitKey) {
-
+        //To DO
     }
 }

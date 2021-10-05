@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class BookingVetting {
 
+    @NotNull
     @EmbeddedId
     BookingVettingKey bookingVettingKey;
     private String bookingResult;
@@ -23,18 +25,9 @@ public class BookingVetting {
 
     @ManyToOne
     @JsonIgnore
-    @MapsId("useremail")
-    @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
+    @MapsId("email")
+    @JoinColumn(name = "user_email", foreignKey = @ForeignKey(name = "fk1_bookingVetting"))
     private User user;
-
-    @Override
-    public String toString() {
-        return "BookingVetting{" +
-                bookingVettingKey.getBid()+
-                ", user"+ bookingVettingKey.getUseremail()+
-                ", bookingResult='" + bookingResult + '\'' +
-                ", comment='" + comment + '\'' + '}';
-    }
 
     //    foreign key
 

@@ -22,7 +22,7 @@ public class BookingVetImpl implements BookingVetService {
     }
 
     @Override
-    public BookingVetting getBookingVettingById(BookingVettingKey id) {
+    public BookingVetting getById(BookingVettingKey id) {
         return bookingVetRepository.getById(id);
     }
 

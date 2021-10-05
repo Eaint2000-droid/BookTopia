@@ -1,6 +1,9 @@
 package com.collab.g5.demo.regulations;
 
+import org.springframework.data.jpa.repository.Query;
+
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface RegulationLimitService {
@@ -8,15 +11,17 @@ public interface RegulationLimitService {
     RegulationLimit save(RegulationLimit newRegulation);
 
     //READ
-    List<RegulationLimit> getAllRegulation();
+    List<RegulationLimit> getAllRegulationLimit();
 
-    RegulationLimit getRegulationById(LocalDate dateID);
+    RegulationLimit getRegulationLimitById(LocalDate dateID,int cid);
 
     //UPDATE
-    RegulationLimit updateRegulation(int cid, Regulation newRegulation);
+    RegulationLimit updateRegulationLimit(int cid, Regulation newRegulation);
 
     //DELETE
     void delete(RegulationLimit regulation);
 
     void deleteById(RegulationLimitKey regulationLimitKey);
+
+
 }

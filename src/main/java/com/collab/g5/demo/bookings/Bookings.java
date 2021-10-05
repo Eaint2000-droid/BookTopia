@@ -3,8 +3,10 @@ package com.collab.g5.demo.bookings;
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,13 +23,15 @@ public class Bookings {
     private int bid;
 
     @ManyToOne
-    @JoinColumn(name="user_useremail", foreignKey = @ForeignKey(name="fk1_bookings"))
+    @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookings"))
+    @Autowired
+    @NotNull
     private User user;
 
     private LocalDate bDate;
     private String status;
 
     // bookings are vetted by users
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingVetting> bookingVettings;
 }
