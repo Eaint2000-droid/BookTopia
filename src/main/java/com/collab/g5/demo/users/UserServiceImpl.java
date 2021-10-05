@@ -1,5 +1,6 @@
 package com.collab.g5.demo.users;
 
+import com.collab.g5.demo.exceptions.users.EmailExistsException;
 import com.collab.g5.demo.security.PasswordEncoder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .isPresent();
         //if yes throw error
         if (userExists) {
-            throw new IllegalStateException("email already taken");
+            throw new EmailExistsException("email already taken");
         }
         //encrypting password
         String encodedPassword = passwordEncoder.bCryptPasswordEncoder()
@@ -54,7 +56,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getUserByEmail(String Email) {
-        return userRepository.getById(Email);
+
+//        System.out.println(userRepository.getById(Email).toString());
+        System.out.println("String email is " + Email);
+        Optional<User> optionalUser= userRepository.findByEmail(Email);
+        if(optionalUser.isEmpty()){
+            throw new UsernameNotFoundException("Email not found " + Email);
+        }
+        System.out.println(optionalUser.get());
+        return optionalUser.get();
     }
 
     @Override
