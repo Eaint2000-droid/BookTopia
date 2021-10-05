@@ -5,6 +5,8 @@ import com.collab.g5.demo.users.User;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -20,6 +22,9 @@ public class News {
     private int nid;
 
     private LocalDate date;
+
+    @NotNull(message = "Title should not be null")
+    @Size(min = 5, message = "Title should be at least 5 characters")
     private String title;
     private String content;
 
