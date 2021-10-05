@@ -1,41 +1,38 @@
 package com.collab.g5.demo.news;
 
+import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import com.collab.g5.demo.exceptions.news.NewsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/api/news")
 public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @GetMapping("" +
-            "")
+    @GetMapping("/hr/getAll")
     public List<News> getNews() {
         return newsService.getAllNews();
     }
 
     //retrieves news by nid
-    @GetMapping("/com/collab/g5/demo/news/{nid}")
+    @GetMapping("/emp/get/{nid}")
     public News getNewsById(@PathVariable int nid) {
         return newsService.getNewsById(nid);
     }
 
     //add new news
-    @PostMapping("/com/collab/g5/demo/news/addNewBook")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/hr/create/newNews")
     public News addBook(@RequestBody News news) {
         return newsService.addNews(news);
     }
 
     //update news
-    @PutMapping("/com/collab/g5/demo/news/updateNews{nid}")
+    @PutMapping("/hr/update/news/{nid}")
     public News updateNews(@PathVariable int nid, @RequestBody News newNewsInfo) {
         News news = newsService.updateNews(nid, newNewsInfo);
         if (news == null) throw new NewsNotFoundException(nid);
@@ -43,13 +40,13 @@ public class NewsController {
     }
 
     //delete news
-    @DeleteMapping("/com/collab/g5/demo/news/deleteNews{nid}")
-    public void deleteNews(@PathVariable int nid, @RequestBody News newNewsInfo) {
-        try {
-            newsService.deleteNewsById(nid);
-        } catch (EmptyResultDataAccessException e) {
-            throw new NewsNotFoundException(nid);
+    @DeleteMapping("/hr/del/{nid}")
+    public void deleteNews(@PathVariable int nid) {
+        News news = newsService.getNewsById(nid);
+        if (news == null) {
+            throw new BookingNotFoundException(nid);
         }
+        newsService.delete(getNewsById(nid));
     }
 
 }

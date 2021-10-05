@@ -32,6 +32,16 @@ public class NewsServiceImpl implements NewsService{
         return newsRepository.save(news);
     }
 
+//    @Override
+//    public News addNews(News news) {
+//        List<News> newsExists = newsRepository.findByTitle(news.getTitle());
+//        if(newsExists.size() == 0)
+//            return newsRepository.save(news);
+//        else
+//            return null;
+//    }
+
+
     @Override
     public News updateNews(int nid, News freshNews) {
         News tempNews = newsRepository.findById(nid)
