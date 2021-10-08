@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegulationLimitServiceImpl implements RegulationLimitService {
@@ -13,42 +13,38 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     private RegulationLimitRepository regulationLimitRepository;
 
     @Override
-    public RegulationLimit save(RegulationLimit newRegulation) {
-        return null;
+    public RegulationLimit save(RegulationLimit newRegulationLimit) {
+        return regulationLimitRepository.save(newRegulationLimit);
     }
 
     @Override
     public List<RegulationLimit> getAllRegulationLimit() {
-//        List<RegulationLimit> a =  regulationLimitRepository.findAll();
-//        System.out.println(a.size());
-//        if(a.size() != 0)
-//            System.out.println(a);
         return regulationLimitRepository.findAll();
-
     }
 
     @Override
-
-    public RegulationLimit getRegulationLimitById(LocalDate dateID, int cid) {
-        //To Do
-        RegulationLimitKey regulationLimitKey=new RegulationLimitKey(dateID,cid);
-        return regulationLimitRepository.getById(regulationLimitKey);
+    public Optional<RegulationLimit> getRegulationLimitById(LocalDate startDate, int cid) {
+        Optional<RegulationLimit> regulationLimit = Optional.ofNullable(regulationLimitRepository.getById(new RegulationLimitKey(startDate, cid)));
+        if (regulationLimit.isPresent()){
+            return regulationLimit;
+        }else
+            return null;
     }
 
 
     @Override
-    public RegulationLimit updateRegulationLimit(int cid, Regulation newRegulation) {
-        //To DO
-        return null;
+    public RegulationLimit updateRegulationLimit(LocalDate startDate, int cid, RegulationLimit newRegulationLimit) {
+        return regulationLimitRepository
+                .findById(new RegulationLimitKey(startDate,cid))
+                .map(regulationLimit -> {
+                    regulationLimit.setRegulationLimitKey(newRegulationLimit.getRegulationLimitKey());
+                    regulationLimit.setDailyLimit(newRegulationLimit.getDailyLimit());
+                    return regulationLimitRepository.save(regulationLimit);
+        }).orElse(null);
     }
 
     @Override
-    public void delete(RegulationLimit regulation) {
-        //To DO
-    }
-
-    @Override
-    public void deleteById(RegulationLimitKey regulationLimitKey) {
-        //To DO
+    public void deleteRegulationLimitById(LocalDate startDate, int cid) {
+        regulationLimitRepository.deleteById(new RegulationLimitKey(startDate, cid));
     }
 }

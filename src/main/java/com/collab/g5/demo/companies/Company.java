@@ -20,6 +20,7 @@ public class Company {
     //user attributes ; stored in db
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@SequenceGenerator(name = "cid")
     @Column(name="cid",nullable=false)
     private int cid;
     private String name;
@@ -30,6 +31,7 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company" , cascade = CascadeType.ALL)
     private List<RegulationLimit> regulationLimit;
 
