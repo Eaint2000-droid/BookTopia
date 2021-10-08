@@ -11,8 +11,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/news")
 public class NewsController {
-    @Autowired
+
     private NewsService newsService;
+
+    @Autowired
+    public NewsController(NewsService injectNewsService){
+        this.newsService = injectNewsService;
+    }
 
     @GetMapping("/hr/getAll")
     public List<News> getNews() {
