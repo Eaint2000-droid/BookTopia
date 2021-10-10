@@ -7,6 +7,7 @@ import com.collab.g5.demo.news.News;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
+//@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User implements UserDetails {
 
     //user attributes ; stored in db
@@ -35,6 +37,7 @@ public class User implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = true;
 
+    @Autowired
     // user constructor
     public User(String email,
                 String fname,
@@ -50,6 +53,11 @@ public class User implements UserDetails {
         this.company = company;
     }
 
+    @Override
+    public String toString() {
+        return "User name is " + email + " and company is " + company + " userRole is " + userRole;
+    }
+
     //mappings to other entities
 
     @ManyToOne
@@ -57,16 +65,21 @@ public class User implements UserDetails {
     @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
 
+    @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BookingVetting> bookingVetting;
 
+    @JsonIgnore
+    @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
     private List<Bookings> bookings;
 
+    @JsonIgnore
     @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
     private List<News> newsList;
 
     //necessary methods from UserDetails Implementation
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =

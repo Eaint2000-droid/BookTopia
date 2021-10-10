@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/**")
-                    .permitAll()
+                .antMatchers("/api/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .formLogin();
@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userServiceImpl  );
+        provider.setUserDetailsService(userServiceImpl);
         return provider;
     }
 }

@@ -2,6 +2,7 @@ package com.collab.g5.demo.news;
 
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.PersistenceConstructor;
 
@@ -52,10 +53,12 @@ public class News {
     }
 
     //foreign keys
+
     @ManyToOne
     @JoinColumn(name="company_cid",foreignKey = @ForeignKey(name="fk1_news"))
     private Company company;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_userEmail",foreignKey = @ForeignKey(name="fk2_news"))
     private User user;
