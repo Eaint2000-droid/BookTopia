@@ -21,7 +21,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User implements UserDetails {
 
     //user attributes ; stored in db

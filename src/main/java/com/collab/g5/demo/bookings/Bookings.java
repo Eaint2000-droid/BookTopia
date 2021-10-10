@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -16,7 +17,6 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Bookings {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,5 +34,19 @@ public class Bookings {
 
     // bookings are vetted by users
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<BookingVetting> bookingVettings;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bookings bookings = (Bookings) o;
+        return Objects.equals(user, bookings.user) && Objects.equals(bDate, bookings.bDate) && Objects.equals(status, bookings.status) && Objects.equals(bookingVettings, bookings.bookingVettings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, bDate, status, bookingVettings);
+    }
 }

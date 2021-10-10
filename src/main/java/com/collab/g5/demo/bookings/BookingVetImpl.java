@@ -13,6 +13,7 @@ public class BookingVetImpl implements BookingVetService {
 
     @Override
     public BookingVetting save(BookingVetting bookingVetting) {
+        System.out.println("Inside service: " + bookingVetting);
         return bookingVetRepository.save(bookingVetting);
     }
 
