@@ -2,11 +2,11 @@ package com.collab.g5.demo.bookings;
 
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -15,6 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class BookingVetting {
 
     @NotNull
@@ -36,6 +37,8 @@ public class BookingVetting {
     @MapsId("bid")
     @JoinColumn(name = "booking_bid", foreignKey = @ForeignKey(name = "fk2_bookingVetting"))
     private Bookings booking;
+
+
 
 
 }

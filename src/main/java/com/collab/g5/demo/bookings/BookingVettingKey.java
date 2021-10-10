@@ -1,11 +1,9 @@
 package com.collab.g5.demo.bookings;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 @Embeddable
@@ -15,11 +13,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class BookingVettingKey implements Serializable {
-//    @Column(name="bid")
+    //@Column(name="bid")
     int bid;
 
-//    @Column(name="user_email")
+    //@Column(name="user_email")
     String email;
 
 }
