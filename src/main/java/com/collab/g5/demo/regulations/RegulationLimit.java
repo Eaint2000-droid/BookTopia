@@ -2,12 +2,16 @@ package com.collab.g5.demo.regulations;
 
 import com.collab.g5.demo.companies.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Getter
@@ -16,18 +20,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 
 public class RegulationLimit {
     @EmbeddedId
-    RegulationLimitKey regulationLimitKey;
+    private RegulationLimitKey regulationLimitKey;
 
     @ManyToOne
-    @MapsId("startDate")
     @JsonIgnore
-    @NotFound(
-            action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "regulation_startDate", foreignKey = @ForeignKey(name = "fk1_regulationLimit"))
+    @MapsId("startDate")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "regulation_start_Date", foreignKey = @ForeignKey(name = "fk1_regulationLimit"))
     private Regulation regulation;
 
 
@@ -37,6 +40,13 @@ public class RegulationLimit {
     @JoinColumn(name = "company_cid", foreignKey = @ForeignKey(name = "fk2_regulationLimit"))
     private Company company;
 
+    @Min(0)
+    @Max(100)
+    @PositiveOrZero
+    @NotNull(message = "dailyLimit should not be null")
     private int dailyLimit;
 
+//    public String toString () {
+//        return "cid" + regulationLimitKey.getCid() + "startdate: " + regulationLimitKey.getStartDate();
+//    }
 }
