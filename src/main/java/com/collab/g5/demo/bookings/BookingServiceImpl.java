@@ -1,6 +1,5 @@
 package com.collab.g5.demo.bookings;
 
-import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +17,16 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Bookings getBookingsById(int id) {
-        Bookings bookings = bookingsRepository.findById(id).orElse(null);
-        if (bookings == null) {
-            throw new BookingNotFoundException(id);
-        }
-        return bookings;
+        return bookingsRepository.findById(id).orElse(null);
     }
 
     @Override
     public Bookings updateBookings(int id, Bookings bookings) {
-        return null;
+        return bookingsRepository.findById(id).map(booking -> {
+            booking.setBDate(bookings.getBDate());
+            booking.setStatus(bookings.getStatus());
+            return bookingsRepository.save(booking);
+        }).orElse(null);
     }
 
 
@@ -48,13 +47,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Bookings save(Bookings bookings) {
-        List<Bookings> bookingsList = bookingsRepository.findAll();
-        for (Bookings b : bookingsList) {
-            if (b.equals(bookings)) {
-                return null;
-//                throw new BookingExistsException(bookings);
-            }
-        }
         return bookingsRepository.save(bookings);
     }
 }

@@ -1,5 +1,6 @@
 package com.collab.g5.demo.bookings;
 
+import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import com.collab.g5.demo.users.User;
@@ -42,11 +43,10 @@ public class BookingsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) {
-        /*
-         * This one maybe can delete? Cause I was using postman to test it out and i realized that
-         * by using postman, it will allow some invalid userEmail to be added into the console
-         * and postman will still go through TODO JY*/
         User a = newBooking.getUser();
+        if(bookingService.bookingExists(newBooking.getBid())){
+            throw new BookingExistsException(newBooking);
+        }
         if (a == null) {
             throw new UserNotFoundException();
         }
@@ -59,7 +59,18 @@ public class BookingsController {
         if (bookings == null) {
             throw new BookingNotFoundException(id);
         }
+
         bookingService.delete(bookingService.getBookingsById(id));
+    }
+
+    @PutMapping("/hr/update/{id}")
+    public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking){
+        Bookings bookings = bookingService.updateBookings(id, newBooking);
+
+        if(bookings == null){
+            throw new BookingNotFoundException(id);
+        }
+        return bookings;
     }
 
 }
