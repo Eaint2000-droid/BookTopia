@@ -4,13 +4,13 @@ package com.collab.g5.demo.companies;
 import com.collab.g5.demo.regulations.RegulationLimit;
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import javax.persistence.*;
 import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -27,7 +27,7 @@ public class Company {
     private long size;
 
     //mappings to other entities
-    @JsonIgnore
+    @JsonIgnoreProperties({"company"})
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<User> users;
 
@@ -35,5 +35,8 @@ public class Company {
     @OneToMany(mappedBy = "company" , cascade = CascadeType.ALL)
     private List<RegulationLimit> regulationLimit;
 
-
+    @Override
+    public String toString() {
+        return "Company name is " + name;
+    }
 }
