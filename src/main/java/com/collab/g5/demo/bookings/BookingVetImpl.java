@@ -13,7 +13,6 @@ public class BookingVetImpl implements BookingVetService {
 
     @Override
     public BookingVetting save(BookingVetting bookingVetting) {
-        System.out.println("Inside service: " + bookingVetting);
         return bookingVetRepository.save(bookingVetting);
     }
 
@@ -28,8 +27,11 @@ public class BookingVetImpl implements BookingVetService {
     }
 
     @Override
-    public BookingVetting updateBookings(int id, BookingVetting bookings) {
-        return null;
+    public BookingVetting updateBookings(BookingVettingKey id, BookingVetting bookings) {
+        return bookingVetRepository.findById(id).map(booking -> {
+            booking.setBookingResult(bookings.getBookingResult());
+            return bookingVetRepository.save(booking);
+        }).orElse(null);
     }
 
     @Override
@@ -38,15 +40,11 @@ public class BookingVetImpl implements BookingVetService {
     }
 
     @Override
-    //TODO
-    //Got to figure this one out.
     public void deleteById(BookingVettingKey id) {
         bookingVetRepository.deleteById(id);
     }
 
     @Override
-    //TODO
-    //Got to figure this one out.
     public boolean bookingVettingExists(BookingVettingKey id) {
         return bookingVetRepository.existsById(id);
     }

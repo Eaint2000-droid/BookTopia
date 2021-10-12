@@ -53,8 +53,15 @@ public class BookingVetController {
 
     @DeleteMapping("/hr/del/{bookingVet}")
     public void delBookingVetting(@RequestBody BookingVetting bkVet) {
-        System.out.println("Deleting " + bkVet);
         bookingVetService.delete(bkVet);
+    }
+
+    @PutMapping("/hr/updateBooking/{bid}/{email}")
+    public BookingVetting updateBookingVetting(@PathVariable int bid, @PathVariable String email, @RequestBody BookingVetting newBookingVetting) {
+        BookingVettingKey bVid = new BookingVettingKey(bid, email);
+        BookingVetting bookingVetting = bookingVetService.updateBookings(bVid, newBookingVetting);
+        if (bookingVetting == null) throw new BookingVettingExistsException();
+        return bookingVetting;
     }
 
 
