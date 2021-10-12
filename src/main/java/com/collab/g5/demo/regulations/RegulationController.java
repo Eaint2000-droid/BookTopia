@@ -20,13 +20,13 @@ public class RegulationController {
         this.regulationService = regulationService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/emp")
     public List<Regulation> getRegulations() {
         return regulationService.getAllRegulation();
     }
 
     //retrieves regulation by startDate
-    @GetMapping("/getRegulation{startDate}")
+    @GetMapping("/emp/getRegulation{startDate}")
     public Regulation getRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
         Regulation regulation = regulationService.getRegulationById(startDate);
 
@@ -36,13 +36,13 @@ public class RegulationController {
 
     //add new regulation
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/addRegulation")
+    @PostMapping("/hr/addRegulation")
     public Regulation addRegulation(@RequestBody Regulation regulation) {
         return regulationService.save(regulation);
     }
 
     //update regulation
-    @PutMapping("/updateRegulation{startDate}")
+    @PutMapping("/hr/updateRegulation{startDate}")
     public Regulation updateRegulation(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) {
         Regulation regulation = regulationService.updateRegulation(startDate, newRegulation);
 
@@ -51,7 +51,7 @@ public class RegulationController {
     }
 
     //delete regulation
-    @DeleteMapping("/deleteRegulation{startDate}")
+    @DeleteMapping("/hr/deleteRegulation{startDate}")
     public void deleteRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
         try {
             regulationService.deleteRegulationById(startDate);

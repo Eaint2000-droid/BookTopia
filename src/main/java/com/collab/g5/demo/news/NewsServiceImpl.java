@@ -27,27 +27,24 @@ public class NewsServiceImpl implements NewsService{
     public News addNews(News news) {
         Optional<News> newsExists = newsRepository.findById(news.getNid());
         if(newsExists.isPresent()){
-            throw new IllegalStateException("News " + news.toString() + " exists");
+            return null;
         }
         return newsRepository.save(news);
     }
 
-//    @Override
-//    public News addNews(News news) {
-//        List<News> newsExists = newsRepository.findByTitle(news.getTitle());
-//        if(newsExists.size() == 0)
-//            return newsRepository.save(news);
-//        else
-//            return null;
-//    }
-
-
     @Override
     public News updateNews(int nid, News freshNews) {
-        News tempNews = newsRepository.findById(nid)
-                .orElseThrow(() -> new IllegalStateException("News with id " + nid + " does not exist"));
-        tempNews.setTitle(freshNews.getTitle());
-        return tempNews;
+        return newsRepository.findById(nid).map(news -> {
+            news.setDate(freshNews.getDate());
+            news.setTitle(freshNews.getTitle());
+            news.setContent(freshNews.getContent());
+            return newsRepository.save(news);
+        }).orElse(null);
+    }
+
+    @Override
+    public void delete(News news) {
+        newsRepository.delete(news);
     }
 
     @Override
@@ -55,8 +52,5 @@ public class NewsServiceImpl implements NewsService{
         newsRepository.deleteById(nid);
     }
 
-    @Override
-    public void delete(News news) {
-        newsRepository.delete(news);
-    }
+
 }

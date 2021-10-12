@@ -7,7 +7,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,13 +26,13 @@ public class RegulationLimitController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/emp")
     public List<RegulationLimit> getRegulationLimits() {
         return regulationLimitService.getAllRegulationLimit();
     }
 
 
-    @GetMapping("/getRegulationLimit/startDate{startDate}/cid{cid}")
+    @GetMapping("/emp/getRegulationLimit/startDate{startDate}/cid{cid}")
     public Optional<RegulationLimit> getRegulationLimitById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid){
 
         Optional<RegulationLimit> getRegulationLimit= regulationLimitService.getRegulationLimitById(startDate, cid);
@@ -46,7 +45,7 @@ public class RegulationLimitController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/addRegulationLimit")
+    @PostMapping("/hr/addRegulationLimit")
     public RegulationLimit addRegulationLimit(@RequestBody RegulationLimit regulationLimit){
 
         RegulationLimitKey regulationLimitKey = regulationLimit.getRegulationLimitKey();
@@ -57,7 +56,7 @@ public class RegulationLimitController {
         return regulationLimitService.save(regulationLimit);
     }
 
-    @PutMapping("/updateRegulationLimit/startDate{startDate}/cid{cid}")
+    @PutMapping("/hr/updateRegulationLimit/startDate{startDate}/cid{cid}")
     public RegulationLimit updateRegulationLimit(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid, @RequestBody RegulationLimit newRegulationLimit){
         RegulationLimit regulationLimit = regulationLimitService.updateRegulationLimit(startDate, cid, newRegulationLimit);
 
@@ -66,7 +65,7 @@ public class RegulationLimitController {
     }
 
 
-    @DeleteMapping("/deleteRegulationLimit/startDate{startDate}/cid{cid}")
+    @DeleteMapping("/hr/deleteRegulationLimit/startDate{startDate}/cid{cid}")
     void deleteRegulationLimitById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid){
         try{
             regulationLimitService.deleteRegulationLimitById(startDate, cid);

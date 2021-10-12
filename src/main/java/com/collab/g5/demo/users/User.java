@@ -7,6 +7,7 @@ import com.collab.g5.demo.news.News;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +37,7 @@ public class User implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = true;
 
+    @Autowired
     // user constructor
     public User(String email,
                 String fname,
