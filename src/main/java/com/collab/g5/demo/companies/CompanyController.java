@@ -1,5 +1,6 @@
 package com.collab.g5.demo.companies;
 
+import com.collab.g5.demo.bookings.BookingService;
 import com.collab.g5.demo.exceptions.companies.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/com")
 public class CompanyController {
-    @Autowired
+
     private CompanyServiceImpl companyServiceImpl;
+
+    @Autowired
+    public CompanyController(CompanyServiceImpl companyServiceImpl){this.companyServiceImpl =companyServiceImpl;}
 
 
     @GetMapping("/hr/getAll")
