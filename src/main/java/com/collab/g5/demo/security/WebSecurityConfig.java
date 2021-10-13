@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserServiceImpl userServiceImpl;
-//    @Autowired
+    //    @Autowired
 //    BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -32,7 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/api/user/get/*").hasAnyRole("HR","EMPLOYEE")
 //                .antMatchers("/api/user/del/*").hasAnyRole("HR","EMPLOYEE")
-                .antMatchers("/api/user/hr/*").hasRole("HR")
+                .antMatchers(HttpMethod.GET, "/api/*/hr/*").hasRole("HR")
+                .antMatchers(HttpMethod.POST, "/api/*/hr/*").hasRole("HR")
+                .antMatchers(HttpMethod.PUT, "/api/*/hr/*").hasRole("HR")
+                .antMatchers(HttpMethod.DELETE, "/api/*/hr/*").hasRole("HR")
 //                .antMatchers("/api/compan")
 //                .hasAnyRole("ADMIN","USER")
                 .antMatchers("/api/**")
@@ -56,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-          auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(daoAuthenticationProvider());
 //        auth.inMemoryAuthentication()
 //                .withUser("user1").password(passwordEncoder.bCryptPasswordEncoder().encode("user1Pass")).roles("USER")
 //                .and()

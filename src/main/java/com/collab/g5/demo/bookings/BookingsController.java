@@ -24,15 +24,14 @@ public class BookingsController {
     }
 
     //when admin wants to receive all the information
-    @GetMapping("/hr/getAll")
+    @GetMapping("/hr/getAll/")
     @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingService.getAllBookings();
     }
 
-    //when employee want to retrieve their own booking. TODO
-    @GetMapping("/emp/getAll/{bid}")
+    @GetMapping("/emp/getID/{bid}")
     public Bookings getBookingsById(@RequestParam int bid) {
         if (!bookingService.bookingExists(bid)) {
             throw new BookingNotFoundException(bid);
@@ -44,7 +43,7 @@ public class BookingsController {
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) {
         User a = newBooking.getUser();
-        if(bookingService.bookingExists(newBooking.getBid())){
+        if (bookingService.bookingExists(newBooking.getBid())) {
             throw new BookingExistsException(newBooking);
         }
         if (a == null) {
@@ -64,10 +63,9 @@ public class BookingsController {
     }
 
     @PutMapping("/hr/update/{id}")
-    public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking){
+    public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking) {
         Bookings bookings = bookingService.updateBookings(id, newBooking);
-
-        if(bookings == null){
+        if (bookings == null) {
             throw new BookingNotFoundException(id);
         }
         return bookings;

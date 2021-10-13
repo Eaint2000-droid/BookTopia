@@ -23,19 +23,19 @@ public class BookingVetController {
         this.userService = userService;
     }
 
-    @GetMapping("/hr")
+    @GetMapping("/hr/getAll")
     public List<BookingVetting> getBookingVetting() {
         return bookingVetService.getAllBookingVetting();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/hr/get/{id}")
+    @GetMapping("/hr/get/{id}/")
     public BookingVetting getBookingVettingById(@RequestBody BookingVettingKey id) {
         return bookingVetService.getById(id);
     }
 
     //this one might not need to be included? How does this method works?
-    @PostMapping("/hr/add/{bookingVet}")
+    @PostMapping("/hr/add/{bookingVet}/")
     public BookingVetting addBookingVetting(@RequestBody BookingVetting bkVet) {
         //What i take in is only the PK of Booking and User. I need to get the Object before i can save the BookingVetting object.
         BookingVettingKey pk1 = bkVet.getBookingVettingKey();
@@ -51,12 +51,12 @@ public class BookingVetController {
         return bookingVetService.save(bkVet);
     }
 
-    @DeleteMapping("/hr/del/{bookingVet}")
+    @DeleteMapping("/hr/del/{bookingVet}/")
     public void delBookingVetting(@RequestBody BookingVetting bkVet) {
         bookingVetService.delete(bkVet);
     }
 
-    @PutMapping("/hr/updateBooking/{bid}/{email}")
+    @PutMapping("/hr/updateBooking/{bid}/{email}/")
     public BookingVetting updateBookingVetting(@PathVariable int bid, @PathVariable String email, @RequestBody BookingVetting newBookingVetting) {
         BookingVettingKey bVid = new BookingVettingKey(bid, email);
         BookingVetting bookingVetting = bookingVetService.updateBookings(bVid, newBookingVetting);
