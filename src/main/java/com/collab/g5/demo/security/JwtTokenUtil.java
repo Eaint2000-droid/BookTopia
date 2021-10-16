@@ -6,6 +6,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +21,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-
+    public static final long JWT_TOKEN_VALIDITY = 1000 * 3600;
 
     @Value("${jwt.secret}")
     private String secret;

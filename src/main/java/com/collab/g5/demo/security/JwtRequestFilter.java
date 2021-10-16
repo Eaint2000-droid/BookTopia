@@ -22,7 +22,7 @@ public class JwtRequestFilter extends OncePerRequestFilter
 {
 
     @Autowired
-    private UserServiceImpl jwtUserDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
 
     @Autowired
