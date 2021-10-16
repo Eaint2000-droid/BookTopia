@@ -37,6 +37,28 @@ public class User implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = true;
 
+    //mappings to other entities
+
+    @ManyToOne
+    @JsonIgnoreProperties({"name", "size"})
+    @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
+    private Company company;
+
+    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BookingVetting> bookingVetting;
+
+    @JsonIgnore
+    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
+    private List<Bookings> bookings;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    private List<News> newsList;
+
+
+
     @Autowired
     // user constructor
     public User(String email,
@@ -58,25 +80,7 @@ public class User implements UserDetails {
         return "User name is " + email + " and company is " + company + " userRole is " + userRole;
     }
 
-    //mappings to other entities
 
-    @ManyToOne
-    @JsonIgnoreProperties({"name", "size"})
-    @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
-    private Company company;
-
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BookingVetting> bookingVetting;
-
-    @JsonIgnore
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
-    private List<Bookings> bookings;
-
-    @JsonIgnore
-    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
-    private List<News> newsList;
 
     //necessary methods from UserDetails Implementation
     @JsonIgnore

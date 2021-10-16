@@ -1,6 +1,7 @@
 package com.collab.g5.demo.companies;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
@@ -113,6 +114,17 @@ class CompanyServiceImplTest {
         this.companyServiceImpl.delete(company);
         verify(this.companyRepository).delete((Company) any());
         assertTrue(this.companyServiceImpl.getAllCompanies().isEmpty());
+    }
+
+    @Test
+    void testUpdateCompany() {
+        Company company = new Company();
+        company.setUsers(new ArrayList<User>());
+        company.setName("Name");
+        company.setSize(3L);
+        company.setRegulationLimit(new ArrayList<RegulationLimit>());
+        company.setCid(1);
+        assertNull(this.companyServiceImpl.updateCompany(1, company));
     }
 
     @Test
