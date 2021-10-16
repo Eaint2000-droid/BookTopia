@@ -1,5 +1,6 @@
 package com.collab.g5.demo.security;
 
+import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,11 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
     {
-        //authenticate(authenticationRequest.getUsername(),
-        authenticationRequest.getPassword();
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails =
                 userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        //JwtUserDetails userDetails = new JwtUserDetails();
-        //userDetails.setUsername(authenticationRequest.getUsername());
+        User user = new User();
+        user.setEmail(authenticationRequest.getUsername());
 
 
         final String token = jwtTokenUtil.generateToken(userDetails);

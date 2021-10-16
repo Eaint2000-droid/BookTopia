@@ -1,12 +1,15 @@
 package com.collab.g5.demo.users;
 
 import com.collab.g5.demo.exceptions.users.EmailExistsException;
+import com.collab.g5.demo.security.WebSecurityConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -23,11 +26,14 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
 
-    public void addNewUser(User user) {
+    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//        String encodedPassword = passwordEncoder.bCryptPasswordEncoder()
-//                .encode(user.getPassword());
-//        user.setPassword(encodedPassword);
+    private WebSecurityConfig webSecurityConfig;
+
+    public void addNewUser(User user) {
+        String encodedPassword = webSecurityConfig.passwordEncoder().encode(user.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
