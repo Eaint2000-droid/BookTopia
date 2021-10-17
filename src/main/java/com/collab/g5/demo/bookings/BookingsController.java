@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.Transient;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingsController {
