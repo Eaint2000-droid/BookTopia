@@ -1,25 +1,31 @@
 package com.collab.g5.demo.news;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.collab.g5.demo.bookings.BookingVetting;
 import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.regulations.RegulationLimit;
 import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserRole;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {NewsServiceImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -164,8 +170,9 @@ public class NewsServiceImplTest {
         news1.setNid(1);
         news1.setTitle("Dr");
         news1.setContent("Not all who wander are lost");
-        assertThrows(IllegalStateException.class, () -> this.newsServiceImpl.addNews(news1));
+        assertNull(this.newsServiceImpl.addNews(news1));
         verify(this.newsRepository).findById((Integer) any());
+        assertTrue(this.newsServiceImpl.getAllNews().isEmpty());
     }
 
     @Test
@@ -283,7 +290,6 @@ public class NewsServiceImplTest {
         news.setTitle("Dr");
         news.setContent("Not all who wander are lost");
         Optional<News> ofResult = Optional.<News>of(news);
-        when(this.newsRepository.findById((Integer) any())).thenReturn(ofResult);
 
         Company company2 = new Company();
         company2.setUsers(new ArrayList<User>());
@@ -319,16 +325,50 @@ public class NewsServiceImplTest {
         news1.setNid(1);
         news1.setTitle("Dr");
         news1.setContent("Not all who wander are lost");
-        News actualUpdateNewsResult = this.newsServiceImpl.updateNews(1, news1);
-        assertSame(news, actualUpdateNewsResult);
-        assertEquals("Dr", actualUpdateNewsResult.getTitle());
+        when(this.newsRepository.save((News) any())).thenReturn(news1);
+        when(this.newsRepository.findById((Integer) any())).thenReturn(ofResult);
+
+        Company company4 = new Company();
+        company4.setUsers(new ArrayList<User>());
+        company4.setName("Name");
+        company4.setSize(3L);
+        company4.setRegulationLimit(new ArrayList<RegulationLimit>());
+        company4.setCid(1);
+
+        Company company5 = new Company();
+        company5.setUsers(new ArrayList<User>());
+        company5.setName("Name");
+        company5.setSize(3L);
+        company5.setRegulationLimit(new ArrayList<RegulationLimit>());
+        company5.setCid(1);
+
+        User user2 = new User();
+        user2.setEmail("jane.doe@example.org");
+        user2.setPassword("iloveyou");
+        user2.setCompany(company5);
+        user2.setBookingVetting(new ArrayList<BookingVetting>());
+        user2.setNewsList(new ArrayList<News>());
+        user2.setFname("Fname");
+        user2.setLname("Lname");
+        user2.setEnabled(true);
+        user2.setBookings(new ArrayList<Bookings>());
+        user2.setLocked(true);
+        user2.setUserRole(UserRole.EMPLOYEE);
+
+        News news2 = new News();
+        news2.setDate(LocalDate.ofEpochDay(1L));
+        news2.setCompany(company4);
+        news2.setUser(user2);
+        news2.setNid(1);
+        news2.setTitle("Dr");
+        news2.setContent("Not all who wander are lost");
+        assertSame(news1, this.newsServiceImpl.updateNews(1, news2));
         verify(this.newsRepository).findById((Integer) any());
+        verify(this.newsRepository).save((News) any());
     }
 
     @Test
     public void testUpdateNews2() {
-        when(this.newsRepository.findById((Integer) any())).thenReturn(Optional.<News>empty());
-
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -363,15 +403,45 @@ public class NewsServiceImplTest {
         news.setNid(1);
         news.setTitle("Dr");
         news.setContent("Not all who wander are lost");
-        assertThrows(IllegalStateException.class, () -> this.newsServiceImpl.updateNews(1, news));
-        verify(this.newsRepository).findById((Integer) any());
-    }
+        when(this.newsRepository.save((News) any())).thenReturn(news);
+        when(this.newsRepository.findById((Integer) any())).thenReturn(Optional.<News>empty());
 
-    @Test
-    public void testDeleteNewsById() {
-        doNothing().when(this.newsRepository).deleteById((Integer) any());
-        this.newsServiceImpl.deleteNewsById(1);
-        verify(this.newsRepository).deleteById((Integer) any());
+        Company company2 = new Company();
+        company2.setUsers(new ArrayList<User>());
+        company2.setName("Name");
+        company2.setSize(3L);
+        company2.setRegulationLimit(new ArrayList<RegulationLimit>());
+        company2.setCid(1);
+
+        Company company3 = new Company();
+        company3.setUsers(new ArrayList<User>());
+        company3.setName("Name");
+        company3.setSize(3L);
+        company3.setRegulationLimit(new ArrayList<RegulationLimit>());
+        company3.setCid(1);
+
+        User user1 = new User();
+        user1.setEmail("jane.doe@example.org");
+        user1.setPassword("iloveyou");
+        user1.setCompany(company3);
+        user1.setBookingVetting(new ArrayList<BookingVetting>());
+        user1.setNewsList(new ArrayList<News>());
+        user1.setFname("Fname");
+        user1.setLname("Lname");
+        user1.setEnabled(true);
+        user1.setBookings(new ArrayList<Bookings>());
+        user1.setLocked(true);
+        user1.setUserRole(UserRole.EMPLOYEE);
+
+        News news1 = new News();
+        news1.setDate(LocalDate.ofEpochDay(1L));
+        news1.setCompany(company2);
+        news1.setUser(user1);
+        news1.setNid(1);
+        news1.setTitle("Dr");
+        news1.setContent("Not all who wander are lost");
+        assertNull(this.newsServiceImpl.updateNews(1, news1));
+        verify(this.newsRepository).findById((Integer) any());
         assertTrue(this.newsServiceImpl.getAllNews().isEmpty());
     }
 
@@ -415,6 +485,14 @@ public class NewsServiceImplTest {
         news.setContent("Not all who wander are lost");
         this.newsServiceImpl.delete(news);
         verify(this.newsRepository).delete((News) any());
+        assertTrue(this.newsServiceImpl.getAllNews().isEmpty());
+    }
+
+    @Test
+    public void testDeleteNewsById() {
+        doNothing().when(this.newsRepository).deleteById((Integer) any());
+        this.newsServiceImpl.deleteNewsById(1);
+        verify(this.newsRepository).deleteById((Integer) any());
         assertTrue(this.newsServiceImpl.getAllNews().isEmpty());
     }
 }

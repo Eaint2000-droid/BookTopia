@@ -35,13 +35,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public void addNewUser(User user) {
         //checks if email exist
-        boolean userExists = userRepository
-                .findByEmail(user.getEmail())
-                .isPresent();
-        //if yes throw error
-        if (userExists) {
-            throw new EmailExistsException("email already taken");
-        }
+//        boolean userExists = userRepository
+//                .findByEmail(user.getEmail())
+//                .isPresent();
+//        //if yes throw error
+//        if (userExists) {
+//            throw new EmailExistsException("email already taken");
+//        }
         //encrypting password
         String encodedPassword = passwordEncoder.bCryptPasswordEncoder()
                 .encode(user.getPassword());
@@ -58,12 +58,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getUserByEmail(String Email) {
 
 //        System.out.println(userRepository.getById(Email).toString());
-        System.out.println("String email is " + Email);
+//        System.out.println("String email is " + Email);
         Optional<User> optionalUser= userRepository.findByEmail(Email);
         if(optionalUser.isEmpty()){
-            throw new UsernameNotFoundException("Email not found " + Email);
+            return null;
         }
-        System.out.println(optionalUser.get());
+//        System.out.println(optionalUser.get());
         return optionalUser.get();
     }
 

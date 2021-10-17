@@ -26,13 +26,17 @@ public class NewsController {
     //retrieves news by nid
     @GetMapping("/emp/get/{nid}")
     public News getNewsById(@PathVariable int nid) {
+        News news = newsService.getNewsById(nid);
+        if(news == null) throw new NewsNotFoundException(nid);
         return newsService.getNewsById(nid);
     }
 
     //add new news
     @PostMapping("/hr/create/newNews")
     public News addBook(@RequestBody News news) {
-        return newsService.addNews(news);
+        News freshNews = newsService.addNews(news);
+        if(freshNews == null) throw new IllegalStateException("News " + freshNews.toString() + " exists");
+        return newsService.addNews(freshNews);
     }
 
     //update news

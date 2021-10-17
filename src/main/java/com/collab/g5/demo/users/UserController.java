@@ -2,9 +2,11 @@ package com.collab.g5.demo.users;
 
 import com.collab.g5.demo.exceptions.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -19,7 +21,7 @@ public class UserController {
     //HR METHODS
     //To view all employees records
     @GetMapping("/hr/getAll/")
-    public List<User> getUsers() {
+    public List<User> getUsers() throws UserNotFoundException{
         List<User> toReturn = userServiceImpl.getAllUsers();
         if (toReturn.size() == 0) {
             throw new UserNotFoundException();
@@ -29,20 +31,29 @@ public class UserController {
 
     //To add new user
     @PostMapping("/hr/create/")
-    public void newUser(@RequestBody User newUser) {
-        userServiceImpl.addNewUser(newUser);
+    public void newUser(@RequestBody User newUser) throws EmailExistsException{
+        try {
+            User userExists = getUserByEmail(newUser.getEmail());
+            throw new EmailExistsException("email already taken");
+        }catch(UsernameNotFoundException e){
+            userServiceImpl.addNewUser(newUser);
+        }
+
     }
 
     //EMPLOYEE METHODS
     @GetMapping("/get/{email}")
-    public User getUserByEmail(@PathVariable String email) {
-        System.out.println("Email is " + email);
+    public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
+
+        if(userService.getUserByEmail(email)==null){
+            throw new UsernameNotFoundException("Email not found " + email);
+        }
         return userService.getUserByEmail(email);
     }
 
 
     @DeleteMapping("/del/{email}")
-    void deleteUser(@PathVariable String email) {
+    void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userService.getUserByEmail(email);
         //TODO Charlene: I think can remove these few lines below though. Since there isnt really a point for this checking since DELETE is idempotent.
         if (user == null) {

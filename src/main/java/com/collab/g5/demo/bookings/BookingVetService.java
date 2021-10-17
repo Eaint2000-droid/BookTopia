@@ -12,7 +12,7 @@ public interface BookingVetService {
     BookingVetting getById(BookingVettingKey id);
 
     //UPDATE
-    BookingVetting updateBookings(int id, BookingVetting bookings);
+    BookingVetting updateBookings(BookingVettingKey id, BookingVetting bookings);
 
     //DELETE
     void delete(BookingVetting bookingVetting);
