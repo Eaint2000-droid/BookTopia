@@ -26,7 +26,7 @@ public class RegulationController {
 
     //retrieves regulation by startDate
     @GetMapping("/emp/getRegulation{startDate}")
-    public Regulation getRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
+    public Regulation getRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) throws RegulationNotFoundException {
         Regulation regulation = regulationServiceImpl.getRegulationById(startDate);
 
         if(regulation == null) throw new RegulationNotFoundException(startDate);
@@ -42,7 +42,7 @@ public class RegulationController {
 
     //update regulation
     @PutMapping("/hr/updateRegulation{startDate}")
-    public Regulation updateRegulation(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) {
+    public Regulation updateRegulation(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) throws RegulationNotFoundException {
         Regulation regulation = regulationServiceImpl.updateRegulation(startDate, newRegulation);
 
         if (regulation == null) throw new RegulationNotFoundException(startDate);
@@ -51,7 +51,7 @@ public class RegulationController {
 
     //delete regulation
     @DeleteMapping("/hr/deleteRegulation{startDate}")
-    public void deleteRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
+    public void deleteRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) throws RegulationNotFoundException {
         try {
             regulationServiceImpl.deleteRegulationById(startDate);
         } catch (EmptyResultDataAccessException e) {

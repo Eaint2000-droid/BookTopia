@@ -1,7 +1,7 @@
 package com.collab.g5.demo.companies;
 
-import com.collab.g5.demo.bookings.BookingService;
-import com.collab.g5.demo.exceptions.companies.*;
+import com.collab.g5.demo.exceptions.companies.CompaniesNotFoundException;
+import com.collab.g5.demo.exceptions.companies.InsertCompanyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class CompanyController {
 
 
     @GetMapping("/hr/getAll")
-    public List<Company> getCompany(){
+    public List<Company> getCompany() throws CompaniesNotFoundException{
         List<Company> toReturn=companyServiceImpl.getAllCompanies();
         if(toReturn.size()==0){
             throw new CompaniesNotFoundException();
@@ -27,7 +27,7 @@ public class CompanyController {
     }
 
     @GetMapping("/hr/get/{cid}")
-    public Company getCompanyById(@PathVariable int cid){
+    public Company getCompanyById(@PathVariable int cid) throws CompaniesNotFoundException{
         Company company = companyServiceImpl.getCompanyById(cid);
 
         if(company==null){
@@ -38,7 +38,7 @@ public class CompanyController {
     }
 
     @PostMapping("/hr/create/{newCompany}")
-    public void newCompany(@RequestBody Company newCompany){
+    public void newCompany(@RequestBody Company newCompany) throws InsertCompanyException{
         int cid = newCompany.getCid();
         if(companyServiceImpl.containsCompany(cid)){
             throw new InsertCompanyException(cid);
@@ -48,7 +48,7 @@ public class CompanyController {
 
 
     @DeleteMapping("/hr/del/{name}")
-    void deleteCompany(@PathVariable int cid){
+    void deleteCompany(@PathVariable int cid) throws CompaniesNotFoundException{
         Company company= companyServiceImpl.getCompanyById(cid);
         if(company==null){
             // throw an exception

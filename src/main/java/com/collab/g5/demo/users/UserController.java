@@ -58,7 +58,6 @@ public class UserController {
     @DeleteMapping("/del/{email}")
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
-        //TODO Charlene: I think can remove these few lines below though. Since there isnt really a point for this checking since DELETE is idempotent.
         if (user == null) {
             // throw an exception
             throw new UserNotFoundException(email);

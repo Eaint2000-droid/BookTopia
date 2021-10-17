@@ -30,9 +30,8 @@ public class BookingsController {
         return bookingServiceImpl.getAllBookings();
     }
 
-    //when employee want to retrieve their own booking. TODO
     @GetMapping("/emp/getAll/{bid}")
-    public Bookings getBookingsById(@RequestParam int bid) {
+    public Bookings getBookingsById(@RequestParam int bid) throws BookingNotFoundException {
         if (!bookingServiceImpl.bookingExists(bid)) {
             throw new BookingNotFoundException(bid);
         }
@@ -41,9 +40,9 @@ public class BookingsController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
-    public Bookings addBooking(@RequestBody Bookings newBooking) {
+    public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
         User a = newBooking.getUser();
-        if(bookingServiceImpl.bookingExists(newBooking.getBid())){
+        if (bookingServiceImpl.bookingExists(newBooking.getBid())) {
             throw new BookingExistsException(newBooking);
         }
         if (a == null) {
@@ -53,7 +52,7 @@ public class BookingsController {
     }
 
     @DeleteMapping("/hr/del/{id}")
-    public void deleteBooking(@RequestParam int id) {
+    public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
         if (bookings == null) {
             throw new BookingNotFoundException(id);
@@ -63,10 +62,10 @@ public class BookingsController {
     }
 
     @PutMapping("/hr/update/{id}")
-    public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking){
+    public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking) throws BookingNotFoundException {
         Bookings bookings = bookingServiceImpl.updateBookings(id, newBooking);
 
-        if(bookings == null){
+        if (bookings == null) {
             throw new BookingNotFoundException(id);
         }
         return bookings;

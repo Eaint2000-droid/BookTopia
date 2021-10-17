@@ -1,7 +1,6 @@
 package com.collab.g5.demo.bookings;
 
 import com.collab.g5.demo.exceptions.bookingVetting.BookingVettingExistsException;
-import com.collab.g5.demo.users.UserService;
 import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class BookingVetController {
 
     //this one might not need to be included? How does this method works?
     @PostMapping("/hr/add/{bookingVet}")
-    public BookingVetting addBookingVetting(@RequestBody BookingVetting bkVet) {
+    public BookingVetting addBookingVetting(@RequestBody BookingVetting bkVet) throws BookingVettingExistsException {
         //What i take in is only the PK of Booking and User. I need to get the Object before i can save the BookingVetting object.
         BookingVettingKey pk1 = bkVet.getBookingVettingKey();
         bkVet.setBookingVettingKey(pk1);
@@ -58,7 +57,7 @@ public class BookingVetController {
     }
 
     @PutMapping("/hr/updateBooking/{bid}/{email}")
-    public BookingVetting updateBookingVetting(@PathVariable int bid, @PathVariable String email, @RequestBody BookingVetting newBookingVetting) {
+    public BookingVetting updateBookingVetting(@PathVariable int bid, @PathVariable String email, @RequestBody BookingVetting newBookingVetting) throws BookingVettingExistsException {
         BookingVettingKey bVid = new BookingVettingKey(bid, email);
         BookingVetting bookingVetting = bookingVetServiceImpl.updateBookings(bVid, newBookingVetting);
         if (bookingVetting == null) throw new BookingVettingExistsException();
