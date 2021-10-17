@@ -57,6 +57,19 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180813</version>
+		</dependency>
+
+
 		<!-- this is for auto-reloading of application upon code change
 		(otherwise you will have to restart the app each time to test new change-->
 		<dependency>
@@ -65,6 +78,8 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -84,6 +99,8 @@
 		</dependency>
 
 	</dependencies>
+
+
 
 	<build>
 		<plugins>

@@ -22,6 +22,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
+@SuppressWarnings("serial")
 //@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User implements UserDetails {
 
@@ -31,7 +32,7 @@ public class User implements UserDetails {
     private String email;
     private String fname;
     private String lname;
-    private String password;
+  private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked = false;
@@ -64,13 +65,13 @@ public class User implements UserDetails {
     public User(String email,
                 String fname,
                 String lname,
-                String password,
+             String password,
                 UserRole userRole,
                 Company company) {
         this.email = email;
         this.fname = fname;
         this.lname = lname;
-        this.password = password;
+         this.password = password;
         this.userRole = userRole;
         this.company = company;
     }
