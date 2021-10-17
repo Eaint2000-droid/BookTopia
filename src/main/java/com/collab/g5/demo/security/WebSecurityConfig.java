@@ -20,8 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserServiceImpl userServiceImpl;
-//    @Autowired
-//    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -32,16 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/api/user/get/*").hasAnyRole("HR","EMPLOYEE")
 //                .antMatchers("/api/user/del/*").hasAnyRole("HR","EMPLOYEE")
-                .antMatchers("/api/user/hr/*").hasRole("HR")
+//                .antMatchers("/api/user/hr/*").hasRole("HR")
 //                .antMatchers("/api/compan")
 //                .hasAnyRole("ADMIN","USER")
                 .antMatchers("/api/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
-
-//                .formLogin()
-//                .and()
                 .formLogin()
                 .defaultSuccessUrl("/", true)
                 .permitAll()
@@ -57,13 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
           auth.authenticationProvider(daoAuthenticationProvider());
-//        auth.inMemoryAuthentication()
-//                .withUser("user1").password(passwordEncoder.bCryptPasswordEncoder().encode("user1Pass")).roles("USER")
-//                .and()
-//                .withUser("user2").password(passwordEncoder.bCryptPasswordEncoder().encode("user2Pass")).roles("USER")
-//                .and()
-//                .withUser("admin").password(passwordEncoder.bCryptPasswordEncoder().encode("adminPass")).roles("ADMIN");
-//
+
     }
 
     @Bean

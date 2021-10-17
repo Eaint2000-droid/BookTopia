@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BookingVetImpl implements BookingVetService {
+public class BookingVetServiceImpl implements BookingVetService {
 
     @Autowired
     private BookingVetRepository bookingVetRepository;

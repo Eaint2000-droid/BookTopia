@@ -26,14 +26,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(classes = {BookingVetImpl.class})
+@ContextConfiguration(classes = {BookingVetServiceImpl.class})
 @ExtendWith(SpringExtension.class)
-class BookingVetImplTest {
-    @Autowired
-    private BookingVetImpl bookingVetImpl;
-
+class BookingVetServiceImplTest {
     @MockBean
     private BookingVetRepository bookingVetRepository;
+
+    @Autowired
+    private BookingVetServiceImpl bookingVetServiceImpl;
 
     @Test
     void testSave() {
@@ -153,7 +153,7 @@ class BookingVetImplTest {
         bookingVetting1.setBooking(bookings1);
         bookingVetting1.setBookingVettingKey(bookingVettingKey1);
         bookingVetting1.setComment("Comment");
-        assertSame(bookingVetting, this.bookingVetImpl.save(bookingVetting1));
+        assertSame(bookingVetting, this.bookingVetServiceImpl.save(bookingVetting1));
         verify(this.bookingVetRepository).save((BookingVetting) any());
     }
 
@@ -161,7 +161,7 @@ class BookingVetImplTest {
     void testGetAllBookingVetting() {
         ArrayList<BookingVetting> bookingVettingList = new ArrayList<BookingVetting>();
         when(this.bookingVetRepository.findAll()).thenReturn(bookingVettingList);
-        List<BookingVetting> actualAllBookingVetting = this.bookingVetImpl.getAllBookingVetting();
+        List<BookingVetting> actualAllBookingVetting = this.bookingVetServiceImpl.getAllBookingVetting();
         assertSame(bookingVettingList, actualAllBookingVetting);
         assertTrue(actualAllBookingVetting.isEmpty());
         verify(this.bookingVetRepository).findAll();
@@ -231,7 +231,7 @@ class BookingVetImplTest {
         BookingVettingKey bookingVettingKey1 = new BookingVettingKey();
         bookingVettingKey1.setEmail("jane.doe@example.org");
         bookingVettingKey1.setBid(1);
-        assertSame(bookingVetting, this.bookingVetImpl.getById(bookingVettingKey1));
+        assertSame(bookingVetting, this.bookingVetServiceImpl.getById(bookingVettingKey1));
         verify(this.bookingVetRepository).getById((BookingVettingKey) any());
     }
 
@@ -417,7 +417,7 @@ class BookingVetImplTest {
         bookingVetting2.setBooking(bookings2);
         bookingVetting2.setBookingVettingKey(bookingVettingKey3);
         bookingVetting2.setComment("Comment");
-        assertSame(bookingVetting1, this.bookingVetImpl.updateBookings(bookingVettingKey2, bookingVetting2));
+        assertSame(bookingVetting1, this.bookingVetServiceImpl.updateBookings(bookingVettingKey2, bookingVetting2));
         verify(this.bookingVetRepository).findById((BookingVettingKey) any());
         verify(this.bookingVetRepository).save((BookingVetting) any());
     }
@@ -483,7 +483,7 @@ class BookingVetImplTest {
         bookingVetting.setBooking(bookings);
         bookingVetting.setBookingVettingKey(bookingVettingKey);
         bookingVetting.setComment("Comment");
-        this.bookingVetImpl.delete(bookingVetting);
+        this.bookingVetServiceImpl.delete(bookingVetting);
         verify(this.bookingVetRepository).delete((BookingVetting) any());
     }
 
@@ -494,9 +494,9 @@ class BookingVetImplTest {
         BookingVettingKey bookingVettingKey = new BookingVettingKey();
         bookingVettingKey.setEmail("jane.doe@example.org");
         bookingVettingKey.setBid(1);
-        this.bookingVetImpl.deleteById(bookingVettingKey);
+        this.bookingVetServiceImpl.deleteById(bookingVettingKey);
         verify(this.bookingVetRepository).deleteById((BookingVettingKey) any());
-        assertTrue(this.bookingVetImpl.getAllBookingVetting().isEmpty());
+        assertTrue(this.bookingVetServiceImpl.getAllBookingVetting().isEmpty());
     }
 
     @Test
@@ -506,9 +506,9 @@ class BookingVetImplTest {
         BookingVettingKey bookingVettingKey = new BookingVettingKey();
         bookingVettingKey.setEmail("jane.doe@example.org");
         bookingVettingKey.setBid(1);
-        assertTrue(this.bookingVetImpl.bookingVettingExists(bookingVettingKey));
+        assertTrue(this.bookingVetServiceImpl.bookingVettingExists(bookingVettingKey));
         verify(this.bookingVetRepository).existsById((BookingVettingKey) any());
-        assertTrue(this.bookingVetImpl.getAllBookingVetting().isEmpty());
+        assertTrue(this.bookingVetServiceImpl.getAllBookingVetting().isEmpty());
     }
 
     @Test
@@ -518,9 +518,9 @@ class BookingVetImplTest {
         BookingVettingKey bookingVettingKey = new BookingVettingKey();
         bookingVettingKey.setEmail("jane.doe@example.org");
         bookingVettingKey.setBid(1);
-        assertFalse(this.bookingVetImpl.bookingVettingExists(bookingVettingKey));
+        assertFalse(this.bookingVetServiceImpl.bookingVettingExists(bookingVettingKey));
         verify(this.bookingVetRepository).existsById((BookingVettingKey) any());
-        assertTrue(this.bookingVetImpl.getAllBookingVetting().isEmpty());
+        assertTrue(this.bookingVetServiceImpl.getAllBookingVetting().isEmpty());
     }
 }
 

@@ -13,10 +13,13 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
     private UserServiceImpl userServiceImpl;
     @Autowired
-    private UserService userService;
+    public UserController(UserServiceImpl userServiceImpl){
+        this.userServiceImpl=userServiceImpl;
+    }
+
+
 
     //HR METHODS
     //To view all employees records
@@ -45,22 +48,22 @@ public class UserController {
     @GetMapping("/get/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
 
-        if(userService.getUserByEmail(email)==null){
+        if(userServiceImpl.getUserByEmail(email)==null){
             throw new UsernameNotFoundException("Email not found " + email);
         }
-        return userService.getUserByEmail(email);
+        return userServiceImpl.getUserByEmail(email);
     }
 
 
     @DeleteMapping("/del/{email}")
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
-        User user = userService.getUserByEmail(email);
+        User user = userServiceImpl.getUserByEmail(email);
         //TODO Charlene: I think can remove these few lines below though. Since there isnt really a point for this checking since DELETE is idempotent.
         if (user == null) {
             // throw an exception
             throw new UserNotFoundException(email);
         }
-        userService.delete(user);
+        userServiceImpl.delete(user);
     }
 
 

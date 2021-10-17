@@ -12,38 +12,38 @@ import java.util.List;
 @RequestMapping("/api/news")
 public class NewsController {
 
-    private NewsService newsService;
+    private NewsServiceImpl newsServiceImpl;
 
     @Autowired
-    public NewsController(NewsService injectNewsService){
-        this.newsService = injectNewsService;
+    public NewsController(NewsServiceImpl newsServiceImpl){
+        this.newsServiceImpl = newsServiceImpl;
     }
 
     @GetMapping("/hr/getAll")
     public List<News> getNews() {
-        return newsService.getAllNews();
+        return newsServiceImpl.getAllNews();
     }
 
     //retrieves news by nid
     @GetMapping("/emp/get/{nid}")
     public News getNewsById(@PathVariable int nid) {
-        News news = newsService.getNewsById(nid);
+        News news = newsServiceImpl.getNewsById(nid);
         if(news == null) throw new NewsNotFoundException(nid);
-        return newsService.getNewsById(nid);
+        return newsServiceImpl.getNewsById(nid);
     }
 
     //add new news
     @PostMapping("/hr/create/newNews")
     public News addBook(@RequestBody News news) {
-        News freshNews = newsService.addNews(news);
+        News freshNews = newsServiceImpl.addNews(news);
         if(freshNews == null) throw new IllegalStateException("News " + freshNews.toString() + " exists");
-        return newsService.addNews(freshNews);
+        return newsServiceImpl.addNews(freshNews);
     }
 
     //update news
     @PutMapping("/hr/update/news/{nid}")
     public News updateNews(@PathVariable int nid, @RequestBody News newNewsInfo) {
-        News news = newsService.updateNews(nid, newNewsInfo);
+        News news = newsServiceImpl.updateNews(nid, newNewsInfo);
         if (news == null) throw new NewsNotFoundException(nid);
         return news;
     }
@@ -51,11 +51,11 @@ public class NewsController {
     //delete news
     @DeleteMapping("/hr/del/{nid}")
     public void deleteNews(@PathVariable int nid) {
-        News news = newsService.getNewsById(nid);
+        News news = newsServiceImpl.getNewsById(nid);
         if (news == null) {
             throw new BookingNotFoundException(nid);
         }
-        newsService.delete(getNewsById(nid));
+        newsServiceImpl.delete(getNewsById(nid));
     }
 
 }

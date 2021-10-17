@@ -16,11 +16,11 @@ import java.util.List;
 @RequestMapping("/api/bookings")
 public class BookingsController {
 
-    private BookingService bookingService;
+    private BookingServiceImpl bookingServiceImpl;
 
     @Autowired
-    public BookingsController(BookingService bookingService) {
-        this.bookingService = bookingService;
+    public BookingsController(BookingServiceImpl bookingServiceImpl) {
+        this.bookingServiceImpl = bookingServiceImpl;
     }
 
     //when admin wants to receive all the information
@@ -28,44 +28,44 @@ public class BookingsController {
     @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
-        return bookingService.getAllBookings();
+        return bookingServiceImpl.getAllBookings();
     }
 
     //when employee want to retrieve their own booking. TODO
     @GetMapping("/emp/getAll/{bid}")
     public Bookings getBookingsById(@RequestParam int bid) {
-        if (!bookingService.bookingExists(bid)) {
+        if (!bookingServiceImpl.bookingExists(bid)) {
             throw new BookingNotFoundException(bid);
         }
-        return bookingService.getBookingsById(bid);
+        return bookingServiceImpl.getBookingsById(bid);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) {
         User a = newBooking.getUser();
-        if(bookingService.bookingExists(newBooking.getBid())){
+        if(bookingServiceImpl.bookingExists(newBooking.getBid())){
             throw new BookingExistsException(newBooking);
         }
         if (a == null) {
             throw new UserNotFoundException();
         }
-        return bookingService.save(newBooking);
+        return bookingServiceImpl.save(newBooking);
     }
 
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@RequestParam int id) {
-        Bookings bookings = bookingService.getBookingsById(id);
+        Bookings bookings = bookingServiceImpl.getBookingsById(id);
         if (bookings == null) {
             throw new BookingNotFoundException(id);
         }
 
-        bookingService.delete(bookingService.getBookingsById(id));
+        bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
     }
 
     @PutMapping("/hr/update/{id}")
     public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking){
-        Bookings bookings = bookingService.updateBookings(id, newBooking);
+        Bookings bookings = bookingServiceImpl.updateBookings(id, newBooking);
 
         if(bookings == null){
             throw new BookingNotFoundException(id);

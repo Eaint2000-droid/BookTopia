@@ -13,38 +13,38 @@ import java.util.List;
 @RestController
 @RequestMapping ("/api/regulation")
 public class RegulationController {
-    private RegulationService regulationService;
+    private RegulationServiceImpl regulationServiceImpl;
 
     @Autowired
-    public RegulationController (RegulationService regulationService){
-        this.regulationService = regulationService;
+    public RegulationController (RegulationServiceImpl regulationServiceImpl){
+        this.regulationServiceImpl = regulationServiceImpl;
     }
 
     @GetMapping("/emp")
     public List<Regulation> getRegulations() {
-        return regulationService.getAllRegulation();
+        return regulationServiceImpl.getAllRegulation();
     }
 
     //retrieves regulation by startDate
     @GetMapping("/emp/getRegulation{startDate}")
     public Regulation getRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
-        Regulation regulation = regulationService.getRegulationById(startDate);
+        Regulation regulation = regulationServiceImpl.getRegulationById(startDate);
 
         if(regulation == null) throw new RegulationNotFoundException(startDate);
-        return regulationService.getRegulationById(startDate);
+        return regulationServiceImpl.getRegulationById(startDate);
     }
 
     //add new regulation
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr/addRegulation")
     public Regulation addRegulation(@RequestBody Regulation regulation) {
-        return regulationService.save(regulation);
+        return regulationServiceImpl.save(regulation);
     }
 
     //update regulation
     @PutMapping("/hr/updateRegulation{startDate}")
     public Regulation updateRegulation(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) {
-        Regulation regulation = regulationService.updateRegulation(startDate, newRegulation);
+        Regulation regulation = regulationServiceImpl.updateRegulation(startDate, newRegulation);
 
         if (regulation == null) throw new RegulationNotFoundException(startDate);
         return regulation;
@@ -54,7 +54,7 @@ public class RegulationController {
     @DeleteMapping("/hr/deleteRegulation{startDate}")
     public void deleteRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) {
         try {
-            regulationService.deleteRegulationById(startDate);
+            regulationServiceImpl.deleteRegulationById(startDate);
         } catch (EmptyResultDataAccessException e) {
             throw new RegulationNotFoundException(startDate);
         }

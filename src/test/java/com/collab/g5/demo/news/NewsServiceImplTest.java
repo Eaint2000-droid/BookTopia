@@ -29,7 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {NewsServiceImpl.class})
 @ExtendWith(SpringExtension.class)
-public class NewsServiceImplTest {
+class NewsServiceImplTest {
     @MockBean
     private NewsRepository newsRepository;
 
@@ -37,7 +37,7 @@ public class NewsServiceImplTest {
     private NewsServiceImpl newsServiceImpl;
 
     @Test
-    public void testGetAllNews() {
+    void testGetAllNews() {
         ArrayList<News> newsList = new ArrayList<News>();
         when(this.newsRepository.findAll()).thenReturn(newsList);
         List<News> actualAllNews = this.newsServiceImpl.getAllNews();
@@ -47,7 +47,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testGetNewsById() {
+    void testGetNewsById() {
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -90,7 +90,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testGetNewsById2() {
+    void testGetNewsById2() {
         when(this.newsRepository.findById((Integer) any())).thenReturn(Optional.<News>empty());
         assertNull(this.newsServiceImpl.getNewsById(1));
         verify(this.newsRepository).findById((Integer) any());
@@ -98,7 +98,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testAddNews() {
+    void testAddNews() {
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -176,7 +176,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testAddNews2() {
+    void testAddNews2() {
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -254,7 +254,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testUpdateNews() {
+    void testUpdateNews() {
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -368,7 +368,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testUpdateNews2() {
+    void testUpdateNews2() {
         Company company = new Company();
         company.setUsers(new ArrayList<User>());
         company.setName("Name");
@@ -446,7 +446,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         doNothing().when(this.newsRepository).delete((News) any());
 
         Company company = new Company();
@@ -489,7 +489,7 @@ public class NewsServiceImplTest {
     }
 
     @Test
-    public void testDeleteNewsById() {
+    void testDeleteNewsById() {
         doNothing().when(this.newsRepository).deleteById((Integer) any());
         this.newsServiceImpl.deleteNewsById(1);
         verify(this.newsRepository).deleteById((Integer) any());
