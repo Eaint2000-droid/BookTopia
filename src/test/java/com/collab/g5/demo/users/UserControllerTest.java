@@ -5,7 +5,6 @@ import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.news.News;
 import com.collab.g5.demo.regulations.RegulationLimit;
-import com.collab.g5.demo.security.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {UserController.class})
@@ -34,14 +32,6 @@ class UserControllerTest {
     @MockBean
     private UserServiceImpl userServiceImpl;
 
-    @Test
-    void testConstructor() {
-        UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userServiceImpl = new UserServiceImpl(userRepository, new PasswordEncoder());
-
-        new UserController(userServiceImpl);
-        assertTrue(userServiceImpl.getAllUsers().isEmpty());
-    }
 
     @Test
     void testGetUserByEmail() throws Exception {

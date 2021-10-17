@@ -1,16 +1,8 @@
 package com.collab.g5.demo.companies;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
 import com.collab.g5.demo.regulations.RegulationLimit;
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.*;
+
 @ContextConfiguration(classes = {CompanyController.class})
 @ExtendWith(SpringExtension.class)
 class CompanyControllerTest {
@@ -32,17 +28,6 @@ class CompanyControllerTest {
 
     @MockBean
     private CompanyServiceImpl companyServiceImpl;
-
-    @Test
-    void testConstructor() {
-        // TODO: This test is incomplete.
-        //   Reason: R002 Missing observers.
-        //   Diffblue Cover was unable to create an assertion.
-        //   Add getters for the following fields or make them package-private:
-        //     CompanyController.companyServiceImpl
-
-        new CompanyController(new CompanyServiceImpl());
-    }
 
     @Test
     void testGetCompanyById() throws Exception {

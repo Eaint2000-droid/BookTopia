@@ -1,14 +1,5 @@
 package com.collab.g5.demo.news;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.collab.g5.demo.bookings.BookingVetting;
 import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
@@ -16,10 +7,6 @@ import com.collab.g5.demo.regulations.RegulationLimit;
 import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +19,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.*;
+
 @ContextConfiguration(classes = {NewsController.class})
 @ExtendWith(SpringExtension.class)
 class NewsControllerTest {
@@ -40,17 +33,6 @@ class NewsControllerTest {
 
     @MockBean
     private NewsServiceImpl newsServiceImpl;
-
-    @Test
-    void testConstructor() {
-        // TODO: This test is incomplete.
-        //   Reason: R002 Missing observers.
-        //   Diffblue Cover was unable to create an assertion.
-        //   Add getters for the following fields or make them package-private:
-        //     NewsController.newsServiceImpl
-
-        new NewsController(new NewsServiceImpl());
-    }
 
     @Test
     void testGetNewsById() throws Exception {
