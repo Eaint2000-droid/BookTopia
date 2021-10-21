@@ -30,6 +30,29 @@ public class BookingsController {
         return bookingServiceImpl.getAllBookings();
     }
 
+//    //when user what to get their booking info
+//    @GetMapping("/emp/getAll")
+//    @Transient
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public List<Bookings> getAllMyBookings() {
+//        return bookingServiceImpl.getAllMyBookings();
+//    }
+
+    //user retrieve all their past booking records
+    @GetMapping("/emp/getAllMyPast")
+    @Transient
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<Bookings> getAllMyPastBookings() {
+        return bookingServiceImpl.getAllMyPastBookings();
+    }
+
+    @GetMapping("/emp/getAllMyUpcoming")
+    @Transient
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<Bookings> getAllMyUpcomingBookings() {
+        return bookingServiceImpl.getAllMyUpcomingBookings();
+    }
+
     @GetMapping("/emp/getAll/{bid}")
     public Bookings getBookingsById(@RequestParam int bid) throws BookingNotFoundException {
         if (!bookingServiceImpl.bookingExists(bid)) {
