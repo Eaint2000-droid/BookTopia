@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class BookingsController {
 
     private BookingServiceImpl bookingServiceImpl;
@@ -25,7 +26,6 @@ public class BookingsController {
     //when admin wants to receive all the information
     @GetMapping("/hr/getAll")
     @Transient
-    @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingServiceImpl.getAllBookings();
     }
@@ -64,11 +64,13 @@ public class BookingsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
-        User a = newBooking.getUser();
+        System.out.println("New Booking: " + newBooking);
+        User userResult = newBooking.getUser();
+        System.out.println("Returned user : " + userResult);
         if (bookingServiceImpl.bookingExists(newBooking.getBid())) {
             throw new BookingExistsException(newBooking);
         }
-        if (a == null) {
+        if (userResult == null) {
             throw new UserNotFoundException();
         }
         return bookingServiceImpl.save(newBooking);
