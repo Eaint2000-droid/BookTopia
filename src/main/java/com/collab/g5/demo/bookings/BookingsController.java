@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookingsController {
 
     private BookingServiceImpl bookingServiceImpl;
@@ -24,7 +25,7 @@ public class BookingsController {
 
     //when admin wants to receive all the information
     @GetMapping("/hr/getAll")
-    @Transient
+//    @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getBookings() {
         return bookingServiceImpl.getAllBookings();
@@ -40,7 +41,7 @@ public class BookingsController {
 
     //user retrieve all their past booking records
     @GetMapping("/emp/getAllMyPast")
-    @Transient
+//    @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getAllMyPastBookings() {
         return bookingServiceImpl.getAllMyPastBookings();
@@ -64,6 +65,7 @@ public class BookingsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
+//        System.out.println(newBooking + " is " + newBooking);
         User a = newBooking.getUser();
         if (bookingServiceImpl.bookingExists(newBooking.getBid())) {
             throw new BookingExistsException(newBooking);

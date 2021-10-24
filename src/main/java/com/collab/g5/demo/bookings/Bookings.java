@@ -24,7 +24,6 @@ public class Bookings {
 
     @ManyToOne
     @JoinColumn(name = "user_useremail", foreignKey = @ForeignKey(name = "fk1_bookings"))
-    @JsonIgnore
     @Autowired
     @NotNull
     private User user;
