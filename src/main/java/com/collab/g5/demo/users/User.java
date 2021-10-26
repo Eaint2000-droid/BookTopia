@@ -6,6 +6,7 @@ import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.news.News;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dailyForm.DailyForm;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,6 +58,10 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
     private List<News> newsList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    private List<DailyForm> dailyFormList;
 
 
 
