@@ -1,12 +1,12 @@
 package com.collab.g5.demo.users;
 
-import com.collab.g5.demo.exceptions.users.*;
+import com.collab.g5.demo.exceptions.users.EmailExistsException;
+import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -18,8 +18,6 @@ public class UserController {
     public UserController(UserServiceImpl userServiceImpl){
         this.userServiceImpl=userServiceImpl;
     }
-
-
 
     //HR METHODS
     //To view all employees records
