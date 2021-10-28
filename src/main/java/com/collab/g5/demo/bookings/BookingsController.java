@@ -40,7 +40,7 @@ public class BookingsController {
 
     //user retrieve all their past booking records
     @GetMapping("/emp/getAllMyPast")
-    @Transient
+//    @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getAllMyPastBookings() {
         return bookingServiceImpl.getAllMyPastBookings();
