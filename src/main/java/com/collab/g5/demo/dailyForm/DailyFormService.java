@@ -1,9 +1,11 @@
-package dailyForm;
+package com.collab.g5.demo.dailyForm;
 
 import com.collab.g5.demo.users.User;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 public interface DailyFormService {
     public List<DailyForm> getAllDailyForms();

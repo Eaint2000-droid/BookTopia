@@ -1,13 +1,17 @@
-package dailyForm;
+package com.collab.g5.demo.dailyForm;
 
 import com.collab.g5.demo.users.User;
-import com.collab.g5.demo.users.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Service
+@AllArgsConstructor
 public class DailyFormServiceImpl implements DailyFormService{
     @Autowired
     private DailyFormRepository dailyFormRepository;

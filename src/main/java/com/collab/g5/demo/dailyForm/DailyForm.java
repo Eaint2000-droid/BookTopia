@@ -1,4 +1,4 @@
-package dailyForm;
+package com.collab.g5.demo.dailyForm;
 
 import javax.persistence.*;
 import com.collab.g5.demo.companies.Company;

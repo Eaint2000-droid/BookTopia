@@ -1,8 +1,5 @@
-package dailyForm;
+package com.collab.g5.demo.dailyForm;
 
-import com.collab.g5.demo.companies.Company;
-import com.collab.g5.demo.companies.CompanyServiceImpl;
-import com.collab.g5.demo.exceptions.companies.CompaniesNotFoundException;
 import com.collab.g5.demo.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,7 +42,7 @@ public class DailyFormController {
         return toReturn;
     }
 
-    @GetMapping("/get/{user}")
+    @GetMapping("/getByUserAndDate/{user}")
     public List<DailyForm> getDailyFormsByUserAndDate(User user, LocalDate dateTime) throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUserAndDate(user,dateTime);
         if(toReturn.size()==0){
