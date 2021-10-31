@@ -45,8 +45,4 @@ public class RegulationLimit {
     @PositiveOrZero
     @NotNull(message = "dailyLimit should not be null")
     private int dailyLimit;
-
-//    public String toString () {
-//        return "cid" + regulationLimitKey.getCid() + "startdate: " + regulationLimitKey.getStartDate();
-//    }
 }

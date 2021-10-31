@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/api/regulationLimit")
 public class RegulationLimitController {
     private RegulationLimitServiceImpl regulationLimitServiceImpl;
@@ -26,14 +27,23 @@ public class RegulationLimitController {
         this.companyServiceImpl = companyServiceImpl;
     }
 
-
+    /**
+     * List all regulation limits in the system
+     * @return list of all regulation limits
+     */
     @GetMapping("/emp")
     public List<RegulationLimit> getRegulationLimits() {
         return regulationLimitServiceImpl.getAllRegulationLimit();
     }
 
-
-    @GetMapping("/emp/getRegulationLimit/startDate{startDate}/cid{cid}")
+    /**
+     * Search for regulation limit with the given startDate and cid
+     * If there is no regulation limit with the given "startDate" and "cid", throw a RegulationLimitNotFoundException
+     * @param startDate
+     * @param cid
+     * @return regulation limit with the given startDate and cid
+     */
+    @GetMapping("/emp/{startDate}/{cid}")
     public Optional<RegulationLimit> getRegulationLimitById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid) throws RegulationLimitNotFoundException {
 
         Optional<RegulationLimit> getRegulationLimit = regulationLimitServiceImpl.getRegulationLimitById(startDate, cid);
@@ -45,9 +55,16 @@ public class RegulationLimitController {
         return getRegulationLimit;
     }
 
+    /**
+     * Add a new regulation limit with POST request to "/hr"
+     * @param regulationLimit
+     * @return list of all regulation limits
+     */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/hr/addRegulationLimit")
+    @PostMapping("/hr")
     public RegulationLimit addRegulationLimit(@RequestBody RegulationLimit regulationLimit) {
+
+        System.out.println("Post request" + regulationLimit);
 
         RegulationLimitKey regulationLimitKey = regulationLimit.getRegulationLimitKey();
         regulationLimit.setRegulation(regulationServiceImpl.getRegulationById(regulationLimitKey.getStartDate()));
@@ -57,7 +74,14 @@ public class RegulationLimitController {
         return regulationLimitServiceImpl.save(regulationLimit);
     }
 
-    @PutMapping("/hr/updateRegulationLimit/startDate{startDate}/cid{cid}")
+    /**
+     * If there is no regulation limit with the given "startDate" and "cid", throw a RegulationLimitNotFoundException
+     * @param startDate
+     * @param cid
+     * @param newRegulationLimit
+     * @return the updated, or newly added regulation limit
+     */
+    @PutMapping("/hr/{startDate}/{cid}")
     public RegulationLimit updateRegulationLimit(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid, @RequestBody RegulationLimit newRegulationLimit) throws RegulationLimitNotFoundException {
         RegulationLimit regulationLimit = regulationLimitServiceImpl.updateRegulationLimit(startDate, cid, newRegulationLimit);
 
@@ -65,8 +89,13 @@ public class RegulationLimitController {
         return regulationLimit;
     }
 
-
-    @DeleteMapping("/hr/deleteRegulationLimit/startDate{startDate}/cid{cid}")
+    /**
+     * Remove a regulation limit with the DELETE request to "/hr/{startDate}/{cid}"
+     * If there is no regulation limit with the given "startDate" and "cid", throw a RegulationLimtNotFoundException
+     * @param startDate
+     * @param cid
+     */
+    @DeleteMapping("/hr/{startDate}/{cid}")
     void deleteRegulationLimitById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @PathVariable int cid) throws RegulationLimitNotFoundException {
         try {
             regulationLimitServiceImpl.deleteRegulationLimitById(startDate, cid);

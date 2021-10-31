@@ -6,10 +6,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping ("/api/regulation")
 public class RegulationController {
     private RegulationServiceImpl regulationServiceImpl;
@@ -19,13 +22,22 @@ public class RegulationController {
         this.regulationServiceImpl = regulationServiceImpl;
     }
 
+    /**
+     * List all regulations in the system
+     * @return list of all regulations
+     */
     @GetMapping("/emp")
     public List<Regulation> getRegulations() {
         return regulationServiceImpl.getAllRegulation();
     }
 
-    //retrieves regulation by startDate
-    @GetMapping("/emp/getRegulation{startDate}")
+    /**
+     * Search for regulation with the given startDate
+     * If there is no regulation with the given "startDate", throw a RegulationNotFoundException
+     * @param startDate
+     * @return regulation with the given startDate
+     */
+    @GetMapping("/emp/{startDate}")
     public Regulation getRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) throws RegulationNotFoundException {
         Regulation regulation = regulationServiceImpl.getRegulationById(startDate);
 
@@ -33,24 +45,37 @@ public class RegulationController {
         return regulationServiceImpl.getRegulationById(startDate);
     }
 
-    //add new regulation
+    /**
+     * Add a new regulation with POST request to "/hr"
+     * @param regulation
+     * @return list of all regulations
+     */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/hr/addRegulation")
-    public Regulation addRegulation(@RequestBody Regulation regulation) {
+    @PostMapping("/hr")
+    public Regulation addRegulation(@Valid @RequestBody Regulation regulation) {
         return regulationServiceImpl.save(regulation);
     }
 
-    //update regulation
-    @PutMapping("/hr/updateRegulation{startDate}")
-    public Regulation updateRegulation(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) throws RegulationNotFoundException {
+    /**
+     * If there is no book with the given "startDate", throw a RegulationNotFoundException
+     * @param startDate
+     * @param newRegulation
+     * @return the updated, or newly added regulation
+     */
+    @PutMapping("/hr/{startDate}")
+    public Regulation updateRegulation(@Valid@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate, @RequestBody Regulation newRegulation) throws RegulationNotFoundException {
         Regulation regulation = regulationServiceImpl.updateRegulation(startDate, newRegulation);
 
         if (regulation == null) throw new RegulationNotFoundException(startDate);
         return regulation;
     }
 
-    //delete regulation
-    @DeleteMapping("/hr/deleteRegulation{startDate}")
+    /**
+     * Remove a regulation with the DELETE request to "/hr/{startDate}"
+     * If there is no regulation with the given "startDate", throw a RegulationNotFoundException
+     * @param startDate
+     */
+    @DeleteMapping("/hr/{startDate}")
     public void deleteRegulationById(@PathVariable @DateTimeFormat(pattern = "uuuu-MM-dd") LocalDate startDate) throws RegulationNotFoundException {
         try {
             regulationServiceImpl.deleteRegulationById(startDate);
