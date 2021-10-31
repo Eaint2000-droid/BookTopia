@@ -10,6 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/api/news")
 public class NewsController {
 

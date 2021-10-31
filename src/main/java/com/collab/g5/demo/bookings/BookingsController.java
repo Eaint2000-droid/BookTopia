@@ -40,7 +40,7 @@ public class BookingsController {
 
     //user retrieve all their past booking records
     @GetMapping("/emp/getAllMyPast")
-    @Transient
+//    @Transient
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Bookings> getAllMyPastBookings() {
         return bookingServiceImpl.getAllMyPastBookings();
@@ -64,7 +64,6 @@ public class BookingsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
-        System.out.println("New Booking: " + newBooking);
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
         if (bookingServiceImpl.bookingExists(newBooking.getBid())) {

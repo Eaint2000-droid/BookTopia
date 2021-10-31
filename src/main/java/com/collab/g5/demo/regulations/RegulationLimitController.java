@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/api/regulationLimit")
 public class RegulationLimitController {
     private RegulationLimitServiceImpl regulationLimitServiceImpl;
@@ -48,6 +49,8 @@ public class RegulationLimitController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr/addRegulationLimit")
     public RegulationLimit addRegulationLimit(@RequestBody RegulationLimit regulationLimit) {
+
+        System.out.println("Post request" + regulationLimit);
 
         RegulationLimitKey regulationLimitKey = regulationLimit.getRegulationLimitKey();
         regulationLimit.setRegulation(regulationServiceImpl.getRegulationById(regulationLimitKey.getStartDate()));
