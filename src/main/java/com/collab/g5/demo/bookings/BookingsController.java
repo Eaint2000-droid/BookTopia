@@ -4,6 +4,7 @@ import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,20 @@ import java.util.List;
 public class BookingsController {
 
     private BookingServiceImpl bookingServiceImpl;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
-    public BookingsController(BookingServiceImpl bookingServiceImpl) {
+    public BookingsController(BookingServiceImpl bookingServiceImpl , UserServiceImpl userServiceImpl)
+    {
         this.bookingServiceImpl = bookingServiceImpl;
+        this.userServiceImpl = userServiceImpl;
     }
 
     //when admin wants to receive all the information
     @GetMapping("/hr/getAll")
     @Transient
     public List<Bookings> getBookings() {
+        System.out.println("Get all method");
         return bookingServiceImpl.getAllBookings();
     }
 
@@ -37,28 +42,31 @@ public class BookingsController {
 //    public List<Bookings> getAllMyBookings() {
 //        return bookingServiceImpl.getAllMyBookings();
 //    }
-
+    // "http://localhost:8080/api/bookings/emp/getAllMyPast/{email}/"
     //user retrieve all their past booking records
-    @GetMapping("/emp/getAllMyPast")
-//    @Transient
-    @CrossOrigin(origins = "http://localhost:3000")
-    public List<Bookings> getAllMyPastBookings() {
-        return bookingServiceImpl.getAllMyPastBookings();
+    //@Transient
+
+    @GetMapping("/emp/getAllMyPast/{email}/")
+    public List<Bookings> getAllMyPastBookings(@PathVariable String email) {
+        System.out.println("Get all past bookings " + email);
+        User u = userServiceImpl.getUserByEmail(email);
+        return bookingServiceImpl.getAllMyPastBookings(u);
     }
 
-    @GetMapping("/emp/getAllMyUpcoming")
-    @Transient
-    @CrossOrigin(origins = "http://localhost:3000")
-    public List<Bookings> getAllMyUpcomingBookings() {
-        return bookingServiceImpl.getAllMyUpcomingBookings();
+    @GetMapping("/emp/getAllMyUpcoming/{email}/")
+    public List<Bookings> getAllMyUpcomingBookings(@PathVariable String email) {
+        System.out.println("get all upcoming bookings");
+        User u = userServiceImpl.getUserByEmail(email);
+        return bookingServiceImpl.getAllMyUpcomingBookings(u);
     }
 
-    @GetMapping("/emp/getAll/{bid}")
-    public Bookings getBookingsById(@RequestParam int bid) throws BookingNotFoundException {
-        if (!bookingServiceImpl.bookingExists(bid)) {
-            throw new BookingNotFoundException(bid);
-        }
-        return bookingServiceImpl.getBookingsById(bid);
+    @GetMapping("/emp/getAll/{email}/")
+    public int getBookingsCountByEmail(@RequestParam String email) throws BookingNotFoundException {
+        System.out.println("BID is " + email);
+//        if (!bookingServiceImpl.bookingExists(bid)) {
+//            throw new BookingNotFoundException(bid);
+//        }
+        return bookingServiceImpl.getBookingsCountByEmail(email);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -78,6 +86,7 @@ public class BookingsController {
 
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
+        System.out.println("Bid is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
         if (bookings == null) {
             throw new BookingNotFoundException(id);
