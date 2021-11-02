@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -27,7 +28,7 @@ public class UserController {
         if (toReturn.size() == 0) {
             throw new UserNotFoundException();
         }
-        System.out.println("SUCCESSS");
+
         return toReturn;
     }
 
@@ -57,6 +58,8 @@ public class UserController {
     }
 
 
+
+
     @DeleteMapping("/del/{email}")
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
@@ -67,6 +70,67 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
+    @PutMapping("/update/fname/{fname}")
+    User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
+
+
+        User checkUser= userServiceImpl.updateFname(fname, user);
+
+        if (checkUser == null) {
+            // throw an exception
+            throw new UserNotFoundException(user.getEmail());
+        }
+
+        return checkUser;
+
+    }
+
+    @PutMapping("/update/Lname/{lname}")
+    User updateLName(@PathVariable String lName, @Valid @RequestBody User user) throws UserNotFoundException {
+
+
+        User checkUser= userServiceImpl.updateLName(lName, user);
+
+        if (checkUser == null) {
+            // throw an exception
+            throw new UserNotFoundException(user.getEmail());
+        }
+
+        return checkUser;
+
+
+    }
+
+
+    @PutMapping("/update/Email/{email}")
+    User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
+
+
+
+        User checkUser= userServiceImpl.updateEmail(email, user);
+
+        if (checkUser == null) {
+            // throw an exception
+            throw new UserNotFoundException(user.getEmail());
+        }
+
+        return checkUser;
+
+    }
+
+
+    @PutMapping("/update/Password/{password}")
+    User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
+
+        User checkUser= userServiceImpl.updatePassword(password, user);
+
+        if (checkUser == null) {
+            // throw an exception
+            throw new UserNotFoundException(user.getEmail());
+        }
+
+        return checkUser;
+    }
 
 
 }
