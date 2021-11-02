@@ -44,4 +44,9 @@ public class DailyFormServiceImpl implements DailyFormService{
 
 
     }
+
+    @Override
+    public void addDailyForm(DailyForm newDailyForm) {
+        dailyFormRepository.save(newDailyForm);
+    }
 }

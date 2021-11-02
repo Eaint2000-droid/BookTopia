@@ -4,6 +4,7 @@ import javax.persistence.*;
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.annotation.PersistenceConstructor;
 
@@ -32,8 +33,10 @@ public class DailyForm {
 
     private boolean symptoms;
 
-    @JsonIgnore
+
     @ManyToOne
+//    @NotNull
+    @JsonIgnoreProperties({"company"})
     @JoinColumn(name="user_useremail",foreignKey = @ForeignKey(name="fk1_DailyForm"))
     private User user;
 

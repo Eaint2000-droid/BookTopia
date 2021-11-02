@@ -27,6 +27,7 @@ public class UserController {
         if (toReturn.size() == 0) {
             throw new UserNotFoundException();
         }
+        System.out.println("SUCCESSS");
         return toReturn;
     }
 
@@ -45,10 +46,13 @@ public class UserController {
     //EMPLOYEE METHODS
     @GetMapping("/get/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
-
+        System.out.println(email);
         if(userServiceImpl.getUserByEmail(email)==null){
+            System.out.println("Not Found");
             throw new UsernameNotFoundException("Email not found " + email);
         }
+        System.out.println("EMAIL");
+        System.out.println(userServiceImpl.getUserByEmail(email));
         return userServiceImpl.getUserByEmail(email);
     }
 
@@ -63,11 +67,6 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
-
-//    @PutMapping("updatePassword/{email}")
-//    public void updatePassword(@PathVariable String email){
-//
-//    }
 
 
 }
