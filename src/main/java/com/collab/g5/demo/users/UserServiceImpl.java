@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService{
             return null;
         }
 
-        userExist.setFname(lName);
+        userExist.setLname(lName);
         userRepository.save(userExist);
         return userExist;
     }

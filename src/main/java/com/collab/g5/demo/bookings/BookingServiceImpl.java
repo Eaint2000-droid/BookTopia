@@ -1,5 +1,7 @@
 package com.collab.g5.demo.bookings;
 
+import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,8 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-
+@Autowired
+private UserService userService;
     //for hr
     @Override
     public List<Bookings> getAllBookings() {
@@ -84,6 +87,24 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Bookings save(Bookings bookings) {
         return bookingsRepository.save(bookings);
+    }
+
+    @Override
+    public ArrayList<Bookings> getBookingByUser(String email) {
+
+        if (userService.getUserByEmail(email)==null)
+        {
+            return null;
+
+        }
+        ArrayList<Bookings> toReturn = new ArrayList<>();
+        for(Bookings b: bookingsRepository.findAll()){
+            if(b.getUser().getEmail().equals(email)){
+                toReturn.add(b);
+            }
+        }
+    
+        return toReturn;
     }
 }
 

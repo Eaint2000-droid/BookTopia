@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,6 +61,20 @@ public class BookingsController {
         }
         return bookingServiceImpl.getBookingsById(bid);
     }
+    @GetMapping("/getUserBookings/{email}")
+    public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException{
+
+        ArrayList<Bookings> toReturn= bookingServiceImpl.getBookingByUser(email);
+        if(toReturn==null){
+            throw new UserNotFoundException();
+        }
+        return toReturn;
+
+    }
+
+
+
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
