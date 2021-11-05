@@ -17,8 +17,11 @@ public class CompanyController {
     @Autowired
     public CompanyController(CompanyServiceImpl companyServiceImpl){this.companyServiceImpl =companyServiceImpl;}
 
-
-    @GetMapping("/hr/getAll")
+    /**
+     * List all companies  in the system
+     * @return list of all companies
+     */
+    @GetMapping("/hr")
     public List<Company> getCompany() throws CompaniesNotFoundException{
         List<Company> toReturn=companyServiceImpl.getAllCompanies();
         if(toReturn.size()==0){
@@ -27,7 +30,13 @@ public class CompanyController {
         return toReturn;
     }
 
-    @GetMapping("/hr/get/{cid}")
+    /**
+     * Search for company with the given cid
+     * If there is no company with the given "cid", throw a CompaniesNotFoundException
+     * @param cid
+     * @return company with the given cid
+     */
+    @GetMapping("/hr/{cid}")
     public Company getCompanyById(@PathVariable int cid) throws CompaniesNotFoundException{
         Company company = companyServiceImpl.getCompanyById(cid);
 
@@ -38,7 +47,13 @@ public class CompanyController {
         return company;
     }
 
-    @PostMapping("/hr/create/{newCompany}")
+    /**
+     * Add a new company  with POST request to "/hr/{newsCompany}"
+     * Note the use of @RequestBody
+     * @param newCompany
+     * @return the newly added company
+     */
+    @PostMapping("/hr/{newCompany}")
     public void newCompany(@RequestBody Company newCompany) throws InsertCompanyException{
         int cid = newCompany.getCid();
         if(companyServiceImpl.containsCompany(cid)){
@@ -47,8 +62,12 @@ public class CompanyController {
         companyServiceImpl.addNewCompany(newCompany);
     }
 
-
-    @DeleteMapping("/hr/del/{name}")
+    /**
+     * Remove a company with the DELETE request to "/hr/{name}"
+     * If there is no book with the given "cid", throw a CompaniesNotFoundException
+     * @param cid
+     */
+    @DeleteMapping("/hr/{name}")
     void deleteCompany(@PathVariable int cid) throws CompaniesNotFoundException{
         Company company= companyServiceImpl.getCompanyById(cid);
         if(company==null){

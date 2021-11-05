@@ -30,13 +30,6 @@ public class News {
     private String title;
     private String content;
 
-
-//    @PersistenceConstructor
-//    public News(String title)
-//    {
-//        this.title = title;
-//    }
-
     @PersistenceConstructor
     public News(int nid, LocalDate date, String title, String content)
     {

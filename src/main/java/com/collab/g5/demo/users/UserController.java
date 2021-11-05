@@ -63,11 +63,4 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
-
-//    @PutMapping("updatePassword/{email}")
-//    public void updatePassword(@PathVariable String email){
-//
-//    }
-
-
 }
