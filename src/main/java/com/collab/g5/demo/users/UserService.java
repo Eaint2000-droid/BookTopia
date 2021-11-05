@@ -1,6 +1,5 @@
 package com.collab.g5.demo.users;
 
-import com.collab.g5.demo.companies.Company;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -16,6 +15,4 @@ public interface UserService {
     void delete(User user);
 
     void deleteById(String userEmail);
-
-//    boolean containsUser(String userEmail);
 }
