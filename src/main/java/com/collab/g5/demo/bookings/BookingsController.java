@@ -41,7 +41,7 @@ public class BookingsController {
         return bookingServiceImpl.getAllBookings();
     }
 
-    @GetMapping("/emp/getAllForEmp/{email}/")
+    @GetMapping("/emp/allEmp/{email}/")
     public List<Bookings> getAllForEmp(@PathVariable String email) {
         System.out.println("Get all my bookings " + email);
         return bookingServiceImpl.getAllMyBookings(email);
