@@ -22,7 +22,7 @@ import java.util.List;
 public class Regulation {
 
     @Id
-    @Column(name="startDate",nullable=false)
+    @Column(name = "startDate",nullable=false)
     @NotNull(message = "StartDate should not be null")
     private LocalDate startDate;
 
