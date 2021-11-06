@@ -22,7 +22,7 @@ public class DailyFormController {
     }
 
 
-    @PostMapping("/create/")
+    @PostMapping("/new")
     public void newDailyForm(@RequestBody DailyForm newDailyForm) throws EmailExistsException {
 
         System.out.println("CREATE");
@@ -35,7 +35,7 @@ public class DailyFormController {
 
 
 
-    @GetMapping("/getAll")
+    @GetMapping("/dailyforms")
     public List<DailyForm> getDailyForms() throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getAllDailyForms();
         if(toReturn.size()==0){
@@ -45,7 +45,7 @@ public class DailyFormController {
     }
 
 
-    @GetMapping("/get/{user}")
+    @GetMapping("/user/{user}")
     public List<DailyForm> getDailyFormsByUser(User user) throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUser(user);
         if(toReturn.size()==0){
@@ -54,7 +54,7 @@ public class DailyFormController {
         return toReturn;
     }
 
-    @GetMapping("/getByUserAndDate/{user}")
+    @GetMapping("/useranddate/{user}")
     public List<DailyForm> getDailyFormsByUserAndDate(User user, LocalDate dateTime) throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUserAndDate(user,dateTime);
         if(toReturn.size()==0){

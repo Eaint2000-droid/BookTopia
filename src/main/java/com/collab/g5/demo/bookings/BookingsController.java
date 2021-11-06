@@ -86,7 +86,7 @@ public class BookingsController {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
-    @GetMapping("/getUserBookings/{email}")
+    @GetMapping("/UserBookings/{email}")
     public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException{
 
         ArrayList<Bookings> toReturn= bookingServiceImpl.getBookingByUser(email);

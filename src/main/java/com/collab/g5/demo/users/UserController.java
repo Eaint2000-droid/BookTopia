@@ -39,7 +39,7 @@ public class UserController {
      * @param newUser
      * @return the newly added user
      */
-    @PostMapping("/hr/create")
+    @PostMapping("/hr/new")
     public void newUser(@RequestBody User newUser) throws EmailExistsException{
         try {
             User userExists = getUserByEmail(newUser.getEmail());
@@ -56,7 +56,7 @@ public class UserController {
      * @param email
      * @return user with the given email
      */
-    @GetMapping("/hr/{email}")
+    @GetMapping("/email/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
         System.out.println(email);
         if(userServiceImpl.getUserByEmail(email)==null){
@@ -76,7 +76,7 @@ public class UserController {
 
 
 
-    @DeleteMapping("/hr/del/{email}")
+    @DeleteMapping("/hr/email/{email}")
 
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
@@ -87,7 +87,7 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
-    @PutMapping("/update/fname/{fname}")
+    @PutMapping("/fname/{fname}")
     User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -102,7 +102,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/update/lname/{lname}")
+    @PutMapping("/lname/{lname}")
     User updateLName(@PathVariable String lname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -119,7 +119,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/update/Email/{email}")
+    @PutMapping("/new/email/{email}")
     User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -136,7 +136,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/update/Password/{password}")
+    @PutMapping("/new/Password/{password}")
     User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
         System.out.println(password);
         System.out.println("Update Password");
