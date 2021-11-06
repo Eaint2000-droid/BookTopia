@@ -45,4 +45,9 @@ public class RegulationLimit {
     @PositiveOrZero
     @NotNull(message = "dailyLimit should not be null")
     private int dailyLimit;
+
+    public RegulationLimit(RegulationLimitKey regulationLimitKey, int dailyLimit) {
+        this.regulationLimitKey = regulationLimitKey;
+        this.dailyLimit = dailyLimit;
+    }
 }

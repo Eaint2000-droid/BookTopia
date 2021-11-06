@@ -10,6 +10,8 @@ public interface RegulationService {
     //READ
     List<Regulation> getAllRegulation();
 
+    List<List<String>> getAllRegulationWithLimit(String userEmail);
+
     Regulation getRegulationById(LocalDate startDate);
 
     //UPDATE
