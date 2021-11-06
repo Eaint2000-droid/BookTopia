@@ -83,6 +83,11 @@ public class BookingServiceImpl implements BookingService {
         bookingsRepository.delete(bookings);
     }
 
+    /**
+     * Remove a booking with the given id
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a booking will also remove all its associated reviews
+     */
     @Override
     public void deleteById(int id) {
         bookingsRepository.deleteById(id);

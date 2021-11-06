@@ -48,6 +48,10 @@ public class BookingsController {
         return bookingServiceImpl.getAllMyPastBookings(u);
     }
 
+    /**
+     * List all upcoming bookings in the system
+     * @return list of all upcoming bookings
+     */
     @GetMapping("/emp/upcoming/{email}/")
     public List<Bookings> getAllMyUpcomingBookings(@PathVariable String email) {
         System.out.println("get all upcoming bookings");
@@ -55,12 +59,23 @@ public class BookingsController {
         return bookingServiceImpl.getAllMyUpcomingBookings(u);
     }
 
+    /**
+     * Search for booking with the given email
+     * If there is no booking with the given "email", throw a BookingNotFoundException
+     * @param email
+     * @return booking with the given email
+     */
     @GetMapping("/emp/{email}/")
     public int getBookingsCountByEmail(@RequestParam String email) throws BookingNotFoundException {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
 
+    /**
+     * Add a new booking with POST request to "/emp"
+     * @param newBooking
+     * @return the newly added booking
+     */
     @PostMapping("/emp")
     public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
         User userResult = newBooking.getUser();
@@ -74,17 +89,12 @@ public class BookingsController {
         return bookingServiceImpl.save(newBooking);
     }
 
-    @DeleteMapping("/hr/{id}")
-    public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
-        System.out.println("Bid is " + id);
-        Bookings bookings = bookingServiceImpl.getBookingsById(id);
-        if (bookings == null) {
-            throw new BookingNotFoundException(id);
-        }
-
-        bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
-    }
-
+    /**
+     * If there is no booking with the given "email", throw a BookingNotFoundException
+     * @param id an int value
+     * @param newBooking a Booking object containing the new booking info to be updated
+     * @return the updated, or newly added booking
+     */
     @PutMapping("/hr/{id}")
     public Bookings updateBookings(@PathVariable int id, @RequestBody Bookings newBooking) throws BookingNotFoundException {
         Bookings bookings = bookingServiceImpl.updateBookings(id, newBooking);
@@ -95,4 +105,19 @@ public class BookingsController {
         return bookings;
     }
 
+    /**
+     * Remove a booking with the DELETE request to "/hr/{id}"
+     * If there is no booking with the given "id", throw a BookingNotFoundException
+     * @param id
+     */
+    @DeleteMapping("/hr/{id}")
+    public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
+        System.out.println("Bid is " + id);
+        Bookings bookings = bookingServiceImpl.getBookingsById(id);
+        if (bookings == null) {
+            throw new BookingNotFoundException(id);
+        }
+
+        bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
+    }
 }

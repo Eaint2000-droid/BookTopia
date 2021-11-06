@@ -46,7 +46,7 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     /**
      * Remove a regulation limit with the given cid
      * Spring Data JPA does not return a value for delete operation
-     * Cascading: removing a regulation limit will also remove all its associated reviews
+     * Cascading: removing a regulation limit will also remove all its associated information
      */
     @Override
     public void deleteRegulationLimitById(LocalDate startDate, int cid) {

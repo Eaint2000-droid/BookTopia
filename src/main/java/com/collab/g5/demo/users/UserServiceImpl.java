@@ -1,18 +1,10 @@
 package com.collab.g5.demo.users;
 
-import com.collab.g5.demo.exceptions.users.EmailExistsException;
 import com.collab.g5.demo.security.WebSecurityConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,12 +55,13 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    /**
+     * Remove a user with the given userEmail
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a user will also remove all its associated information
+     */
     @Override
     public void deleteById(String userEmail) {
         userRepository.deleteById(userEmail);
     }
-
-
-
-
 }
