@@ -18,6 +18,10 @@ public interface CompanyService {
     //DELETE
     void delete(Company company);
 
+    /**
+     * Change method's signature: do not return a value for delete operation
+     * @param cid
+     */
     void deleteById(int cid);
 
     boolean containsCompany(int cid);

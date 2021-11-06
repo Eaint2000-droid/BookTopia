@@ -48,7 +48,7 @@ public class RegulationController {
     /**
      * Add a new regulation with POST request to "/hr"
      * @param regulation
-     * @return list of all regulations
+     * @return the newly added regulation
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
@@ -58,9 +58,9 @@ public class RegulationController {
     }
 
     /**
-     * If there is no book with the given "startDate", throw a RegulationNotFoundException
-     * @param startDate
-     * @param newRegulation
+     * If there is no regulation with the given "startDate", throw a RegulationNotFoundException
+     * @param startDate a LocalDate value
+     * @param newRegulation a Regulation object containing the new regulation info to be updated
      * @return the updated, or newly added regulation
      */
     @PutMapping("/hr/{startDate}")

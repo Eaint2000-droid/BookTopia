@@ -56,6 +56,11 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
+    /**
+     * Remove a company with the given cid
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a company will also remove all its associated reviews
+     */
     @Override
     public void deleteById(int cid) {
         companyRepository.deleteById(cid);

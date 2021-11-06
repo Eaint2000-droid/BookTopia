@@ -19,9 +19,11 @@ public class UserController {
         this.userServiceImpl=userServiceImpl;
     }
 
-    //HR METHODS
-    //To view all employees records
-    @GetMapping("/hr/getAll/")
+    /**
+     * List all users in the system
+     * @return list of all users
+     */
+    @GetMapping("/hr")
     public List<User> getUsers() throws UserNotFoundException{
         List<User> toReturn = userServiceImpl.getAllUsers();
         if (toReturn.size() == 0) {
@@ -30,8 +32,12 @@ public class UserController {
         return toReturn;
     }
 
-    //To add new user
-    @PostMapping("/hr/create/")
+    /**
+     * Add a new user with POST request to "/hr"
+     * @param newUser
+     * @return the newly added user
+     */
+    @PostMapping("/hr")
     public void newUser(@RequestBody User newUser) throws EmailExistsException{
         try {
             User userExists = getUserByEmail(newUser.getEmail());
@@ -42,8 +48,13 @@ public class UserController {
 
     }
 
-    //EMPLOYEE METHODS
-    @GetMapping("/get/{email}")
+    /**
+     * Search for user with the given email
+     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * @param email
+     * @return user with the given email
+     */
+    @GetMapping("/hr/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
 
         if(userServiceImpl.getUserByEmail(email)==null){
@@ -52,8 +63,12 @@ public class UserController {
         return userServiceImpl.getUserByEmail(email);
     }
 
-
-    @DeleteMapping("/del/{email}")
+    /**
+     * Remove a user with the DELETE request to "/hr/{email}"
+     * If there is no news with the given "nid", throw a UserNotFoundException
+     * @param email
+     */
+    @DeleteMapping("/hr/{email}")
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
         if (user == null) {
@@ -62,12 +77,5 @@ public class UserController {
         }
         userServiceImpl.delete(user);
     }
-
-
-//    @PutMapping("updatePassword/{email}")
-//    public void updatePassword(@PathVariable String email){
-//
-//    }
-
 
 }

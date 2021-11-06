@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * We only need this interface declaration
+ * Spring will automatically generate an implementation of the repo
+ *
+ * JpaRepository provides more features by extending PagingAndSortingRepository, which in turn extends CrudRepository
+ */
 @Repository
 public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
 
