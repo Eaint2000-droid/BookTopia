@@ -34,6 +34,9 @@ public class User implements UserDetails {
     private String fname;
     private String lname;
   private String password;
+    private Boolean vaccinated;
+
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked = false;
@@ -42,7 +45,7 @@ public class User implements UserDetails {
     //mappings to other entities
 
     @ManyToOne
-    @JsonIgnoreProperties({"name", "size"})
+    @JsonIgnoreProperties({"name", "size","users"})
     @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
 
@@ -89,7 +92,7 @@ public class User implements UserDetails {
 
 
     //necessary methods from UserDetails Implementation
-    @JsonIgnore
+//    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
@@ -101,6 +104,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 
     @Override
     public String getPassword() {

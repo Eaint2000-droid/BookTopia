@@ -74,8 +74,11 @@ private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
                 .and()
                 // dont authenticate this particular request
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/*/hr/**").hasAuthority("HR")
+                .antMatchers("/api/**").hasAnyAuthority("HR","EMPLOYEE")
                 .antMatchers("/authenticate").permitAll().
+//                .antMatchers("/api/*/hr/**").hasRole("ADMIN")
+
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to

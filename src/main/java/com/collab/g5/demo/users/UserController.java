@@ -47,12 +47,13 @@ public class UserController {
     //EMPLOYEE METHODS
     @GetMapping("/get/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
-
+        System.out.println(email);
         if(userServiceImpl.getUserByEmail(email)==null){
 
             throw new UsernameNotFoundException("Email not found " + email);
         }
 
+        System.out.println(userServiceImpl.getUserByEmail(email));
         return userServiceImpl.getUserByEmail(email);
     }
 
