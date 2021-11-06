@@ -19,4 +19,17 @@ public interface UserService {
      * @param userEmail
      */
     void deleteById(String userEmail);
+
+
+    User updatePassword(String password, User user);
+
+    User updateFname(String fname, User user);
+
+    User updateLName(String lName, User user);
+
+    User updateEmail(String email, User user);
+
+
+//    boolean containsUser(String userEmail);
+
 }

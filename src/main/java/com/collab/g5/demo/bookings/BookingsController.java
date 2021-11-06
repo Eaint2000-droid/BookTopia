@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Transient;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -85,6 +86,19 @@ public class BookingsController {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
+    @GetMapping("/getUserBookings/{email}")
+    public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException{
+
+        ArrayList<Bookings> toReturn= bookingServiceImpl.getBookingByUser(email);
+        if(toReturn==null){
+            throw new UserNotFoundException();
+        }
+        return toReturn;
+    }
+
+
+
+
 
     //TODO have to do error handling so that i check if there is enough slots before i save the booking.
     //TODO when i add a booking in, i have to check 2 things.

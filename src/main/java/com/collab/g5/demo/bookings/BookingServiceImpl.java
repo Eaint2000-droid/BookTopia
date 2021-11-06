@@ -1,12 +1,14 @@
 package com.collab.g5.demo.bookings;
 
 import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,7 +17,8 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-
+@Autowired
+private UserService userService;
     //for hr
     @Override
     public List<Bookings> getAllBookings() {
@@ -130,6 +133,23 @@ public class BookingServiceImpl implements BookingService {
 
     public int getBookingsCountByEmail(String email) {
         return bookingsRepository.findBookingsCountByEmail(email);
+    }
+    @Override
+    public ArrayList<Bookings> getBookingByUser(String email) {
+
+        if (userService.getUserByEmail(email)==null)
+        {
+            return null;
+
+        }
+        ArrayList<Bookings> toReturn = new ArrayList<>();
+        for(Bookings b: bookingsRepository.findAll()){
+            if(b.getUser().getEmail().equals(email)){
+                toReturn.add(b);
+            }
+        }
+    
+        return toReturn;
     }
 }
 

@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService{
         if(optionalUser.isEmpty()){
             return null;
         }
+
         return optionalUser.get();
     }
 
@@ -64,4 +65,59 @@ public class UserServiceImpl implements UserService{
     public void deleteById(String userEmail) {
         userRepository.deleteById(userEmail);
     }
+
+
+    @Override
+    public User updatePassword(String password, User user) {
+        User userExist = userRepository.getById(user.getEmail());
+        if (userExist == null) {
+            // throw an exception
+            return null;
+        }
+        String encodedPassword = webSecurityConfig.passwordEncoder().encode(password);
+        userExist.setPassword(encodedPassword);
+        userRepository.save(userExist);
+        return userExist;
+    }
+
+    @Override
+    public User updateFname(String fName, User user) {
+        User userExist = userRepository.getById(user.getEmail());
+        if (userExist == null) {
+            // throw an exception
+          return null;
+        }
+
+        userExist.setFname(fName);
+        userRepository.save(userExist);
+        return userExist;
+    }
+
+    @Override
+    public User updateLName(String lName, User user) {
+        User userExist = userRepository.getById(user.getEmail());
+        if (userExist == null) {
+            // throw an exception
+            return null;
+        }
+
+        userExist.setLname(lName);
+        userRepository.save(userExist);
+        return userExist;
+    }
+
+    @Override
+    public User updateEmail(String email, User user) {
+        User userExist = userRepository.getById(user.getEmail());
+        if (userExist == null) {
+            // throw an exception
+           return null;
+        }
+
+        userExist.setFname(email);
+        userRepository.save(userExist);
+        return userExist;
+    }
+
+
 }
