@@ -1,7 +1,6 @@
 package com.collab.g5.demo.regulations;
 
 import com.collab.g5.demo.companies.Company;
-import com.collab.g5.demo.companies.CompanyService;
 import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.regulations.RegulationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +83,6 @@ public class RegulationController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
-<<<<<<< HEAD
     public void addRegulation(@Valid @RequestBody Regulation regulation) {
         Regulation savedRegulation = regulationServiceImpl.save(regulation);
         List<Company> companies = companyServiceImpl.getAllCompanies();
@@ -109,11 +107,6 @@ public class RegulationController {
             System.out.println("DONE");
         }
 
-=======
-    public Regulation addRegulation(@Valid @RequestBody Regulation regulation) {
-        //add it into regulationLimit
-        return regulationServiceImpl.save(regulation);
->>>>>>> e43faf1a9a3389095bf34116119473ef3c836677
     }
 
     /**
