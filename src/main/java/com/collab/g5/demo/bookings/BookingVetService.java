@@ -17,6 +17,10 @@ public interface BookingVetService {
     //DELETE
     void delete(BookingVetting bookingVetting);
 
+    /**
+     * Change method's signature: do not return a value for delete operation
+     * @param id
+     */
     void deleteById(BookingVettingKey id);
 
     boolean bookingVettingExists(BookingVettingKey id);

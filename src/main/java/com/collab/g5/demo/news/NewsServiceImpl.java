@@ -50,7 +50,7 @@ public class NewsServiceImpl implements NewsService{
     /**
      * Remove a news with the given nid
      * Spring Data JPA does not return a value for delete operation
-     * Cascading: removing a news will also remove all its associated reviews
+     * Cascading: removing a news will also remove all its associated information
      */
     @Override
     public void deleteNewsById(int nid) {
