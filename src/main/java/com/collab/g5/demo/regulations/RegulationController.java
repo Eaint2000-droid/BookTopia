@@ -1,7 +1,6 @@
 package com.collab.g5.demo.regulations;
 
 import com.collab.g5.demo.companies.Company;
-import com.collab.g5.demo.companies.CompanyService;
 import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.regulations.RegulationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
