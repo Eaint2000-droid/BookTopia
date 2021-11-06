@@ -53,6 +53,7 @@ public class RegulationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
     public Regulation addRegulation(@Valid @RequestBody Regulation regulation) {
+        //add it into regulationLimit
         return regulationServiceImpl.save(regulation);
     }
 

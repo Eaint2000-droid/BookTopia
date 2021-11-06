@@ -82,7 +82,6 @@ public class User implements UserDetails {
     }
 
 
-
     //necessary methods from UserDetails Implementation
     @JsonIgnore
     @Override

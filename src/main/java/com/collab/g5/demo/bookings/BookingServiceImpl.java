@@ -4,6 +4,7 @@ import com.collab.g5.demo.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Iterator;
@@ -22,13 +23,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
 
-//    //for emp how do i make sure it returns my ownstuff only
+    //    //for emp how do i make sure it returns my ownstuff only
 //    @Override
 //    public List<Bookings> getAllMyBookings() {
 //        return bookingsRepository.findAll();
 //
 //    }
-    
+    public List<Bookings> getAllMyBookings(String email) {
+        return bookingsRepository.findBookingsByEmail(email);
+    }
+
     public List<Bookings> getAllMyPastBookings(User u) {
         System.out.println("getAllMyPastBookings: " + u);
         LocalDateTime now = LocalDateTime.now().minusDays(1L);
@@ -46,6 +50,17 @@ public class BookingServiceImpl implements BookingService {
         System.out.println(bookingsList.size());
 
         return bookingsList;
+    }
+
+    // This is to get the count of bookings that that particular month has already.
+    public int getBookingsCountByDate(int cid, LocalDate date) {
+        System.out.println("Local Date is " + date.getMonthValue());
+        return bookingsRepository.getBookingsCountByDate(cid, date);
+    }
+
+    public void autoUpdateBookings(int month) {
+        //find the next booking that status is pending.
+        //set the status to Completed.
     }
 
     public List<Bookings> getAllMyUpcomingBookings(User u) {

@@ -37,6 +37,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company name is " + name;
+        return "Company{" +
+                "cid=" + cid + "}";
     }
 }
