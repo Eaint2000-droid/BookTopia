@@ -1,5 +1,6 @@
 package com.collab.g5.demo.bookings;
 
+import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
@@ -32,6 +33,7 @@ public class BookingsController {
 
     /**
      * List all bookings in the system
+     *
      * @return list of all bookings
      */
     @GetMapping("/hr")
@@ -49,6 +51,7 @@ public class BookingsController {
 
     /**
      * List all past bookings in the system
+     *
      * @return list of all past bookings
      */
     @GetMapping("/emp/past/{email}/")
@@ -60,6 +63,7 @@ public class BookingsController {
 
     /**
      * List all upcoming bookings in the system
+     *
      * @return list of all upcoming bookings
      */
     @GetMapping("/emp/upcoming/{email}/")
@@ -72,6 +76,7 @@ public class BookingsController {
     /**
      * Search for booking with the given email
      * If there is no booking with the given "email", throw a BookingNotFoundException
+     *
      * @param email
      * @return booking with the given email
      */
@@ -85,8 +90,10 @@ public class BookingsController {
     //TODO when i add a booking in, i have to check 2 things.
     // 1 is if the user have enough booking slots left per month.
     // 2 is if the daily limit for that particular day is full.
+
     /**
      * Add a new booking with POST request to "/emp"
+     *
      * @param newBooking
      * @return the newly added booking
      */
@@ -106,14 +113,33 @@ public class BookingsController {
         User tempUser = userServiceImpl.getUserByEmail(newBooking.getUser().getEmail());
         System.out.println("Line 88 " + tempUser.getCompany());
         int cid = tempUser.getCompany().getCid();
+
         //Company tempCompany = companyServiceImpl.getCompanyById()
         System.out.println("Before going into the method: " + cid + " booking " + newBooking.getBDate());
+        //limit variable will store the quota of company of that particular date => total quota
         int limit = companyServiceImpl.getCurrentQuota(cid, newBooking.getBDate());
         System.out.println("The daily limit for this company on this day is " + limit);
-        //getting number of users that is registered into the system on this date.
+
         System.out.println("Line 95 Company CID is " + cid + " booking date: " + newBooking.getBDate());
+        //getCurrentQuota -> getting number of bookings for that particular date
         int getCurrentQuota = bookingServiceImpl.getBookingsCountByDate(cid, newBooking.getBDate());
         System.out.println("This company have " + getCurrentQuota + " number of employees on " + newBooking.getBDate().toString());
+
+        //userCountByMonth -> retrieve number of bookings made by user for that month.
+        int userCountByMonth = bookingServiceImpl.getBookingsCountByUserAndMonth(newBooking.getUser().getEmail(), newBooking.getBDate());
+        System.out.println("User has " + userCountByMonth + " bookings");
+        System.out.println("Company Limit is " + limit);
+
+        //dailyLimitForUser -> get each company user daily limit.
+        Company tempCompany = companyServiceImpl.getCompanyById(cid);
+        int dailyLimitForUser = tempCompany.getQuota();
+        System.out.println("quota is " + dailyLimitForUser);
+
+
+        if (userCountByMonth >= dailyLimitForUser) {
+            throw new IllegalStateException("Maxed out");
+        }
+
         if (limit == getCurrentQuota) {
             System.out.println("Pending");
             newBooking.setStatus("pending");
@@ -127,14 +153,17 @@ public class BookingsController {
     /*
      * I need to find the CID of the user who booked the bookings.
      */
+
     /**
      * Remove a booking with the DELETE request to "/hr/{id}"
      * If there is no booking with the given "id", throw a BookingNotFoundException
+     *
      * @param id
      */
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
         //First i get the userEmail as i need it to
+        System.out.println("ID is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
         LocalDate bookingsDate = bookings.getBDate();
         System.out.println("Booking Date is " + bookingsDate);
@@ -148,36 +177,32 @@ public class BookingsController {
         System.out.println("Limit is " + limit);
         //I have gotten my limit for this particular company.
 
-
         //Get the count of the number of bookings for this company in this particular month.
         int beforeDeleteBookingCount = bookingServiceImpl.getBookingsCountByDate(cid, bookingsDate);
         System.out.println("Booking Count is " + beforeDeleteBookingCount);
 
         if (beforeDeleteBookingCount == limit) {
+            System.out.println("Maxed out");
             //i need to do the auto approval stage.
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id)); //delete the current booking
 
             //set the next booking that is not approved.
             //TODO have to implement this once I have set the other part.
-            bookingServiceImpl.autoUpdateBookings(bookingsDate.getMonthValue());
-
-
+            bookingServiceImpl.autoUpdateBookings(cid, bookingsDate.getMonthValue());
         } else {
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }
-
         System.out.println("Bid is " + id);
         if (bookings == null) {
             throw new BookingNotFoundException(id);
         }
-
-
     }
 
 
     /**
      * If there is no booking with the given "email", throw a BookingNotFoundException
-     * @param id an int value
+     *
+     * @param id         an int value
      * @param newBooking a Booking object containing the new booking info to be updated
      * @return the updated, or newly added booking
      */
@@ -190,7 +215,6 @@ public class BookingsController {
         }
         return bookings;
     }
-
 
 
 }

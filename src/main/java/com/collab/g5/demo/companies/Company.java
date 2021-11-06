@@ -6,6 +6,7 @@ import com.collab.g5.demo.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -21,10 +22,11 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     //@SequenceGenerator(name = "cid")
-    @Column(name="cid",nullable=false)
+    @Column(name = "cid", nullable = false)
     private int cid;
     private String name;
     private long size;
+    private int quota;
 
     //mappings to other entities
     @JsonIgnoreProperties({"company"})
@@ -32,7 +34,7 @@ public class Company {
     private List<User> users;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "company" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<RegulationLimit> regulationLimit;
 
     @Override

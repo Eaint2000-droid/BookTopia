@@ -58,9 +58,18 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRepository.getBookingsCountByDate(cid, date);
     }
 
-    public void autoUpdateBookings(int month) {
+    public int getBookingsCountByUserAndMonth(String email, LocalDate date) {
+        int month = date.getMonthValue();
+        return bookingsRepository.getBookingsCountByUserAndMonth(email, month);
+    }
+
+    //TODO
+    public void autoUpdateBookings(int cid, int month) {
         //find the next booking that status is pending.
         //set the status to Completed.
+        //get all the bookings.
+        System.out.println("Auto Update Bookings");
+        bookingsRepository.updateBookings();
     }
 
     public List<Bookings> getAllMyUpcomingBookings(User u) {
@@ -80,6 +89,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Bookings getBookingsById(int id) {
+        System.out.println("ID in service is " + id);
         return bookingsRepository.findById(id).orElse(null);
     }
 
