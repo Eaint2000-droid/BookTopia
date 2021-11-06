@@ -7,6 +7,7 @@ import com.collab.g5.demo.news.News;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.collab.g5.demo.dailyForm.DailyForm;
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,21 +30,25 @@ public class User implements UserDetails {
 
     //user attributes ; stored in db
     @Id
+    @NotNull
     @Column(name = "email", nullable = false)
     private String email;
+    @NotNull
     private String fname;
+    @NotNull
     private String lname;
+    @NotNull
   private String password;
     private Boolean vaccinated;
 
-
+    @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked = false;
     private Boolean enabled = true;
 
     //mappings to other entities
-
+    @NotNull
     @ManyToOne
     @JsonIgnoreProperties({"name", "size","users"})
     @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))

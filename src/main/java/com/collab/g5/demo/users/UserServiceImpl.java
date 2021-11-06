@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService{
            return null;
         }
 
-        userExist.setFname(email);
+        userExist.setEmail(email);
         userRepository.save(userExist);
         return userExist;
     }

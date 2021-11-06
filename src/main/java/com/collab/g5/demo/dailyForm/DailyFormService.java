@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DailyFormService {
     public List<DailyForm> getAllDailyForms();
-    public List<DailyForm> getDailyFormByUser(User user);
+    public List<DailyForm> getDailyFormByUser(String useremail);
     public List<DailyForm> getDailyFormByUserAndDate(User user, LocalDate dateTime);
     public void addDailyForm(DailyForm dailyForm);
 }

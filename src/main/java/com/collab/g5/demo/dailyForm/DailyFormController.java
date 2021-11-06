@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("/api/DailyForm")
+@RequestMapping("/api/dailyForm")
 public class DailyFormController {
 
     private DailyFormServiceImpl dailyFormServiceImpl;
@@ -36,7 +36,7 @@ public class DailyFormController {
 
 
     @GetMapping("/dailyforms")
-    public List<DailyForm> getDailyForms() throws DailyFormNotFoundException {
+    public List<DailyForm> getAllDailyForms() throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getAllDailyForms();
         if(toReturn.size()==0){
             throw new DailyFormNotFoundException();
@@ -45,9 +45,9 @@ public class DailyFormController {
     }
 
 
-    @GetMapping("/user/{user}")
-    public List<DailyForm> getDailyFormsByUser(User user) throws DailyFormNotFoundException {
-        List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUser(user);
+    @GetMapping("/user/{email}")
+    public List<DailyForm> getDailyFormsByUser(@PathVariable String email) throws DailyFormNotFoundException {
+        List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUser(email);
         if(toReturn.size()==0){
             throw new DailyFormNotFoundException();
         }
@@ -55,7 +55,7 @@ public class DailyFormController {
     }
 
     @GetMapping("/useranddate/{user}")
-    public List<DailyForm> getDailyFormsByUserAndDate(User user, LocalDate dateTime) throws DailyFormNotFoundException {
+    public List<DailyForm> getDailyFormsByUserAndDate(@PathVariable User user, @PathVariable LocalDate dateTime) throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUserAndDate(user,dateTime);
         if(toReturn.size()==0){
             throw new DailyFormNotFoundException();

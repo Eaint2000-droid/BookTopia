@@ -20,11 +20,20 @@ public class DailyFormServiceImpl implements DailyFormService{
     }
 
     @Override
-    public List<DailyForm> getDailyFormByUser(User user) {
+    public List<DailyForm> getDailyFormByUser(String email) {
+        System.out.println("____"+ email+ "++++");
+
         ArrayList<DailyForm> toReturn= new ArrayList<>();
         for(DailyForm dailyForm: dailyFormRepository.findAll()){
-            if(dailyForm.getUser().equals(user)) {
-                toReturn.add(dailyForm);
+//            System.out.println(dailyForm);
+//            System.out.println(dailyForm.getUser().getEmail());
+            if(dailyForm.getUser()!=null){
+                System.out.println(dailyForm.getUser().getEmail());
+                if(dailyForm.getUser().getEmail().equals(email)) {
+                    System.out.println("TRUEEEE");
+//                    System.out.println(dailyForm.getUser().getEmail());
+                    toReturn.add(dailyForm);
+                }
             }
 
         }
