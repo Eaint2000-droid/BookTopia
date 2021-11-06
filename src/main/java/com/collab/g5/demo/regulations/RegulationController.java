@@ -1,5 +1,8 @@
 package com.collab.g5.demo.regulations;
 
+import com.collab.g5.demo.companies.Company;
+import com.collab.g5.demo.companies.CompanyService;
+import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.regulations.RegulationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -16,10 +21,15 @@ import java.util.List;
 @RequestMapping ("/api/regulation")
 public class RegulationController {
     private RegulationServiceImpl regulationServiceImpl;
+    private RegulationLimitServiceImpl regulationLimitServiceImpl;
+    private CompanyServiceImpl companyServiceImpl;
+
 
     @Autowired
-    public RegulationController (RegulationServiceImpl regulationServiceImpl){
+    public RegulationController (RegulationServiceImpl regulationServiceImpl, RegulationLimitServiceImpl regulationLimitServiceImpl, CompanyServiceImpl companyServiceImpl){
         this.regulationServiceImpl = regulationServiceImpl;
+        this.regulationLimitServiceImpl = regulationLimitServiceImpl;
+        this.companyServiceImpl = companyServiceImpl;
     }
 
     /**
@@ -29,6 +39,28 @@ public class RegulationController {
     @GetMapping("/emp")
     public List<Regulation> getRegulations() {
         return regulationServiceImpl.getAllRegulation();
+    }
+
+    @GetMapping("/emp/limit/{userEmail}/")
+    public List<HashMap<String, String>> getRegulationsWithLimit(@PathVariable String userEmail) {
+        List<List<String>> result =  regulationServiceImpl.getAllRegulationWithLimit(userEmail);
+
+        List<HashMap<String, String>> res = null;
+
+        if(result != null && !result.isEmpty()){
+            res = new ArrayList<HashMap<String,String>>();
+
+            for (List<String> object : result) {
+                HashMap<String, String> toAdd = new HashMap<>();
+                toAdd.put("startDate", object.get(0));
+                toAdd.put("endDate", object.get(1));
+                toAdd.put("percentage", object.get(2));
+                toAdd.put("dailyLimit", object.get(3));
+                res.add(toAdd);
+            }
+        }
+        return res;
+
     }
 
     /**
@@ -52,8 +84,30 @@ public class RegulationController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
-    public Regulation addRegulation(@Valid @RequestBody Regulation regulation) {
-        return regulationServiceImpl.save(regulation);
+    public void addRegulation(@Valid @RequestBody Regulation regulation) {
+        Regulation savedRegulation = regulationServiceImpl.save(regulation);
+        List<Company> companies = companyServiceImpl.getAllCompanies();
+        System.out.println("Nicoleeeee: " + companies.size());
+        for (int i = 0; i < companies.size(); i++) {
+            Company company = companies.get(i);
+            System.out.println("Company:" + company);
+            long companySize = companies.get(i).getSize();
+            System.out.println("Company Size:" + companySize);
+            int dailyLimit = (int) (companySize * (savedRegulation.getPercentage()/100.0));
+            System.out.println("Daily Limit:" + dailyLimit);
+            int cid = companies.get(i).getCid();
+            System.out.println("Cid:" + cid);
+            LocalDate startDate = regulation.getStartDate();
+            System.out.println("Start Date:" + startDate);
+            RegulationLimitKey tempRegulationLimitKey = new RegulationLimitKey(startDate,cid);
+            System.out.println("Temp Regulation Limit Key:" + tempRegulationLimitKey);
+            RegulationLimit tempRegulationLimit = new RegulationLimit(tempRegulationLimitKey, savedRegulation, company, dailyLimit);
+            System.out.println("Temp Regulation Limit:" + tempRegulationLimit);
+
+            regulationLimitServiceImpl.save(tempRegulationLimit);
+            System.out.println("DONE");
+        }
+
     }
 
     /**

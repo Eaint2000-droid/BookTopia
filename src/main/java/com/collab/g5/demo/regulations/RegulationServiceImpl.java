@@ -25,6 +25,11 @@ public class RegulationServiceImpl implements RegulationService {
     }
 
     @Override
+    public List<List<String>> getAllRegulationWithLimit(String userEmail) {
+        return regulationRepository.findAllRegulationWithLimit(userEmail);
+    }
+
+    @Override
     public Regulation getRegulationById(LocalDate startDate) {
         return regulationRepository.findById(startDate).map(regulation ->{
             return regulation;

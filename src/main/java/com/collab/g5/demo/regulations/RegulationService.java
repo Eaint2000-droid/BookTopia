@@ -10,6 +10,8 @@ public interface RegulationService {
     //READ
     List<Regulation> getAllRegulation();
 
+    List<List<String>> getAllRegulationWithLimit(String userEmail);
+
     Regulation getRegulationById(LocalDate startDate);
 
     //UPDATE
@@ -18,7 +20,7 @@ public interface RegulationService {
     //DELETE
     /**
      * Method's signature: do not return a value for delete operation
-     * @param id
+     * @param startDate
      */
     void deleteRegulationById(LocalDate startDate);
 }
