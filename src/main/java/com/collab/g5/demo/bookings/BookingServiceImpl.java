@@ -1,19 +1,24 @@
 package com.collab.g5.demo.bookings;
 
+import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.time.LocalDateTime;
 
 @Service
 public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-
+@Autowired
+private UserService userService;
     //for hr
     @Override
     public List<Bookings> getAllBookings() {
@@ -21,31 +26,65 @@ public class BookingServiceImpl implements BookingService {
     }
 
 
-//    //for emp how do i make sure it returns my ownstuff only
+    //    //for emp how do i make sure it returns my ownstuff only
 //    @Override
 //    public List<Bookings> getAllMyBookings() {
 //        return bookingsRepository.findAll();
 //
 //    }
+    public List<Bookings> getAllMyBookings(String email) {
+        return bookingsRepository.findBookingsByEmail(email);
+    }
 
-
-    public List<Bookings> getAllMyPastBookings() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Bookings> bookingsList = new ArrayList<>(bookingsRepository.findAll());
-        for (int i =0; i<bookingsList.size();i++){
-            if(bookingsList.get(i).getBDate().isAfter(ChronoLocalDate.from(now))){
-                bookingsList.remove(i);
+    public List<Bookings> getAllMyPastBookings(User u) {
+        System.out.println("getAllMyPastBookings: " + u);
+        LocalDateTime now = LocalDateTime.now().minusDays(1L);
+        System.out.println("Local Time is " + now);
+        List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
+        System.out.println(bookingsList.size());
+        Iterator<Bookings> iterator = bookingsList.iterator();
+        while (iterator.hasNext()) {
+            Bookings b = iterator.next();
+            System.out.println(b.getBDate());
+            if (!b.getBDate().isBefore(ChronoLocalDate.from(now))) {
+                iterator.remove();
             }
         }
+        System.out.println(bookingsList.size());
+
         return bookingsList;
     }
 
-    public List<Bookings> getAllMyUpcomingBookings() {
+    // This is to get the count of bookings that that particular month has already.
+    public int getBookingsCountByDate(int cid, LocalDate date) {
+        System.out.println("Local Date is " + date.getMonthValue());
+        return bookingsRepository.getBookingsCountByDate(cid, date);
+    }
+
+    public int getBookingsCountByUserAndMonth(String email, LocalDate date) {
+        int month = date.getMonthValue();
+        return bookingsRepository.getBookingsCountByUserAndMonth(email, month);
+    }
+
+    //TODO
+    public void autoUpdateBookings(int cid, int month) {
+        //find the next booking that status is pending.
+        //set the status to Completed.
+        //get all the bookings.
+        System.out.println("Auto Update Bookings");
+        bookingsRepository.updateBookings();
+    }
+
+    public List<Bookings> getAllMyUpcomingBookings(User u) {
         LocalDateTime now = LocalDateTime.now();
-        List<Bookings> bookingsList = new ArrayList<>(bookingsRepository.findAll());
-        for (int i =0; i<bookingsList.size();i++){
-            if(!bookingsList.get(i).getBDate().isAfter(ChronoLocalDate.from(now))){
-                bookingsList.remove(i);
+
+        List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
+        System.out.println("Upcoming " + bookingsList.size());
+        Iterator<Bookings> iterator = bookingsList.iterator();
+        while (iterator.hasNext()) {
+            Bookings b = iterator.next();
+            if (b.getBDate().isBefore(ChronoLocalDate.from(now))) {
+                iterator.remove();
             }
         }
         return bookingsList;
@@ -53,6 +92,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Bookings getBookingsById(int id) {
+        System.out.println("ID in service is " + id);
         return bookingsRepository.findById(id).orElse(null);
     }
 
@@ -71,6 +111,11 @@ public class BookingServiceImpl implements BookingService {
         bookingsRepository.delete(bookings);
     }
 
+    /**
+     * Remove a booking with the given id
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a booking will also remove all its associated reviews
+     */
     @Override
     public void deleteById(int id) {
         bookingsRepository.deleteById(id);
@@ -84,6 +129,27 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Bookings save(Bookings bookings) {
         return bookingsRepository.save(bookings);
+    }
+
+    public int getBookingsCountByEmail(String email) {
+        return bookingsRepository.findBookingsCountByEmail(email);
+    }
+    @Override
+    public ArrayList<Bookings> getBookingByUser(String email) {
+
+        if (userService.getUserByEmail(email)==null)
+        {
+            return null;
+
+        }
+        ArrayList<Bookings> toReturn = new ArrayList<>();
+        for(Bookings b: bookingsRepository.findAll()){
+            if(b.getUser().getEmail().equals(email)){
+                toReturn.add(b);
+            }
+        }
+    
+        return toReturn;
     }
 }
 

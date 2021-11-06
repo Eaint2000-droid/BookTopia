@@ -80,10 +80,11 @@ public class RegulationController {
     /**
      * Add a new regulation with POST request to "/hr"
      * @param regulation
-     * @return list of all regulations
+     * @return the newly added regulation
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
+<<<<<<< HEAD
     public void addRegulation(@Valid @RequestBody Regulation regulation) {
         Regulation savedRegulation = regulationServiceImpl.save(regulation);
         List<Company> companies = companyServiceImpl.getAllCompanies();
@@ -108,12 +109,17 @@ public class RegulationController {
             System.out.println("DONE");
         }
 
+=======
+    public Regulation addRegulation(@Valid @RequestBody Regulation regulation) {
+        //add it into regulationLimit
+        return regulationServiceImpl.save(regulation);
+>>>>>>> e43faf1a9a3389095bf34116119473ef3c836677
     }
 
     /**
-     * If there is no book with the given "startDate", throw a RegulationNotFoundException
-     * @param startDate
-     * @param newRegulation
+     * If there is no regulation with the given "startDate", throw a RegulationNotFoundException
+     * @param startDate a LocalDate value
+     * @param newRegulation a Regulation object containing the new regulation info to be updated
      * @return the updated, or newly added regulation
      */
     @PutMapping("/hr/{startDate}")

@@ -46,6 +46,11 @@ public class RegulationServiceImpl implements RegulationService {
         }).orElse(null);
     }
 
+    /**
+     * Remove a regulation with the given startDate
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a regulation will also remove all its associated information
+     */
     @Override
     public void deleteRegulationById(LocalDate startDate) {
         regulationRepository.deleteById(startDate);

@@ -34,6 +34,11 @@ public class BookingVetServiceImpl implements BookingVetService {
         }).orElse(null);
     }
 
+    /**
+     * Remove a booking vetting with the given bookingVetting
+     * Spring Data JPA does not return a value for delete operation
+     * Cascading: removing a booking vetting will also remove all its associated information
+     */
     @Override
     public void delete(BookingVetting bookingVetting) {
         bookingVetRepository.delete(bookingVetting);

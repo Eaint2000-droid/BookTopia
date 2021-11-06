@@ -11,6 +11,10 @@ public interface NewsService {
 
     News updateNews(int nid, News news);
 
+    /**
+     * Change method's signature: do not return a value for delete operation
+     * @param nid
+     */
     void deleteNewsById(int nid);
 
     void delete(News news);
