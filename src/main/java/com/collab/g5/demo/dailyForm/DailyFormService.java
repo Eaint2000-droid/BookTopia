@@ -12,4 +12,12 @@ public interface DailyFormService {
     public List<DailyForm> getDailyFormByUser(String useremail);
     public List<DailyForm> getDailyFormByUserAndDate(User user, LocalDate dateTime);
     public void addDailyForm(DailyForm dailyForm);
+
+    List<DailyForm> getDailyFormByDate(LocalDate dateTime);
+
+   int getNumDailyFormByDate(LocalDate dateTime);
+
+    int getUniqueNumDailyFormByDate(LocalDate date);
+
+    int[] getUniqueNumDailyFormByWeek(LocalDate date);
 }

@@ -29,6 +29,8 @@ public interface UserService {
 
     User updateEmail(String email, User user);
 
+    User updateVaccination(boolean vaccination, User user);
+
 
 //    boolean containsUser(String userEmail);
 

@@ -119,5 +119,18 @@ public class UserServiceImpl implements UserService{
         return userExist;
     }
 
+    @Override
+    public User updateVaccination(boolean vaccination, User user) {
+        User userExist = userRepository.getById(user.getEmail());
+        if (userExist == null) {
+            // throw an exception
+            return null;
+        }
+
+        userExist.setVaccinated(vaccination);
+        userRepository.save(userExist);
+        return userExist;
+    }
+
 
 }
