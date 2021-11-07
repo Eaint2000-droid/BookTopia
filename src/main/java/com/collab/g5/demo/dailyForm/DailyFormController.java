@@ -3,6 +3,7 @@ package com.collab.g5.demo.dailyForm;
 import com.collab.g5.demo.exceptions.users.EmailExistsException;
 import com.collab.g5.demo.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,14 +55,51 @@ public class DailyFormController {
         return toReturn;
     }
 
-    @GetMapping("/useranddate/{user}")
-    public List<DailyForm> getDailyFormsByUserAndDate(@PathVariable User user, @PathVariable LocalDate dateTime) throws DailyFormNotFoundException {
-        List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUserAndDate(user,dateTime);
+
+    @GetMapping("/date/{date}")
+    public List<DailyForm> getDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws DailyFormNotFoundException {
+
+        List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByDate(date);
         if(toReturn.size()==0){
             throw new DailyFormNotFoundException();
         }
         return toReturn;
     }
+
+    /**
+     * Get the total number of daily check-in form submitted with the GET request to "/date/num/{date}"
+     * @param date
+     */
+
+    @GetMapping("/date/num/{date}")
+    public int getNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
+
+        int toReturn=dailyFormServiceImpl.getNumDailyFormByDate(date);
+        return toReturn;
+    }
+
+    /**
+     * Get the number of unique users that checked in  with the GET request to "/date/users/{date}"
+     * @param date
+     */
+
+    @GetMapping("/date/users/{date}")
+    public int getUniqueNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
+
+        int toReturn=dailyFormServiceImpl.getUniqueNumDailyFormByDate(date);
+        return toReturn;
+    }
+
+
+    @GetMapping("/date/users/week/{date}")
+    public int[] getUniqueNumDailyFormsByWeek(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
+        System.out.println("Function Called");
+        int[] toReturn=dailyFormServiceImpl.getUniqueNumDailyFormByWeek(date);
+        return toReturn;
+    }
+
+
+
 
 
 }

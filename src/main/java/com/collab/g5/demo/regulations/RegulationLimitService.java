@@ -24,4 +24,5 @@ public interface RegulationLimitService {
     void deleteRegulationLimitById(LocalDate startDate, int cid);
 
 
+    RegulationLimit getCurrentRegulationLimitById( int cid);
 }

@@ -138,10 +138,26 @@ public class UserController {
 
     @PutMapping("/new/Password/{password}")
     User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
-        System.out.println(password);
+
+        User checkUser= userServiceImpl.updatePassword(password, user);
+
+        if (checkUser == null) {
+            System.out.println("User is not found");
+            // throw an exception
+            throw new UserNotFoundException(user.getEmail());
+        }
+        System.out.println("user Found!") ;
+
+        return checkUser;
+    }
+
+
+    @PutMapping("/new/vaccination/{vaccination}")
+    User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
+
         System.out.println("Update Password");
         System.out.println(user);
-        User checkUser= userServiceImpl.updatePassword(password, user);
+        User checkUser= userServiceImpl.updateVaccination(vaccination, user);
 
         if (checkUser == null) {
             System.out.println("User is not found");

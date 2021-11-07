@@ -56,6 +56,39 @@ public class RegulationLimitController {
     }
 
     /**
+     * Search for regulation limit with the given startDate and cid
+     * If there is no regulation limit with the given "startDate" and "cid", throw a RegulationLimitNotFoundException
+     * @param cid
+     * @return regulation limit with the given startDate and cid
+     */
+    @GetMapping("/emp/{cid}")
+    public RegulationLimit getCurrentRegulationLimitById( @PathVariable int cid) throws RegulationLimitNotFoundException {
+
+        RegulationLimit getRegulationLimit = regulationLimitServiceImpl.getCurrentRegulationLimitById( cid);
+
+        if (getRegulationLimit==null) {
+            // throw an exception
+            throw new RegulationLimitNotFoundException();
+        }
+        return getRegulationLimit;
+    }
+
+    @GetMapping("/emp/num/{cid}")
+    public int getCurrentRegulationLimitNumberById( @PathVariable int cid) throws RegulationLimitNotFoundException {
+
+        RegulationLimit getRegulationLimit = regulationLimitServiceImpl.getCurrentRegulationLimitById( cid);
+
+        if (getRegulationLimit==null) {
+            // throw an exception
+            throw new RegulationLimitNotFoundException();
+        }
+        return getRegulationLimit.getDailyLimit();
+    }
+
+
+
+
+    /**
      * Add a new regulation limit with POST request to "/hr"
      * @param regulationLimit
      * @return list of all regulation limits

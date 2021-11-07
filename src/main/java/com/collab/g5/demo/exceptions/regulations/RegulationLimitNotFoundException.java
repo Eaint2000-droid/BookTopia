@@ -13,4 +13,7 @@ public class RegulationLimitNotFoundException extends RuntimeException{
     public RegulationLimitNotFoundException(LocalDate startDate, int cid){
         super("No regulation limit found with Start Date " + startDate + "and cid " + cid);
     }
+    public RegulationLimitNotFoundException(){
+        super("No regulation found");
+    }
 }
