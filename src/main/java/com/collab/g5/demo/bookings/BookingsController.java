@@ -178,7 +178,6 @@ public class BookingsController {
      *
      * @param id
      */
-    @ResponseStatus(HttpStatus.TOO_EARLY)
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
         //First i get the userEmail as i need it to
