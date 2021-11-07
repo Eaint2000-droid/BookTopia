@@ -71,7 +71,7 @@ public class CompanyServiceImpl implements CompanyService {
         //Based on this bookingsDate, ill have to find the starting date from the regulation table
         //as that is the PK in the RegulationLimit.
         Date d1 = new Date();
-        System.out.println(bookingsDate);
+        System.out.println("Line 74 " + bookingsDate);
         LocalDate startingDate = regulationRepository.findStartDateBasedCustomDate(bookingsDate);
         System.out.println("Start Date is " + startingDate + " and my cid is " + cid);
         RegulationLimitKey tempLimitKey = new RegulationLimitKey(startingDate, cid);
