@@ -25,4 +25,6 @@ public interface RegulationLimitService {
 
 
     RegulationLimit getCurrentRegulationLimitById( int cid);
+
+    RegulationLimit getCurrentRegulationLimitByUser(String email);
 }

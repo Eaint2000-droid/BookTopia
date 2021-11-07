@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @NotNull
     private String lname;
     @NotNull
-  private String password;
+    private String password;
     private Boolean vaccinated;
 
     @NotNull
