@@ -17,8 +17,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-@Autowired
-private UserService userService;
+    @Autowired
+    private UserService userService;
+
     //for hr
     @Override
     public List<Bookings> getAllBookings() {
@@ -128,27 +129,34 @@ private UserService userService;
 
     @Override
     public Bookings save(Bookings bookings) {
-        return bookingsRepository.save(bookings);
+        System.out.println("Before " + bookings);
+
+        Bookings b = bookingsRepository.save(bookings);
+        System.out.println("After " + b);
+        return b;
     }
 
     public int getBookingsCountByEmail(String email) {
-        return bookingsRepository.findBookingsCountByEmail(email);
+        System.out.println(email);
+        int x = bookingsRepository.findBookingsCountByEmail(email);
+        System.out.println(x);
+        return x;
     }
+
     @Override
     public ArrayList<Bookings> getBookingByUser(String email) {
 
-        if (userService.getUserByEmail(email)==null)
-        {
+        if (userService.getUserByEmail(email) == null) {
             return null;
 
         }
         ArrayList<Bookings> toReturn = new ArrayList<>();
-        for(Bookings b: bookingsRepository.findAll()){
-            if(b.getUser().getEmail().equals(email)){
+        for (Bookings b : bookingsRepository.findAll()) {
+            if (b.getUser().getEmail().equals(email)) {
                 toReturn.add(b);
             }
         }
-    
+
         return toReturn;
     }
 }
