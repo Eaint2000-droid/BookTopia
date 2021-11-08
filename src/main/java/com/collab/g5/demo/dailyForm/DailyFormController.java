@@ -23,7 +23,7 @@ public class DailyFormController {
     }
 
 
-    @PostMapping("/new")
+    @PostMapping("/emp/new")
     public void newDailyForm(@RequestBody DailyForm newDailyForm) throws EmailExistsException {
 
         System.out.println("CREATE");

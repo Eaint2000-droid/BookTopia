@@ -58,7 +58,7 @@ public class UserController {
      * @param email
      * @return user with the given email
      */
-    @GetMapping("/email/{email}")
+    @GetMapping("/emp/email/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
         System.out.println(email);
         if(userServiceImpl.getUserByEmail(email)==null){
@@ -76,7 +76,7 @@ public class UserController {
      * @param email
      * @return user with the given email
      */
-    @GetMapping("/emailVax/{email}")
+    @GetMapping("/emp/emailVax/{email}")
     public Boolean getUserVaxByEmail(@PathVariable String email) throws UsernameNotFoundException{
         if(userServiceImpl.getUserByEmail(email)==null){
             throw new UsernameNotFoundException("Email not found " + email);
