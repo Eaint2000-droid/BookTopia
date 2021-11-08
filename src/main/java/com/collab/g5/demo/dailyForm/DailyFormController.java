@@ -36,7 +36,7 @@ public class DailyFormController {
 
 
 
-    @GetMapping("/dailyforms")
+    @GetMapping("/hr")
     public List<DailyForm> getAllDailyForms() throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getAllDailyForms();
         if(toReturn.size()==0){
@@ -46,7 +46,7 @@ public class DailyFormController {
     }
 
 
-    @GetMapping("/user/{email}")
+    @GetMapping("hr/user/{email}")
     public List<DailyForm> getDailyFormsByUser(@PathVariable String email) throws DailyFormNotFoundException {
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByUser(email);
         if(toReturn.size()==0){
@@ -56,7 +56,7 @@ public class DailyFormController {
     }
 
 
-    @GetMapping("/date/{date}")
+    @GetMapping("hr/date/{date}")
     public List<DailyForm> getDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws DailyFormNotFoundException {
 
         List<DailyForm> toReturn=dailyFormServiceImpl.getDailyFormByDate(date);
@@ -71,7 +71,7 @@ public class DailyFormController {
      * @param date
      */
 
-    @GetMapping("/date/num/{date}")
+    @GetMapping("emp/date/num/{date}")
     public int getNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
 
         int toReturn=dailyFormServiceImpl.getNumDailyFormByDate(date);
@@ -83,7 +83,7 @@ public class DailyFormController {
      * @param date
      */
 
-    @GetMapping("/date/users/{date}")
+    @GetMapping("emp/date/users/{date}")
     public int getUniqueNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
 
         int toReturn=dailyFormServiceImpl.getUniqueNumDailyFormByDate(date);
@@ -91,14 +91,14 @@ public class DailyFormController {
     }
 
 
-    @GetMapping("/date/users/week/{date}")
+    @GetMapping("emp/date/users/week/{date}")
     public int[] getUniqueNumDailyFormsByWeek(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
         System.out.println("Function Called");
         int[] toReturn=dailyFormServiceImpl.getUniqueNumDailyFormByWeek(date);
         return toReturn;
     }
 
-    @GetMapping("/userToday/{email}")
+    @GetMapping("emp/userToday/{email}")
     public Boolean getDailyFormsByUserToday(@PathVariable String email) throws DailyFormNotFoundException {
         return dailyFormServiceImpl.getDailyFormByUserToday(email);
     }
