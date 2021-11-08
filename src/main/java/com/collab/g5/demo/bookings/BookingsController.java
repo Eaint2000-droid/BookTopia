@@ -149,6 +149,10 @@ public class BookingsController {
         int dailyLimitForUser = tempCompany.getQuota();
         System.out.println("quota is " + dailyLimitForUser);
 
+        boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
+        if (!vaccineStatus) {
+            throw new IllegalStateException(("Not Vaccinated"));
+        }
 
         if (userCountByMonth >= dailyLimitForUser) {
             throw new IllegalStateException("Maxed out");
@@ -198,6 +202,7 @@ public class BookingsController {
         //Get the count of the number of bookings for this company in this particular month.
         int beforeDeleteBookingCount = bookingServiceImpl.getBookingsCountByDate(cid, bookingsDate);
         System.out.println("Booking Count is " + beforeDeleteBookingCount);
+
 
         if (beforeDeleteBookingCount == limit) {
             System.out.println("Maxed out");
