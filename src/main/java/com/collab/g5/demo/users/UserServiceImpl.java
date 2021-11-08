@@ -1,5 +1,7 @@
 package com.collab.g5.demo.users;
 
+import com.collab.g5.demo.email.Mail;
+import com.collab.g5.demo.email.MailService;
 import com.collab.g5.demo.security.WebSecurityConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +12,14 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private MailService mailService;
 
     @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -24,7 +27,18 @@ public class UserServiceImpl implements UserService{
     private WebSecurityConfig webSecurityConfig;
 
     public void addNewUser(User user) {
-        String encodedPassword = webSecurityConfig.passwordEncoder().encode(user.getPassword());
+        Mail mail = new Mail();
+        mail.setMailFrom("weloveis211@gmail.com");
+        String userEmail = user.getEmail();
+        System.out.println("User Email in Service Implementation is " + userEmail);
+        System.out.println("user Object is " + user);
+        mail.setMailTo(userEmail);
+        mail.setMailSubject("Welcome to Company X " + user.getEmail());
+        mail.setMailContent("Your passwword is password1. \n Please remember to change your password");
+        mailService.sendEmail(mail);
+
+        //setting default password to be password1
+        String encodedPassword = webSecurityConfig.passwordEncoder().encode("password1");
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
@@ -37,8 +51,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByEmail(String Email) {
 
-        Optional<User> optionalUser= userRepository.findByEmail(Email);
-        if(optionalUser.isEmpty()){
+        Optional<User> optionalUser = userRepository.findByEmail(Email);
+        if (optionalUser.isEmpty()) {
             return null;
         }
 
@@ -89,7 +103,7 @@ public class UserServiceImpl implements UserService{
         User userExist = userRepository.getById(user.getEmail());
         if (userExist == null) {
             // throw an exception
-          return null;
+            return null;
         }
 
         userExist.setFname(fName);
@@ -115,7 +129,7 @@ public class UserServiceImpl implements UserService{
         User userExist = userRepository.getById(user.getEmail());
         if (userExist == null) {
             // throw an exception
-           return null;
+            return null;
         }
 
         userExist.setEmail(email);

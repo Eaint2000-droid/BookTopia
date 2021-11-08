@@ -42,6 +42,7 @@ public class UserController {
      */
     @PostMapping("/hr/new")
     public void newUser(@RequestBody User newUser) throws EmailExistsException{
+        System.out.println("New User is " + newUser);
         try {
             User userExists = getUserByEmail(newUser.getEmail());
             throw new EmailExistsException("email already taken");
@@ -92,7 +93,6 @@ public class UserController {
 
 
     @DeleteMapping("/hr/email/{email}")
-
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
         if (user == null) {
