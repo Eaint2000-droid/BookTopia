@@ -3,6 +3,7 @@ package com.collab.g5.demo.users;
 import com.collab.g5.demo.email.Mail;
 import com.collab.g5.demo.email.MailService;
 import com.collab.g5.demo.security.WebSecurityConfig;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-<<<<<<< HEAD
-@AllArgsConstructor
-=======
->>>>>>> 59fd609dc73c56dfda25108a2473a568a4c59605
+
+
 public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
