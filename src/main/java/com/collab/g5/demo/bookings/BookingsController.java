@@ -1,10 +1,11 @@
 package com.collab.g5.demo.bookings;
 
-import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
+import com.collab.g5.demo.exceptions.users.UserMonthlyQuotaExceeded;
 import com.collab.g5.demo.exceptions.users.UserNotFoundException;
+import com.collab.g5.demo.exceptions.users.UserNotVaccinatedException;
 import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserRole;
 import com.collab.g5.demo.users.UserServiceImpl;
@@ -35,17 +36,22 @@ public class BookingsController {
     }
 
     /**
-     * List all bookings in the system
+     * List all bookings in the system, mainly for the administrator to view who is in the system.
      *
      * @return list of all bookings
      */
     @GetMapping("/hr")
     @Transient
     public List<Bookings> getBookings() {
-        System.out.println("Get all method");
         return bookingServiceImpl.getAllBookings();
     }
 
+    /**
+     * Returns a list of bookings that is specific to the user with the email specified in the argument.
+     *
+     * @param email
+     * @return List of booking
+     */
     @GetMapping("/emp/allEmp/{email}/")
     public List<Bookings> getAllForEmp(@PathVariable String email) {
         System.out.println("Get all my bookings " + email);
@@ -53,8 +59,9 @@ public class BookingsController {
     }
 
     /**
-     * List all past bookings in the system
+     * Returns a list of all past bookings that is specific to the user with email in argument
      *
+     * @param email
      * @return list of all past bookings
      */
     @GetMapping("/emp/past/{email}/")
@@ -65,8 +72,9 @@ public class BookingsController {
     }
 
     /**
-     * List all upcoming bookings in the system
+     * Returns a list of all upcoming bookings that is specific to the user specified in the argument
      *
+     * @param email
      * @return list of all upcoming bookings
      */
     @GetMapping("/emp/upcoming/{email}/")
@@ -83,13 +91,20 @@ public class BookingsController {
      * @param email
      * @return booking with the given email
      */
-    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping("/emp/{email}/")
     public int getBookingsCountByEmail(@PathVariable String email) throws BookingNotFoundException {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
 
+
+    /**
+     * Returns a list of Bookings that is specific to that particular user with <code>email</code>
+     *
+     * @param email
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/UserBookings/{email}")
     public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException {
 
@@ -99,24 +114,31 @@ public class BookingsController {
         }
         return toReturn;
     }
-    //TODO have to do error handling so that i check if there is enough slots before i save the booking.
-    //TODO when i add a booking in, i have to check 2 things.
-    // 1 is if the user have enough booking slots left per month.
-    // 2 is if the daily limit for that particular day is full.
 
     /**
-     * Add a new booking with POST request to "/emp"
+     * Add a new booking with argument in <code>newBooking</code>
+     * Stopping Conditions
+     * 1) User is not vaccinated
+     * 2) User monthly quota exceeded.
+     * 3) Company daily limit exceeded.
      *
      * @param newBooking
      * @return the newly added booking
+     * @throw UserNotVaccinatedException if user is not vaccinated
+     * @throw UserMonthlyQuotaExceeded if user exceeds monthly quota
+     * @throw BookingExistsException when booking already exists
+     * @throw UserNotFoundException when user does not exist.
      */
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
-    public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
+    public Bookings addBooking(@RequestBody Bookings newBooking) throws UserNotFoundException,
+            UserMonthlyQuotaExceeded, BookingExistsException {
+        System.out.println("new Booking is " + newBooking);
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
-        if (bookingServiceImpl.bookingExists(newBooking.getBid())) {
+//        select count(*) from bookings where user_useremail = 'ivory@scis.smu.edu.sg' and b_date = '2021-11-08';
+        if (bookingServiceImpl.checkForDuplicateBookings(newBooking.getUser().getEmail(), newBooking.getBDate()) > 0) {
             throw new BookingExistsException(newBooking);
         }
         if (userResult == null) {
@@ -143,27 +165,29 @@ public class BookingsController {
         int userCountByMonth = bookingServiceImpl.getBookingsCountByUserAndMonth(newBooking.getUser().getEmail(), newBooking.getBDate());
         System.out.println("User has " + userCountByMonth + " bookings");
         System.out.println("Company Limit is " + limit);
-
+        if (userCountByMonth >= 10) {
+            throw new UserMonthlyQuotaExceeded(userResult);
+        }
         //dailyLimitForUser -> get each company user daily limit.
-        Company tempCompany = companyServiceImpl.getCompanyById(cid);
-        int dailyLimitForUser = tempCompany.getQuota();
-        System.out.println("quota is " + dailyLimitForUser);
+//        Company tempCompany = companyServiceImpl.getCompanyById(cid);
+//        int dailyLimitForUser = tempCompany.getQuota();
+//        System.out.println("quota is " + dailyLimitForUser);
 
         boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
         if (!vaccineStatus) {
-            throw new IllegalStateException(("Not Vaccinated"));
+            throw new UserNotVaccinatedException(userResult);
         }
 
-        if (userCountByMonth >= dailyLimitForUser) {
-            throw new IllegalStateException("Maxed out");
-        }
+//        if (userCountByMonth >= dailyLimitForUser) {
+//            throw new CompanyDailyLimitExceeded();
+//        }
 
         if (limit == getCurrentQuota) {
             System.out.println("Pending");
             newBooking.setStatus("pending");
         } else {
-            System.out.println("Completed");
-            newBooking.setStatus("completed");
+            System.out.println("Confirmed");
+            newBooking.setStatus("Confirmed");
         }
         System.out.println(newBooking);
         Bookings b = bookingServiceImpl.save(newBooking);
@@ -172,18 +196,16 @@ public class BookingsController {
         return b;
     }
 
-    /*
-     * I need to find the CID of the user who booked the bookings.
-     */
-
     /**
      * Remove a booking with the DELETE request to "/hr/{id}"
-     * If there is no booking with the given "id", throw a BookingNotFoundException
+     * If there is pending bookings that day based on the booking ID,
+     * it will find the next booking ID that is pending on that day and
+     * set the status to be "Confirmed"
      *
      * @param id
      */
     @DeleteMapping("/hr/del/{id}")
-    public void deleteBooking(@RequestParam int id) throws BookingNotFoundException {
+    public void deleteBooking(@RequestParam int id) {
         //First i get the userEmail as i need it to
         System.out.println("ID is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
@@ -216,9 +238,6 @@ public class BookingsController {
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }
         System.out.println("Bid is " + id);
-        if (bookings == null) {
-            throw new BookingNotFoundException(id);
-        }
     }
 
 

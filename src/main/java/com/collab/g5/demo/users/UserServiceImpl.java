@@ -3,7 +3,6 @@ package com.collab.g5.demo.users;
 import com.collab.g5.demo.email.Mail;
 import com.collab.g5.demo.email.MailService;
 import com.collab.g5.demo.security.WebSecurityConfig;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,20 +10,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private MailService mailService;
+    private WebSecurityConfig webSecurityConfig;
 
-    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private WebSecurityConfig webSecurityConfig;
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, MailService mailService, WebSecurityConfig webSecurityConfig) {
+        this.userRepository = userRepository;
+        this.mailService = mailService;
+        this.webSecurityConfig = webSecurityConfig;
+
+    }
 
     public void addNewUser(User user) {
         Mail mail = new Mail();

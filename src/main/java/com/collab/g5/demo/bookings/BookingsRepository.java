@@ -35,6 +35,9 @@ public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
     @Query(value = "update bookings set status = \"completed\" where status = \"pending\" limit 1", nativeQuery = true)
     void updateBookings();
 
+    @Query(value = "select count(*) from bookings where user_useremail = ?1 and b_date = ?2", nativeQuery = true)
+    int checkForDuplicateBookings(String userEmail, LocalDate date);
+
     List<Bookings> findAllByUser(User user);
 
     @Query("SELECT b FROM Bookings b WHERE b.user.email = ?1")
