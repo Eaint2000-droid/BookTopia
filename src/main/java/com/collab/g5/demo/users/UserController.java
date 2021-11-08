@@ -41,6 +41,7 @@ public class UserController {
      */
     @PostMapping("/hr/new")
     public void newUser(@RequestBody User newUser) throws EmailExistsException{
+        System.out.println("New User is " + newUser);
         try {
             User userExists = getUserByEmail(newUser.getEmail());
             throw new EmailExistsException("email already taken");

@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @NotNull
     private String lname;
     @NotNull
-  private String password;
+    private String password;
     private Boolean vaccinated;
 
     @NotNull
@@ -50,7 +50,7 @@ public class User implements UserDetails {
     //mappings to other entities
     @NotNull
     @ManyToOne
-    @JsonIgnoreProperties({"name", "size","users"})
+    @JsonIgnoreProperties({"name", "size", "users"})
     @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
 
@@ -60,17 +60,16 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy="user",cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bookings> bookings;
 
     @JsonIgnore
-    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<News> newsList;
 
     @JsonIgnore
-    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DailyForm> dailyFormList;
-
 
 
     @Autowired
@@ -78,22 +77,28 @@ public class User implements UserDetails {
     public User(String email,
                 String fname,
                 String lname,
-             String password,
+                String password,
                 UserRole userRole,
                 Company company) {
         this.email = email;
         this.fname = fname;
         this.lname = lname;
-         this.password = password;
+        this.password = password;
         this.userRole = userRole;
         this.company = company;
     }
 
     @Override
     public String toString() {
-        return "User name is " + email + " and company is " + company + " userRole is " + userRole;
+        return "User{" +
+                "email='" + email + '\'' +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
+                ", company=" + company +
+                '}';
     }
-
 
     //necessary methods from UserDetails Implementation
 //    @JsonIgnore
