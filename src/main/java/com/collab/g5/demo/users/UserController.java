@@ -92,7 +92,6 @@ public class UserController {
 
 
     @DeleteMapping("/hr/email/{email}")
-
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
         if (user == null) {
