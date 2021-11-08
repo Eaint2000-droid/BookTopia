@@ -1,5 +1,7 @@
 package com.collab.g5.demo.regulations;
 
+import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class RegulationLimitServiceImpl implements RegulationLimitService {
     @Autowired
     private RegulationLimitRepository regulationLimitRepository;
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
 
     @Override
     public RegulationLimit save(RegulationLimit newRegulationLimit) {
@@ -65,5 +70,11 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
             return null;
         }
         return list.get(list.size()-1);
+    }
+
+    @Override
+    public RegulationLimit getCurrentRegulationLimitByUser(String email) {
+        User user=userServiceImpl.getUserByEmail(email);
+        return getCurrentRegulationLimitById(user.getCompany().getCid());
     }
 }

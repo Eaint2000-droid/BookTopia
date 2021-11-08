@@ -2,6 +2,7 @@ package com.collab.g5.demo.regulations;
 
 import com.collab.g5.demo.companies.CompanyServiceImpl;
 import com.collab.g5.demo.exceptions.regulations.RegulationLimitNotFoundException;
+import com.collab.g5.demo.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -73,10 +74,10 @@ public class RegulationLimitController {
         return getRegulationLimit;
     }
 
-    @GetMapping("/emp/num/{cid}")
-    public int getCurrentRegulationLimitNumberById( @PathVariable int cid) throws RegulationLimitNotFoundException {
+    @GetMapping("/emp/num/{email}")
+    public int getCurrentRegulationLimitByUser( @PathVariable String email) throws RegulationLimitNotFoundException {
 
-        RegulationLimit getRegulationLimit = regulationLimitServiceImpl.getCurrentRegulationLimitById( cid);
+        RegulationLimit getRegulationLimit = regulationLimitServiceImpl.getCurrentRegulationLimitByUser(email);
 
         if (getRegulationLimit==null) {
             // throw an exception

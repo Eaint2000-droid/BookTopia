@@ -11,6 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
+
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -24,7 +25,7 @@ public class UserController {
      * List all users in the system
      * @return list of all users
      */
-    @GetMapping("/hr")
+    @GetMapping("/")
     public List<User> getUsers() throws UserNotFoundException{
         List<User> toReturn = userServiceImpl.getAllUsers();
         if (toReturn.size() == 0) {
