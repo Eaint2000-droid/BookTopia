@@ -14,11 +14,17 @@ import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    @Autowired
+
+
     private BookingsRepository bookingsRepository;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    public BookingServiceImpl(BookingsRepository bookingsRepository, UserService userService) {
+        this.bookingsRepository = bookingsRepository;
+        this.userService = userService;
+
+    }
 
     //for hr
     @Override
@@ -125,6 +131,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public boolean bookingExists(int id) {
         return bookingsRepository.existsById(id);
+    }
+
+    public int checkForDuplicateBookings(String userEmail, LocalDate date) {
+        return bookingsRepository.checkForDuplicateBookings(userEmail, date);
     }
 
     @Override

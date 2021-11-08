@@ -12,8 +12,17 @@ import java.io.UnsupportedEncodingException;
 
 @Service("mailService")
 public class MailServiceImpl implements MailService {
+<<<<<<< HEAD
     @Autowired
     JavaMailSender mailSender;
+=======
+    private JavaMailSender mailSender;
+
+    @Autowired
+    public MailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+>>>>>>> 59fd609dc73c56dfda25108a2473a568a4c59605
 
     public void sendEmail(Mail mail) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
