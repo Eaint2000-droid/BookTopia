@@ -66,6 +66,10 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(userEmail);
     }
 
+    @Override
+    public boolean getVaccinatedByEmail(String email) {
+        return userRepository.getVaccinatedByEmail(email);
+    }
 
     @Override
     public User updatePassword(String password, User user) {

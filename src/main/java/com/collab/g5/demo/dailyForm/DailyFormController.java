@@ -98,6 +98,11 @@ public class DailyFormController {
         return toReturn;
     }
 
+    @GetMapping("/userToday/{email}")
+    public Boolean getDailyFormsByUserToday(@PathVariable String email) throws DailyFormNotFoundException {
+        return dailyFormServiceImpl.getDailyFormByUserToday(email);
+    }
+
 
 
 

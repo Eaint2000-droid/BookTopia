@@ -69,6 +69,20 @@ public class UserController {
     }
 
     /**
+     * Search for user vax status with the given email
+     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * @param email
+     * @return user with the given email
+     */
+    @GetMapping("/emailVax/{email}")
+    public Boolean getUserVaxByEmail(@PathVariable String email) throws UsernameNotFoundException{
+        if(userServiceImpl.getUserByEmail(email)==null){
+            throw new UsernameNotFoundException("Email not found " + email);
+        }
+        return userServiceImpl.getUserByEmail(email).getVaccinated();
+    }
+
+    /**
      * Remove a user with the DELETE request to "/hr/{email}"
      * If there is no news with the given "nid", throw a UserNotFoundException
      * @param email

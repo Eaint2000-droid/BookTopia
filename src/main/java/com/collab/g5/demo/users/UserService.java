@@ -20,6 +20,7 @@ public interface UserService {
      */
     void deleteById(String userEmail);
 
+    boolean getVaccinatedByEmail(String email);
 
     User updatePassword(String password, User user);
 

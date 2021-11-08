@@ -6,12 +6,14 @@ import com.collab.g5.demo.exceptions.bookings.BookingExistsException;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import com.collab.g5.demo.exceptions.users.UserNotFoundException;
 import com.collab.g5.demo.users.User;
+import com.collab.g5.demo.users.UserRole;
 import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,25 +83,22 @@ public class BookingsController {
      * @param email
      * @return booking with the given email
      */
+    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping("/emp/{email}/")
-    public int getBookingsCountByEmail(@RequestParam String email) throws BookingNotFoundException {
+    public int getBookingsCountByEmail(@PathVariable String email) throws BookingNotFoundException {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
-    @GetMapping("/UserBookings/{email}")
-    public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException{
 
-        ArrayList<Bookings> toReturn= bookingServiceImpl.getBookingByUser(email);
-        if(toReturn==null){
+    @GetMapping("/UserBookings/{email}")
+    public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException {
+
+        ArrayList<Bookings> toReturn = bookingServiceImpl.getBookingByUser(email);
+        if (toReturn == null) {
             throw new UserNotFoundException();
         }
         return toReturn;
     }
-
-
-
-
-
     //TODO have to do error handling so that i check if there is enough slots before i save the booking.
     //TODO when i add a booking in, i have to check 2 things.
     // 1 is if the user have enough booking slots left per month.
@@ -111,8 +110,9 @@ public class BookingsController {
      * @param newBooking
      * @return the newly added booking
      */
+    @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/emp")
+    @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody Bookings newBooking) throws BookingExistsException, UserNotFoundException {
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
@@ -149,6 +149,10 @@ public class BookingsController {
         int dailyLimitForUser = tempCompany.getQuota();
         System.out.println("quota is " + dailyLimitForUser);
 
+        boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
+        if (!vaccineStatus) {
+            throw new IllegalStateException(("Not Vaccinated"));
+        }
 
         if (userCountByMonth >= dailyLimitForUser) {
             throw new IllegalStateException("Maxed out");
@@ -161,7 +165,11 @@ public class BookingsController {
             System.out.println("Completed");
             newBooking.setStatus("completed");
         }
-        return bookingServiceImpl.save(newBooking);
+        System.out.println(newBooking);
+        Bookings b = bookingServiceImpl.save(newBooking);
+        b.getUser().setUserRole(UserRole.HR);
+        System.out.println("Finalize is " + b);
+        return b;
     }
 
     /*
@@ -194,6 +202,7 @@ public class BookingsController {
         //Get the count of the number of bookings for this company in this particular month.
         int beforeDeleteBookingCount = bookingServiceImpl.getBookingsCountByDate(cid, bookingsDate);
         System.out.println("Booking Count is " + beforeDeleteBookingCount);
+
 
         if (beforeDeleteBookingCount == limit) {
             System.out.println("Maxed out");
