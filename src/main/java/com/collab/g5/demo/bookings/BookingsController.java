@@ -205,7 +205,7 @@ public class BookingsController {
      * @param id
      */
     @DeleteMapping("/hr/del/{id}")
-    public void deleteBooking(@RequestParam int id) {
+    public void deleteBooking(@PathVariable int id) {
         //First i get the userEmail as i need it to
         System.out.println("ID is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
@@ -226,14 +226,14 @@ public class BookingsController {
         System.out.println("Booking Count is " + beforeDeleteBookingCount);
 
 
-        if (beforeDeleteBookingCount == limit) {
+        if (beforeDeleteBookingCount >= limit) {
             System.out.println("Maxed out");
             //i need to do the auto approval stage.
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id)); //delete the current booking
 
             //set the next booking that is not approved.
             //TODO have to implement this once I have set the other part.
-            bookingServiceImpl.autoUpdateBookings(cid, bookingsDate.getMonthValue());
+            bookingServiceImpl.autoUpdateBookings(cid, bookingsDate);
         } else {
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }
