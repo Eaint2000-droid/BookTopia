@@ -25,7 +25,7 @@ public class UserController {
      * List all users in the system
      * @return list of all users
      */
-    @GetMapping("/")
+    @GetMapping("/hr")
     public List<User> getUsers() throws UserNotFoundException{
         List<User> toReturn = userServiceImpl.getAllUsers();
         if (toReturn.size() == 0) {
