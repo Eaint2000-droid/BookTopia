@@ -11,6 +11,7 @@ import java.util.Properties;
 
 @Configuration
 public class MailConfiguration {
+
     private Environment env;
 
     @Autowired
