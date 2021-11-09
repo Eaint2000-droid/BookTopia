@@ -171,7 +171,7 @@ public class UserController {
     @PutMapping("hr/new/vaccination/{vaccination}")
     User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
 
-        System.out.println("Update Password");
+        System.out.println("Update Vax");
         System.out.println(user);
         User checkUser= userServiceImpl.updateVaccination(vaccination, user);
 
