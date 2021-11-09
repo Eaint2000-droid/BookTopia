@@ -29,7 +29,7 @@ public class NewsController {
      * List all news in the system
      * @return list of all news
      */
-    @GetMapping("/hr")
+    @GetMapping("/emp/")
     public List<News> getNews() {
         return newsServiceImpl.getAllNews();
     }
