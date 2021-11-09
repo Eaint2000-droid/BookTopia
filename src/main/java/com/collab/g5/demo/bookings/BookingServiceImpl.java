@@ -1,7 +1,7 @@
 package com.collab.g5.demo.bookings;
 
 import com.collab.g5.demo.users.User;
-import com.collab.g5.demo.users.UserService;
+import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,17 @@ import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    @Autowired
+
+
     private BookingsRepository bookingsRepository;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private UserService userService;
+    public BookingServiceImpl(BookingsRepository bookingsRepository, UserServiceImpl userServiceImpl) {
+        this.bookingsRepository = bookingsRepository;
+        this.userServiceImpl = userServiceImpl;
+
+    }
 
     //for hr
     @Override
@@ -58,6 +64,7 @@ public class BookingServiceImpl implements BookingService {
 
     // This is to get the count of bookings that that particular month has already.
     public int getBookingsCountByDate(int cid, LocalDate date) {
+        System.out.println(cid + " " + date);
         System.out.println("Local Date is " + date.getMonthValue());
         return bookingsRepository.getBookingsCountByDate(cid, date);
     }
@@ -68,12 +75,57 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //TODO
-    public void autoUpdateBookings(int cid, int month) {
-        //find the next booking that status is pending.
-        //set the status to Completed.
-        //get all the bookings.
-        System.out.println("Auto Update Bookings");
-        bookingsRepository.updateBookings();
+    public void autoUpdateBookings(int cid, LocalDate date) {
+        //remove all the users that does not belong to the same company.
+        List<User> userList = userServiceImpl.getAllUsers();
+        System.out.println("Auto update booking :" + userList);
+//        for (User user : userList) {
+//            user = userServiceImpl.getUserByEmail(user.getEmail());
+//        }
+        userList.removeIf(temp -> temp.getCompany().getCid() != cid);
+        System.out.println("Cid is " + cid + " and date is " + date);
+        //remove all bookings that does not have the same date as the date mentioned.
+        List<Bookings> bookingsList = bookingsRepository.findAll();
+        System.out.println("toString1 " + bookingsList);
+        Iterator<Bookings> bookingsIterator = bookingsList.iterator();
+//        while (bookingsIterator.hasNext()) {
+//            System.out.println();
+//        }
+        bookingsList.removeIf(temp -> !temp.getBDate().toString().equals(date.toString()));
+        System.out.println("toString2 " + bookingsList);
+        bookingsList.removeIf(temp -> temp.getStatus().equals("Confirmed"));
+        System.out.println("toString3 " + bookingsList.size());
+        bookingsList.forEach(temp -> System.out.println(temp.getBid()));
+        //so now my bookingsList will only contain those that are pending on that date.
+        bookingsIterator = bookingsList.iterator();
+        int smallestBID = Integer.MAX_VALUE;
+        while (bookingsIterator.hasNext()) {
+            Boolean isFromSameCompany = false;
+            Bookings temp = bookingsIterator.next();
+            for (User u : userList) {
+                if (temp.getUser().getEmail() == u.getEmail()) {
+                    isFromSameCompany = true;
+                }
+            }
+            if (!isFromSameCompany) {
+                bookingsIterator.remove();
+            }
+
+        }
+        //this will just contain all the bookings that are pending and from the same company.
+        //have to get the smallest BID.
+        bookingsIterator = bookingsList.iterator();
+        System.out.println("Booking Iterator size is " + bookingsList.size());
+        while (bookingsIterator.hasNext()) {
+            Bookings temp = bookingsIterator.next();
+            System.out.println(temp.getBid());
+            if (temp.getBid() < smallestBID) {
+                smallestBID = temp.getBid();
+            }
+        }
+        //so now i will update the smallestBID's status to be Confirmed.
+        System.out.println("Auto Update Bookings: " + smallestBID);
+        bookingsRepository.updateBookings(smallestBID);
     }
 
     public List<Bookings> getAllMyUpcomingBookings(User u) {
@@ -127,6 +179,10 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRepository.existsById(id);
     }
 
+    public int checkForDuplicateBookings(String userEmail, LocalDate date) {
+        return bookingsRepository.checkForDuplicateBookings(userEmail, date);
+    }
+
     @Override
     public Bookings save(Bookings bookings) {
         System.out.println("Before " + bookings);
@@ -146,7 +202,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public ArrayList<Bookings> getBookingByUser(String email) {
 
-        if (userService.getUserByEmail(email) == null) {
+        if (userServiceImpl.getUserByEmail(email) == null) {
             return null;
 
         }

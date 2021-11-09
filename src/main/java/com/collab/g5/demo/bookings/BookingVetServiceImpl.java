@@ -8,8 +8,12 @@ import java.util.List;
 @Service
 public class BookingVetServiceImpl implements BookingVetService {
 
-    @Autowired
     private BookingVetRepository bookingVetRepository;
+
+    @Autowired
+    public BookingVetServiceImpl(BookingVetRepository bookingVetRepository) {
+        this.bookingVetRepository = bookingVetRepository;
+    }
 
     @Override
     public BookingVetting save(BookingVetting bookingVetting) {

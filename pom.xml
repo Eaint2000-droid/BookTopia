@@ -67,11 +67,13 @@
 			<version>8.0.26</version>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -89,7 +91,6 @@
 			<version>20180813</version>
 		</dependency>
 
-
 		<!-- this is for auto-reloading of application upon code change
 		(otherwise you will have to restart the app each time to test new change-->
 		<dependency>
@@ -98,12 +99,20 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>5.3.10</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>4.23</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,7 +120,12 @@
 			<version>2.5.6</version>
 		</dependency>
 
-
+		<!-- Swagger 2 UI -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -124,6 +138,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<!-- this is for validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -131,8 +146,6 @@
 		</dependency>
 
 	</dependencies>
-
-
 
 	<build>
 		<plugins>

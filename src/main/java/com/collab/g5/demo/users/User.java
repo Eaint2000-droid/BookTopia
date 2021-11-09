@@ -109,6 +109,10 @@ public class User implements UserDetails {
         return Collections.singletonList(authority);
     }
 
+    public String getName() {
+        return fname + " " + lname;
+    }
+
     @Override
     public String getUsername() {
         return email;

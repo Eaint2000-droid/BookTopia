@@ -32,6 +32,10 @@ public interface UserService {
 
     User updateVaccination(boolean vaccination, User user);
 
+    void forgetPassword(String email);
+
+    User setForgetPassword(String email, String password);
+
 
 //    boolean containsUser(String userEmail);
 

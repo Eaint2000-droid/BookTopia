@@ -11,20 +11,49 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+
+
 public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
+
     private MailService mailService;
+    private WebSecurityConfig webSecurityConfig;
+
 
     @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public UserServiceImpl(UserRepository userRepository, MailService mailService, WebSecurityConfig webSecurityConfig) {
+        this.userRepository = userRepository;
+        this.mailService = mailService;
+        this.webSecurityConfig = webSecurityConfig;
 
-    private WebSecurityConfig webSecurityConfig;
+    }
+
+    @Override
+    public void forgetPassword(String email) {
+        User user = userRepository.getById(email);
+        Mail mail = new Mail();
+        mail.setMailFrom("weloveis211@gmail.com");
+        String userEmail = user.getEmail();
+        System.out.println("User Email in Service Implementation is " + userEmail);
+        System.out.println("user Object is " + user);
+        mail.setMailTo(userEmail);
+        mail.setMailSubject("Welcome to Company X ," + user.getEmail());
+        mail.setMailContent("Dear User,\n\n"+
+                "It appears that you have trouble logging in.\n " +
+
+                "Please use the link below To reset your password.\n" +
+
+                "Warm Regards, \n"
+                + "CS203G5 Team"
+
+        );
+        mailService.sendEmail(mail);
+    }
+
+
 
     public void addNewUser(User user) {
         Mail mail = new Mail();
@@ -33,8 +62,22 @@ public class UserServiceImpl implements UserService {
         System.out.println("User Email in Service Implementation is " + userEmail);
         System.out.println("user Object is " + user);
         mail.setMailTo(userEmail);
-        mail.setMailSubject("Welcome to Company X " + user.getEmail());
-        mail.setMailContent("Your passwword is password1. \n Please remember to change your password");
+        mail.setMailSubject("Welcome to Company X ," + user.getEmail());
+        mail.setMailContent("Dear User,\n\n"+
+                            "We are excited to get you on board our application.\n " +
+                             "\n"+
+                            "You may login with these details:\n" +
+                            "Username - " + userEmail +"\n"+
+                            "Passwword - password1. \n " +
+                            "\n"+
+                            "Please change your password in profile settings upon entering the application. \n" +
+                            "Using our application you will be able to check-in and book slots with greater convenience.\n" +
+                            "In addition, you may choose to keep up to date with the latest news and covid regulations\n"+
+                            "Wishing you a great experience!"
+                        + "\n Warm Regards, \n"
+                            + "CS203G5 Team"
+
+                         );
         mailService.sendEmail(mail);
 
         //setting default password to be password1
@@ -150,5 +193,21 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    @Override
+    public User setForgetPassword(String email, String password) {
+
+        User user= getUserByEmail(email);
+
+        if(user==null){
+            return null;
+        }
+
+        String encodedPassword = webSecurityConfig.passwordEncoder().encode(password);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        return user;
+
+
+    }
 
 }

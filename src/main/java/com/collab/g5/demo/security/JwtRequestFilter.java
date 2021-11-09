@@ -1,7 +1,6 @@
 package com.collab.g5.demo.security;
 
 
-import com.collab.g5.demo.users.UserServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,21 +17,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter
-{
+public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
-
+    private JwtTokenUtil jwtTokenHelper;
 
     @Autowired
-    private JwtTokenUtil jwtTokenHelper;
+    public JwtRequestFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenHelper) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtTokenHelper = jwtTokenHelper;
+
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("authorization");
 
         String username = null;
@@ -40,8 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter
 
         // JWT Token is in the form "Bearer token".
         //Remove Bearer word and get only the Token
-        if (requestTokenHeader != null &&  requestTokenHeader.startsWith("Bearer "))
-        {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username =
@@ -57,13 +56,11 @@ public class JwtRequestFilter extends OncePerRequestFilter
         }
         // Once we get the token validate it.
         if (username != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null)
-        {
-            UserDetails userDetails =    this.jwtUserDetailsService.loadUserByUsername(username);
+                SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
             // if token is valid configure Spring Security to manually set
             // authentication
-            if (jwtTokenHelper.validateToken(jwtToken, userDetails))
-            {
+            if (jwtTokenHelper.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

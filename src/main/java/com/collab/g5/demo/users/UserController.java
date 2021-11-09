@@ -16,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private UserServiceImpl userServiceImpl;
+
     @Autowired
     public UserController(UserServiceImpl userServiceImpl){
         this.userServiceImpl=userServiceImpl;
@@ -25,7 +26,7 @@ public class UserController {
      * List all users in the system
      * @return list of all users
      */
-    @GetMapping("/")
+    @GetMapping("/hr")
     public List<User> getUsers() throws UserNotFoundException{
         List<User> toReturn = userServiceImpl.getAllUsers();
         if (toReturn.size() == 0) {
@@ -52,13 +53,16 @@ public class UserController {
 
     }
 
+
+
+
     /**
      * Search for user with the given email
      * If there is no user with the given "email", throw a UsernameNotFoundException
      * @param email
      * @return user with the given email
      */
-    @GetMapping("/email/{email}")
+    @GetMapping("/emp/email/{email}")
     public User getUserByEmail(@PathVariable String email) throws UsernameNotFoundException{
         System.out.println(email);
         if(userServiceImpl.getUserByEmail(email)==null){
@@ -76,7 +80,7 @@ public class UserController {
      * @param email
      * @return user with the given email
      */
-    @GetMapping("/emailVax/{email}")
+    @GetMapping("/emp/emailVax/{email}")
     public Boolean getUserVaxByEmail(@PathVariable String email) throws UsernameNotFoundException{
         if(userServiceImpl.getUserByEmail(email)==null){
             throw new UsernameNotFoundException("Email not found " + email);
@@ -102,7 +106,7 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
-    @PutMapping("/fname/{fname}")
+    @PutMapping("emp/fname/{fname}")
     User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -117,7 +121,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/lname/{lname}")
+    @PutMapping("emp/lname/{lname}")
     User updateLName(@PathVariable String lname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -134,7 +138,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/new/email/{email}")
+    @PutMapping("emp/new/email/{email}")
     User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
@@ -151,7 +155,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/new/Password/{password}")
+    @PutMapping("emp/new/Password/{password}")
     User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
 
         User checkUser= userServiceImpl.updatePassword(password, user);
@@ -167,10 +171,10 @@ public class UserController {
     }
 
 
-    @PutMapping("/new/vaccination/{vaccination}")
+    @PutMapping("hr/new/vaccination/{vaccination}")
     User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
 
-        System.out.println("Update Password");
+        System.out.println("Update Vax");
         System.out.println(user);
         User checkUser= userServiceImpl.updateVaccination(vaccination, user);
 

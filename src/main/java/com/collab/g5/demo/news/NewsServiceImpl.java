@@ -7,17 +7,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NewsServiceImpl implements NewsService{
-    @Autowired
+public class NewsServiceImpl implements NewsService {
     private NewsRepository newsRepository;
 
+    @Autowired
+    public NewsServiceImpl(NewsRepository newsRepository) {
+        this.newsRepository = newsRepository;
+    }
+
     @Override
-    public List<News> getAllNews(){
+    public List<News> getAllNews() {
         return newsRepository.findAll();
     }
 
     @Override
-    public News getNewsById(int id){
+    public News getNewsById(int id) {
         return newsRepository.findById(id).map(news -> {
             return news;
         }).orElse(null);
@@ -26,7 +30,7 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public News addNews(News news) {
         Optional<News> newsExists = newsRepository.findById(news.getNid());
-        if(newsExists.isPresent()){
+        if (newsExists.isPresent()) {
             return null;
         }
         return newsRepository.save(news);
