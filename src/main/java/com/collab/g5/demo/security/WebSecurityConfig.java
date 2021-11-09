@@ -72,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // dont authenticate this particular request
                 .authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/api/*/hr/**").hasAuthority("HR")
                 .antMatchers("/api/**").hasAnyAuthority("HR", "EMPLOYEE")
 //                .antMatchers("/api/*/hr/**").hasRole("ADMIN").
@@ -87,4 +88,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+//    private static final String[] AUTH_WHITELIST = { "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs",
+//            "/webjars/**" };
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers(AUTH_WHITELIST);
+//    }
 }

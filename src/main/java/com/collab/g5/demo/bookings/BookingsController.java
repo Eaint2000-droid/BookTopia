@@ -10,11 +10,11 @@ import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserRole;
 import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Transient;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class BookingsController {
         this.companyServiceImpl = companyServiceImpl;
     }
 
+    /**
     /**
      * List all bookings in the system, mainly for the administrator to view who is in the system.
      *
@@ -130,10 +131,8 @@ public class BookingsController {
      * @throw UserNotFoundException when user does not exist.
      */
     @Transactional
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
-    public Bookings addBooking(@RequestBody Bookings newBooking) throws UserNotFoundException,
-            UserMonthlyQuotaExceeded, BookingExistsException {
+    public Bookings addBooking(@RequestBody @Valid Bookings newBooking) {
         System.out.println("new Booking is " + newBooking);
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
