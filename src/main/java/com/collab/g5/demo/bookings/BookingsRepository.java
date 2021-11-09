@@ -18,13 +18,13 @@ import java.util.List;
  */
 @Repository
 public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
-
-    @Query("SELECT count(b) FROM Bookings b WHERE b.user.email = ?1 and MONTH(b.bDate)=MONTH(now()) and b.status='completed'")
+    //this will essentially get the amount of bookings that the user has booked for this particular month.
+    @Query("SELECT count(b) FROM Bookings b WHERE b.user.email = ?1 and MONTH(b.bDate)=MONTH(now()) and b.status='Confirmed'")
     int findBookingsCountByEmail(String email);
 
     @Query(value = "select count(*) from company c inner join \n" +
             "( select * from bookings b inner join user u where b.user_useremail = u.email ) as bookinguser using (cid) \n" +
-            "where c.cid = ?1 and bookinguser.status = \"completed\" and bookinguser.b_date = ?2", nativeQuery = true)
+            "where c.cid = ?1 and bookinguser.status = \"confirmed\" and bookinguser.b_date = ?2", nativeQuery = true)
     int getBookingsCountByDate(int cid, LocalDate bDate);
 
     @Query(value = "select count(*) from bookings b where MONTH(b.b_date) =  ?2 and b.user_useremail =?1 ", nativeQuery = true)
@@ -32,8 +32,8 @@ public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "update bookings set status = \"completed\" where status = \"pending\" limit 1", nativeQuery = true)
-    void updateBookings();
+    @Query(value = "update bookings b set status = \"Confirmed\"  where bid = ?1", nativeQuery = true)
+    void updateBookings(int bid);
 
     @Query(value = "select count(*) from bookings where user_useremail = ?1 and b_date = ?2", nativeQuery = true)
     int checkForDuplicateBookings(String userEmail, LocalDate date);
@@ -42,4 +42,6 @@ public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
 
     @Query("SELECT b FROM Bookings b WHERE b.user.email = ?1")
     List<Bookings> findBookingsByEmail(String email);
+
+
 }

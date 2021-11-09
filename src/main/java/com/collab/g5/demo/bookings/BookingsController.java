@@ -10,11 +10,11 @@ import com.collab.g5.demo.users.User;
 import com.collab.g5.demo.users.UserRole;
 import com.collab.g5.demo.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Transient;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class BookingsController {
         this.companyServiceImpl = companyServiceImpl;
     }
 
+    /**
     /**
      * List all bookings in the system, mainly for the administrator to view who is in the system.
      *
@@ -130,10 +131,8 @@ public class BookingsController {
      * @throw UserNotFoundException when user does not exist.
      */
     @Transactional
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/emp/")
-    public Bookings addBooking(@RequestBody Bookings newBooking) throws UserNotFoundException,
-            UserMonthlyQuotaExceeded, BookingExistsException {
+    public Bookings addBooking(@RequestBody @Valid Bookings newBooking) {
         System.out.println("new Booking is " + newBooking);
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
@@ -205,7 +204,7 @@ public class BookingsController {
      * @param id
      */
     @DeleteMapping("/hr/del/{id}")
-    public void deleteBooking(@RequestParam int id) {
+    public void deleteBooking(@PathVariable int id) {
         //First i get the userEmail as i need it to
         System.out.println("ID is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
@@ -226,14 +225,14 @@ public class BookingsController {
         System.out.println("Booking Count is " + beforeDeleteBookingCount);
 
 
-        if (beforeDeleteBookingCount == limit) {
+        if (beforeDeleteBookingCount >= limit) {
             System.out.println("Maxed out");
             //i need to do the auto approval stage.
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id)); //delete the current booking
 
             //set the next booking that is not approved.
             //TODO have to implement this once I have set the other part.
-            bookingServiceImpl.autoUpdateBookings(cid, bookingsDate.getMonthValue());
+            bookingServiceImpl.autoUpdateBookings(cid, bookingsDate);
         } else {
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }

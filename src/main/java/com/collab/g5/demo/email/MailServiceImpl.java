@@ -14,8 +14,7 @@ import java.io.UnsupportedEncodingException;
 public class MailServiceImpl implements MailService {
 
 
-    JavaMailSender mailSender;
-
+    private JavaMailSender mailSender;
 
 
     @Autowired
