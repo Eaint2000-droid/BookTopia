@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://*")
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -51,8 +51,6 @@ public class UserController {
         }
 
     }
-
-
 
 
     /**

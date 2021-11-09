@@ -45,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
 
     public List<Bookings> getAllMyPastBookings(User u) {
         System.out.println("getAllMyPastBookings: " + u);
-        LocalDateTime now = LocalDateTime.now().minusDays(1L);
+        LocalDateTime now = LocalDateTime.now();
         System.out.println("Local Time is " + now);
         List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
         System.out.println(bookingsList.size());
@@ -129,7 +129,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public List<Bookings> getAllMyUpcomingBookings(User u) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().plusDays(1L);
 
         List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
         System.out.println("Upcoming " + bookingsList.size());

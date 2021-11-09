@@ -136,7 +136,6 @@ public class BookingsController {
         System.out.println("new Booking is " + newBooking);
         User userResult = newBooking.getUser();
         System.out.println("Returned user : " + userResult);
-//        select count(*) from bookings where user_useremail = 'ivory@scis.smu.edu.sg' and b_date = '2021-11-08';
         if (bookingServiceImpl.checkForDuplicateBookings(newBooking.getUser().getEmail(), newBooking.getBDate()) > 0) {
             throw new BookingExistsException(newBooking);
         }
@@ -174,7 +173,7 @@ public class BookingsController {
 
         boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
         if (!vaccineStatus) {
-            throw new UserNotVaccinatedException(userResult);
+            throw new UserNotVaccinatedException(tempUser);
         }
 
 //        if (userCountByMonth >= dailyLimitForUser) {

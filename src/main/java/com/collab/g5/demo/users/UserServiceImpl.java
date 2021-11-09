@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
 
         //setting default password to be password1
         String encodedPassword = webSecurityConfig.passwordEncoder().encode("password1");
+        user.setVaccinated(false);
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
