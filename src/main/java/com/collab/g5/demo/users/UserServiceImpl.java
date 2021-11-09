@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
-
 public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
@@ -41,8 +39,8 @@ public class UserServiceImpl implements UserService {
         System.out.println("user Object is " + user);
         mail.setMailTo(userEmail);
         mail.setMailSubject("Welcome to Company X ," + user.getEmail());
-        mail.setMailContent("Dear User,\n\n"+
-                "It appears that you have trouble logging in.\n " +
+        mail.setMailContent("Dear " + user.getName() + ",\n\n" +
+                "It appears that you have trouble logging in.\n" +
 
                 "Please use the link below To reset your password.\n" +
 
@@ -54,7 +52,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     public void addNewUser(User user) {
         Mail mail = new Mail();
         mail.setMailFrom("weloveis211@gmail.com");
@@ -63,21 +60,21 @@ public class UserServiceImpl implements UserService {
         System.out.println("user Object is " + user);
         mail.setMailTo(userEmail);
         mail.setMailSubject("Welcome to Company X ," + user.getEmail());
-        mail.setMailContent("Dear User,\n\n"+
-                            "We are excited to get you on board our application.\n " +
-                             "\n"+
-                            "You may login with these details:\n" +
-                            "Username - " + userEmail +"\n"+
-                            "Passwword - password1. \n " +
-                            "\n"+
-                            "Please change your password in profile settings upon entering the application. \n" +
-                            "Using our application you will be able to check-in and book slots with greater convenience.\n" +
-                            "In addition, you may choose to keep up to date with the latest news and covid regulations\n"+
-                            "Wishing you a great experience!"
-                        + "\n Warm Regards, \n"
-                            + "CS203G5 Team"
+        mail.setMailContent("Dear " + user.getName() + "\n\n" +
+                "We are excited to get you on board our application.\n " +
+                "\n" +
+                "You may login with these details:\n" +
+                "Username - " + userEmail + "\n" +
+                "Password - password1. \n " +
+                "\n" +
+                "Please change your password in profile settings upon entering the application. \n" +
+                "Using our application you will be able to check-in and book slots with greater convenience.\n" +
+                "In addition, you may choose to keep up to date with the latest news and covid regulations\n" +
+                "Wishing you a great experience!"
+                + "\nWarm Regards, \n"
+                + "CS203G5 Team"
 
-                         );
+        );
         mailService.sendEmail(mail);
 
         //setting default password to be password1
@@ -196,9 +193,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User setForgetPassword(String email, String password) {
 
-        User user= getUserByEmail(email);
+        User user = getUserByEmail(email);
 
-        if(user==null){
+        if (user == null) {
             return null;
         }
 
