@@ -3,9 +3,14 @@ package com.collab.g5.demo.news;
 import com.collab.g5.demo.exceptions.bookings.BookingNotFoundException;
 import com.collab.g5.demo.exceptions.news.NewsExistsException;
 import com.collab.g5.demo.exceptions.news.NewsNotFoundException;
+import org.jsoup.*;
+import org.jsoup.nodes.*;
+import org.jsoup.select.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -79,6 +84,60 @@ public class NewsController {
             throw new BookingNotFoundException(nid);
         }
         newsServiceImpl.delete(getNewsById(nid));
+    }
+
+    @GetMapping("/emp/cna/")
+    public List<HashMap<String, String>> getCnaNews() {
+        final String httpsUrl = "https://www.channelnewsasia.com/coronavirus-covid-19";
+        List<HashMap<String, String>> res = null;
+
+        try {
+            Document webpageContent = Jsoup.connect(httpsUrl)
+                    .userAgent("Mozilla").data("name", "jsoup").get();
+
+            Elements titles = webpageContent.select("div").first().getElementsByClass("media-object media-object-- top-stories-primary-section__item");
+
+            res = new ArrayList<HashMap<String, String>>();
+
+            for (Element title : titles) {
+                HashMap<String, String> toAdd = new HashMap<>();
+                toAdd.put("href", "https://www.channelnewsasia.com" + title.getElementsByTag("a").attr("href"));
+                toAdd.put("title", title.getElementsByTag("img").attr("title"));
+                toAdd.put("src", title.getElementsByTag("img").attr("src"));
+                res.add(toAdd);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    @GetMapping("/emp/covidcases/")
+    private HashMap<String, String> getCovidCases() {
+        final String httpsUrl = "https://www.worldometers.info/coronavirus/country/singapore/";
+        HashMap<String, String> res = null;
+
+        try {
+            Document webpageContent = Jsoup.connect(httpsUrl).get();
+
+            Elements stats = webpageContent.select("[id='maincounter-wrap']");
+
+            res = new HashMap<String, String>();
+
+            res.put("cases", stats.get(0).getElementsByTag("h1").text());
+            res.put("caseno", stats.get(0).getElementsByClass("maincounter-number").text());
+            res.put("deaths", stats.get(1).getElementsByTag("h1").text());
+            res.put("deathno", stats.get(1).getElementsByClass("maincounter-number").text());res.put("header: ", stats.get(0).getElementsByTag("h1").text());
+            res.put("recovered", stats.get(2).getElementsByTag("h1").text());
+            res.put("recoveredno", stats.get(2).getElementsByClass("maincounter-number").text());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return res;
     }
 
 }
