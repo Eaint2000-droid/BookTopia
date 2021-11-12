@@ -29,7 +29,7 @@ public class JwtAuthenticationController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
-        this.userServiceImpl=userServiceImpl;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -48,30 +48,27 @@ public class JwtAuthenticationController {
 
     /**
      * when a user forget password
+     *
      * @param email
      * @return the newly added user
      */
     @PostMapping("/authenticate/forget/{email}")
     public void forgetPassword(@PathVariable String email) throws UserNotFoundException {
-
-        try {
-            User userExists = userServiceImpl.getUserByEmail(email);
-            userServiceImpl.forgetPassword(email);
-
-        }catch(UsernameNotFoundException e){
+        User userExists = userServiceImpl.getUserByEmail(email);
+        if (userExists == null) {
             throw new UserNotFoundException();
         }
-
+        userServiceImpl.forgetPassword(email);
     }
 
     @PostMapping("/authenticate/forget/new/{password}")
-    public void SetForgetPassword(@PathVariable String password, @Valid @RequestBody User user ) throws UserNotFoundException {
+    public void SetForgetPassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
 
         try {
             User userExists = userServiceImpl.getUserByEmail(user.getEmail());
             userServiceImpl.setForgetPassword(user.getEmail(), password);
 
-        }catch(UsernameNotFoundException e){
+        } catch (UsernameNotFoundException e) {
             throw new UserNotFoundException();
         }
 
