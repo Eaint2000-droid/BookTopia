@@ -32,17 +32,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRepository.findAll();
     }
 
-
-    //    //for emp how do i make sure it returns my ownstuff only
-//    @Override
-//    public List<Bookings> getAllMyBookings() {
-//        return bookingsRepository.findAll();
-//
-//    }
+    @Override
     public List<Bookings> getAllMyBookings(String email) {
         return bookingsRepository.findBookingsByEmail(email);
     }
 
+    @Override
     public List<Bookings> getAllMyPastBookings(User u) {
         System.out.println("getAllMyPastBookings: " + u);
         LocalDateTime now = LocalDateTime.now();
@@ -63,18 +58,21 @@ public class BookingServiceImpl implements BookingService {
     }
 
     // This is to get the count of bookings that that particular month has already.
+    @Override
     public int getBookingsCountByDate(int cid, LocalDate date) {
         System.out.println(cid + " " + date);
         System.out.println("Local Date is " + date.getMonthValue());
         return bookingsRepository.getBookingsCountByDate(cid, date);
     }
 
+    @Override
     public int getBookingsCountByUserAndMonth(String email, LocalDate date) {
         int month = date.getMonthValue();
         return bookingsRepository.getBookingsCountByUserAndMonth(email, month);
     }
 
     //TODO
+    @Override
     public void autoUpdateBookings(int cid, LocalDate date) {
         //remove all the users that does not belong to the same company.
         List<User> userList = userServiceImpl.getAllUsers();
@@ -128,6 +126,7 @@ public class BookingServiceImpl implements BookingService {
         bookingsRepository.updateBookings(smallestBID);
     }
 
+    @Override
     public List<Bookings> getAllMyUpcomingBookings(User u) {
         LocalDateTime now = LocalDateTime.now().plusDays(1L);
 
@@ -192,6 +191,7 @@ public class BookingServiceImpl implements BookingService {
         return b;
     }
 
+    @Override
     public int getBookingsCountByEmail(String email) {
         System.out.println(email);
         int x = bookingsRepository.findBookingsCountByEmail(email);
