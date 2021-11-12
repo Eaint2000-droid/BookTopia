@@ -29,13 +29,13 @@ public class Regulation {
     @NotNull(message = "EndDate should not be null")
     private LocalDate endDate;
 
-    @Min(0)
-    @Max(100)
-    @PositiveOrZero
+    @Min(value = 0, message = "Percentage should be between 0 to 100")
+    @Max(value = 100, message = "Percentage should be between 0 to 100")
+    @PositiveOrZero(message = "Percentage should be between 0 to 100")
     @NotNull(message = "Percentage should not be null")
     private int percentage;
 
-    // foreign key
+    // Foreign key
     @OneToMany(mappedBy = "regulation", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<RegulationLimit> regulationLimits;
