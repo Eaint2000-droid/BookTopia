@@ -2,6 +2,8 @@ package com.collab.g5.demo.regulations;
 
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.companies.CompanyServiceImpl;
+import com.collab.g5.demo.exceptions.regulations.RegulationExistsException;
+import com.collab.g5.demo.exceptions.regulations.RegulationInvalidDateException;
 import com.collab.g5.demo.exceptions.regulations.RegulationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -89,6 +91,19 @@ public class RegulationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")
     public void addRegulation(@Valid @RequestBody Regulation regulation) {
+        List<Regulation> ret = regulationServiceImpl.getAllRegulation();
+        int result = regulation.getStartDate().compareTo(regulation.getEndDate());
+
+        if(result > 0) {
+            throw new RegulationInvalidDateException(regulation);
+        }
+
+        for (Regulation r : ret) {
+            if(!(regulation.getStartDate().isBefore(r.getStartDate()) && regulation.getEndDate().isBefore(r.getStartDate()) || regulation.getStartDate().isAfter(r.getEndDate())&&regulation.getEndDate().isAfter(r.getEndDate()))) {
+                throw new RegulationExistsException(regulation);
+            }
+        }
+
         Regulation savedRegulation = regulationServiceImpl.save(regulation);
         List<Company> companies = companyServiceImpl.getAllCompanies();
         for (int i = 0; i < companies.size(); i++) {
