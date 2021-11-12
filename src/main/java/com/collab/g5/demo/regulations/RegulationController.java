@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin
 @RequestMapping("/api/regulation")
 public class RegulationController {
     private RegulationServiceImpl regulationServiceImpl;

@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bVetting")
+@CrossOrigin
 public class BookingVetController {
 
     private BookingVetServiceImpl bookingVetServiceImpl;

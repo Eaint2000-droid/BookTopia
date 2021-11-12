@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin
 @RequestMapping("/api/news")
 public class NewsController {
 
@@ -86,7 +86,7 @@ public class NewsController {
         newsServiceImpl.delete(getNewsById(nid));
     }
 
-    @GetMapping("/emp/cna/")
+    @GetMapping("/emp/cna")
     public List<HashMap<String, String>> getCnaNews() {
         final String httpsUrl = "https://www.channelnewsasia.com/coronavirus-covid-19";
         List<HashMap<String, String>> res = null;

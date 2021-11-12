@@ -42,7 +42,9 @@ public class UserServiceImpl implements UserService {
         mail.setMailContent("Dear " + user.getName() + ",\n\n" +
                 "It appears that you have trouble logging in.\n" +
 
-                "Please use the link below To reset your password.\n" +
+                "Please use the link below " +
+                " https://frontend-five-eta.vercel.app/UpdatePassword " +
+                "To reset your password.\n" +
 
                 "Warm Regards, \n"
                 + "CS203G5 Team"

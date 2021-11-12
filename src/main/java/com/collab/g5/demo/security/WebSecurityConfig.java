@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -72,19 +73,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // dont authenticate this particular request
                 .authorizeRequests()
+//                .antMatchers("/**").permitAll().and()
+                .antMatchers("/api/**", "/api/news/**").hasAnyAuthority("HR", "EMPLOYEE")
+                .antMatchers("/swagger-ui.html#/").permitAll() //this is to enable the swagger UI absolute path.
                 .antMatchers("/api/*/hr/**").hasAuthority("HR")
-                .antMatchers("/api/**").hasAnyAuthority("HR", "EMPLOYEE")
 //                .antMatchers("/api/*/hr/**").hasRole("ADMIN").
                 .antMatchers("/authenticate").permitAll()
-                .antMatchers("/authenticate/**").permitAll().
+                .antMatchers("/authenticate/**").permitAll().and()
 
 
 //
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+//                        anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

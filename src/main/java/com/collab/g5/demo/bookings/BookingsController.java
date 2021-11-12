@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin
 public class BookingsController {
 
     private BookingServiceImpl bookingServiceImpl;
@@ -180,7 +180,7 @@ public class BookingsController {
 //            throw new CompanyDailyLimitExceeded();
 //        }
 
-        if (limit == getCurrentQuota) {
+        if (limit <= getCurrentQuota) {
             System.out.println("Pending");
             newBooking.setStatus("pending");
         } else {
