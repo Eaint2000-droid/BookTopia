@@ -103,6 +103,13 @@ public class UserController {
         userServiceImpl.delete(user);
     }
 
+    /**
+     * Search for user vax status with the given email
+     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * @param email
+     * @return user with the given email
+     */
+
     @PutMapping("emp/fname/{fname}")
     User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
 
@@ -117,6 +124,13 @@ public class UserController {
         return checkUser;
 
     }
+
+    /**
+     * Search for user vax status with the given email
+     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * @param email
+     * @return user with the given email
+     */
 
     @PutMapping("emp/lname/{lname}")
     User updateLName(@PathVariable String lname, @Valid @RequestBody User user) throws UserNotFoundException {
@@ -134,7 +148,12 @@ public class UserController {
 
     }
 
-
+    /**
+     * Search for user vax status with the given email
+     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * @param email
+     * @return user with the given email
+     */
     @PutMapping("emp/new/email/{email}")
     User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
 
@@ -151,11 +170,17 @@ public class UserController {
 
     }
 
-
+    /**
+     * Update user's password with PUT request to "emp/new/Password/{password}"
+     * If there is no user found within databse , throw a UserNotFoundException
+     * @param user
+     * @param password
+     * @return user with updated password
+     */
     @PutMapping("emp/new/Password/{password}")
     User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
 
-        User checkUser= userServiceImpl.updatePassword(password, user);
+        User checkUser = userServiceImpl.updatePassword(password, user);
 
         if (checkUser == null) {
             System.out.println("User is not found");
@@ -167,6 +192,13 @@ public class UserController {
         return checkUser;
     }
 
+    /**
+     * Update user's vaccination status with PUT request to "hr/new/vaccination/{vaccination}"
+     * If there is no user found within databse , throw a UserNotFoundException
+     * @param user
+     * @param vaccination
+     * @return user with updated vaccination status
+     */
 
     @PutMapping("hr/new/vaccination/{vaccination}")
     User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
