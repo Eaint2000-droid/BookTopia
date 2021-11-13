@@ -13,26 +13,51 @@ import java.util.Optional;
 @Service
 public class RegulationLimitServiceImpl implements RegulationLimitService {
 
+    /**
+     * Declaration of varaibles
+     */
     private RegulationLimitRepository regulationLimitRepository;
     private UserServiceImpl userServiceImpl;
 
 
+    /**
+     * Instantiating the variables listed.
+     *
+     * @param regulationLimitRepository
+     * @param userServiceImpl
+     */
     @Autowired
     public RegulationLimitServiceImpl(RegulationLimitRepository regulationLimitRepository, UserServiceImpl userServiceImpl) {
         this.regulationLimitRepository = regulationLimitRepository;
         this.userServiceImpl = userServiceImpl;
     }
 
+    /**
+     * Persist a new RegulationLimit based on a regulation limit object
+     *
+     * @param newRegulationLimit
+     * @return A new regulation limit
+     */
     @Override
     public RegulationLimit save(RegulationLimit newRegulationLimit) {
         return regulationLimitRepository.save(newRegulationLimit);
     }
 
+    /**
+     * Returns all the regulation limit entries in the database
+     * @return a List of regulation Limit.
+     */
     @Override
     public List<RegulationLimit> getAllRegulationLimit() {
         return regulationLimitRepository.findAll();
     }
 
+    /**
+     * Finding a regulation limit object based on the ID
+     * @param startDate
+     * @param cid
+     * @return A regulation limit object if it can be found or else will return null.
+     */
     @Override
     public Optional<RegulationLimit> getRegulationLimitById(LocalDate startDate, int cid) {
         Optional<RegulationLimit> regulationLimit = Optional.ofNullable(regulationLimitRepository.getById(new RegulationLimitKey(startDate, cid)));
@@ -43,6 +68,14 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
 
+    /**
+     * Uniquely Identify a regulation Limit based on the start date and CID which forms a regulation limit key and
+     * updates its values to the new Regulation Limit data
+     * @param startDate
+     * @param cid
+     * @param newRegulationLimit
+     * @return Updated Regulation Limit
+     */
     @Override
     public RegulationLimit updateRegulationLimit(LocalDate startDate, int cid, RegulationLimit newRegulationLimit) {
         return regulationLimitRepository
@@ -64,6 +97,11 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
         regulationLimitRepository.deleteById(new RegulationLimitKey(startDate, cid));
     }
 
+    /**
+     * This will get the current regulation based on the cid //TODO Can help with this ?
+     * @param cid
+     * @return
+     */
     @Override
     public RegulationLimit getCurrentRegulationLimitById(int cid) {
 
@@ -76,6 +114,11 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
         return list.get(list.size() - 1);
     }
 
+    /**
+     * TODO Help with this too.
+     * @param email
+     * @return
+     */
     @Override
     public RegulationLimit getCurrentRegulationLimitByUser(String email) {
         User user = userServiceImpl.getUserByEmail(email);

@@ -40,6 +40,7 @@ public class DailyFormServiceImpl implements DailyFormService {
         return toReturn;
     }
 
+    @Override
     public boolean getDailyFormByUserToday(String email) {
         ArrayList<DailyForm> toReturn = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();

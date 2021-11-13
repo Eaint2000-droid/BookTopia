@@ -2,40 +2,76 @@ package com.collab.g5.demo.regulations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class RegulationServiceImpl implements RegulationService {
+    //Declaration of variables
     private RegulationRepository regulationRepository;
 
+    /**
+     * Instantiating the variables for this class.
+     *
+     * @param regulationRepository
+     */
     @Autowired
-    public RegulationServiceImpl (RegulationRepository regulationRepository){
+    public RegulationServiceImpl(RegulationRepository regulationRepository) {
         this.regulationRepository = regulationRepository;
     }
 
+    /**
+     * Persist a new regulation
+     *
+     * @param newRegulation
+     * @return Regulation that is saved into the database.
+     */
     @Override
     public Regulation save(Regulation newRegulation) {
         return regulationRepository.save(newRegulation);
     }
 
+    /**
+     * Returns all the regulations that is in the database
+     *
+     * @return List of regulations
+     */
     @Override
     public List<Regulation> getAllRegulation() {
         return regulationRepository.findAll();
     }
 
+    /**
+     * Returns a nested list of strings which contains the regulation limits? TODO Can help with this? HAHAHA
+     *
+     * @param userEmail
+     * @return TODO here tooo.
+     */
     @Override
     public List<List<String>> getAllRegulationWithLimit(String userEmail) {
         return regulationRepository.findAllRegulationWithLimit(userEmail);
     }
 
+    /**
+     * Finds a regulation based on its ID and returns the object if found in the database.
+     *
+     * @param startDate
+     * @return A regulation if it exists or else it will return null.
+     */
     @Override
     public Regulation getRegulationById(LocalDate startDate) {
-        return regulationRepository.findById(startDate).map(regulation ->{
+        return regulationRepository.findById(startDate).map(regulation -> {
             return regulation;
         }).orElse(null);
     }
 
+    /**
+     * Finds a regulation based on the startDate and updates its contents with the data inside newRegulation
+     * @param startDate
+     * @param newRegulation
+     * @return
+     */
     @Override
     public Regulation updateRegulation(LocalDate startDate, Regulation newRegulation) {
         return regulationRepository.findById(startDate).map(regulation -> {

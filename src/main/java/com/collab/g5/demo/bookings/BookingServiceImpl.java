@@ -15,10 +15,18 @@ import java.util.List;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-
+    /**
+     * Declaring both of services that is requiored.
+     */
     private BookingsRepository bookingsRepository;
     private UserServiceImpl userServiceImpl;
 
+    /**
+     * Instantiating the variables by making use of Constructor Injection
+     *
+     * @param bookingsRepository
+     * @param userServiceImpl
+     */
     @Autowired
     public BookingServiceImpl(BookingsRepository bookingsRepository, UserServiceImpl userServiceImpl) {
         this.bookingsRepository = bookingsRepository;
@@ -26,28 +34,43 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
-    //for hr
+    /**
+     * This method will return all the bookings that are in the database without any filter.
+     *
+     * @return all the bookings that are in the database.
+     */
     @Override
     public List<Bookings> getAllBookings() {
         return bookingsRepository.findAll();
     }
 
+    /**
+     * This will only return all the bookings that belongs to this particular user specified by the email.
+     *
+     * @param email
+     * @return all bookings that is made by this user.
+     */
     @Override
     public List<Bookings> getAllMyBookings(String email) {
         return bookingsRepository.findBookingsByEmail(email);
     }
 
+    /**
+     * This will return all the past bookings that is made by this user
+     * This method will essentially retrieve all the bookings from the database that
+     * belongs to this user and will then iterate through and delete those
+     * that Date is after today's date
+     *
+     * @param user
+     * @return all past bookings that is made by this user.
+     */
     @Override
-    public List<Bookings> getAllMyPastBookings(User u) {
-        System.out.println("getAllMyPastBookings: " + u);
+    public List<Bookings> getAllMyPastBookings(User user) {
         LocalDateTime now = LocalDateTime.now();
-        System.out.println("Local Time is " + now);
-        List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
-        System.out.println(bookingsList.size());
+        List<Bookings> bookingsList = bookingsRepository.findAllByUser(user);
         Iterator<Bookings> iterator = bookingsList.iterator();
         while (iterator.hasNext()) {
             Bookings b = iterator.next();
-            System.out.println(b.getBDate());
             if (!b.getBDate().isBefore(ChronoLocalDate.from(now))) {
                 iterator.remove();
             }
@@ -57,42 +80,75 @@ public class BookingServiceImpl implements BookingService {
         return bookingsList;
     }
 
-    // This is to get the count of bookings that that particular month has already.
+    /**
+     * This will return all the upcoming bookings that is made by this user
+     * This method will essentially retrieve all the bookings from the database that
+     * belongs to this user and will then iterate through and delete those
+     * that Date is before today date.
+     *
+     * @param user
+     * @return list of bookings that belongs to user and its upcoming.
+     */
+    @Override
+    public List<Bookings> getAllMyUpcomingBookings(User user) {
+        LocalDateTime now = LocalDateTime.now().plusDays(1L);
+
+        List<Bookings> bookingsList = bookingsRepository.findAllByUser(user);
+        Iterator<Bookings> iterator = bookingsList.iterator();
+        while (iterator.hasNext()) {
+            Bookings b = iterator.next();
+            if (b.getBDate().isBefore(ChronoLocalDate.from(now))) {
+                iterator.remove();
+            }
+        }
+        return bookingsList;
+    }
+
+    /**
+     * This is to retrieve for a specific date, how many bookings there are.
+     *
+     * @param cid
+     * @param date
+     * @return number of bookings that is "Confirmed" on that date.
+     */
     @Override
     public int getBookingsCountByDate(int cid, LocalDate date) {
-        System.out.println(cid + " " + date);
-        System.out.println("Local Date is " + date.getMonthValue());
         return bookingsRepository.getBookingsCountByDate(cid, date);
     }
 
+    /**
+     * This will retrieve the number of bookings that this particular user have for this particular month.
+     *
+     * @param email
+     * @param date
+     * @return number of bookings that is made by this user for this month.
+     */
     @Override
     public int getBookingsCountByUserAndMonth(String email, LocalDate date) {
         int month = date.getMonthValue();
         return bookingsRepository.getBookingsCountByUserAndMonth(email, month);
     }
 
-    //TODO
+    /**
+     * This method will only be triggered if and only if the total number of bookings pending and Confirmed status
+     * for that particular date exceeds the daily limit of the company. It will then loop through the database to find
+     * for the next booking that is made by one of the user's from the same company and set that status to be Confirmed.
+     *
+     * @param cid
+     * @param date
+     */
     @Override
     public void autoUpdateBookings(int cid, LocalDate date) {
-        //remove all the users that does not belong to the same company.
         List<User> userList = userServiceImpl.getAllUsers();
-        System.out.println("Auto update booking :" + userList);
-//        for (User user : userList) {
-//            user = userServiceImpl.getUserByEmail(user.getEmail());
-//        }
         userList.removeIf(temp -> temp.getCompany().getCid() != cid);
-        System.out.println("Cid is " + cid + " and date is " + date);
         //remove all bookings that does not have the same date as the date mentioned.
         List<Bookings> bookingsList = bookingsRepository.findAll();
-        System.out.println("toString1 " + bookingsList);
         Iterator<Bookings> bookingsIterator = bookingsList.iterator();
 //        while (bookingsIterator.hasNext()) {
 //            System.out.println();
 //        }
         bookingsList.removeIf(temp -> !temp.getBDate().toString().equals(date.toString()));
-        System.out.println("toString2 " + bookingsList);
         bookingsList.removeIf(temp -> temp.getStatus().equals("Confirmed"));
-        System.out.println("toString3 " + bookingsList.size());
         bookingsList.forEach(temp -> System.out.println(temp.getBid()));
         //so now my bookingsList will only contain those that are pending on that date.
         bookingsIterator = bookingsList.iterator();
@@ -113,7 +169,6 @@ public class BookingServiceImpl implements BookingService {
         //this will just contain all the bookings that are pending and from the same company.
         //have to get the smallest BID.
         bookingsIterator = bookingsList.iterator();
-        System.out.println("Booking Iterator size is " + bookingsList.size());
         while (bookingsIterator.hasNext()) {
             Bookings temp = bookingsIterator.next();
             System.out.println(temp.getBid());
@@ -122,32 +177,28 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         //so now i will update the smallestBID's status to be Confirmed.
-        System.out.println("Auto Update Bookings: " + smallestBID);
         bookingsRepository.updateBookings(smallestBID);
     }
 
-    @Override
-    public List<Bookings> getAllMyUpcomingBookings(User u) {
-        LocalDateTime now = LocalDateTime.now().plusDays(1L);
-
-        List<Bookings> bookingsList = bookingsRepository.findAllByUser(u);
-        System.out.println("Upcoming " + bookingsList.size());
-        Iterator<Bookings> iterator = bookingsList.iterator();
-        while (iterator.hasNext()) {
-            Bookings b = iterator.next();
-            if (b.getBDate().isBefore(ChronoLocalDate.from(now))) {
-                iterator.remove();
-            }
-        }
-        return bookingsList;
-    }
-
+    /**
+     * Returns a bookings based on its id
+     *
+     * @param id
+     * @return the booking itself if it can be found or null otherwise.
+     */
     @Override
     public Bookings getBookingsById(int id) {
-        System.out.println("ID in service is " + id);
         return bookingsRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Given a specific booking ID, we will first retrieve the particular booking
+     * before setting its booking date and status to be the new booking and returning it.
+     *
+     * @param id
+     * @param bookings
+     * @return the newly updated Bookings.
+     */
     @Override
     public Bookings updateBookings(int id, Bookings bookings) {
         return bookingsRepository.findById(id).map(booking -> {
@@ -157,7 +208,11 @@ public class BookingServiceImpl implements BookingService {
         }).orElse(null);
     }
 
-
+    /**
+     * Delete a booking based on its object
+     *
+     * @param bookings
+     */
     @Override
     public void delete(Bookings bookings) {
         bookingsRepository.delete(bookings);
@@ -173,34 +228,48 @@ public class BookingServiceImpl implements BookingService {
         bookingsRepository.deleteById(id);
     }
 
+    /**
+     * This method is to ensure that each user is only allowed to book 1 bookings for that particular date.
+     *
+     * @param userEmail
+     * @param date
+     * @return number of bookigns for the specific user and date
+     */
     @Override
-    public boolean bookingExists(int id) {
-        return bookingsRepository.existsById(id);
-    }
-
     public int checkForDuplicateBookings(String userEmail, LocalDate date) {
         return bookingsRepository.checkForDuplicateBookings(userEmail, date);
     }
 
+    /**
+     * Saves the bookings instance to the database.
+     *
+     * @param bookings
+     * @return the booking itself.
+     */
     @Override
     public Bookings save(Bookings bookings) {
-        System.out.println("Before " + bookings);
-
-        Bookings b = bookingsRepository.save(bookings);
-        System.out.println("After " + b);
-        return b;
+        return bookingsRepository.save(bookings);
     }
 
+    /**
+     * This will return all the bookings that is in that the specific user made.
+     *
+     * @param email
+     * @return
+     */
     @Override
     public int getBookingsCountByEmail(String email) {
-        System.out.println(email);
-        int x = bookingsRepository.findBookingsCountByEmail(email);
-        System.out.println(x);
-        return x;
+        return bookingsRepository.findBookingsCountByEmail(email);
     }
 
+    /**
+     * Get the list of bookings that is for the email specified.
+     *
+     * @param email
+     * @return list bookings that is made by the user.
+     */
     @Override
-    public ArrayList<Bookings> getBookingByUser(String email) {
+    public List<Bookings> getBookingByUser(String email) {
 
         if (userServiceImpl.getUserByEmail(email) == null) {
             return null;

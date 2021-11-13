@@ -14,31 +14,32 @@ public interface BookingService {
     //READ
     List<Bookings> getAllBookings();
 
+    List<Bookings> getBookingByUser(String email);
+
+    List<Bookings> getAllMyBookings(String email);
+
+    List<Bookings> getAllMyPastBookings(User u);
+
+    List<Bookings> getAllMyUpcomingBookings(User u);
+
     Bookings getBookingsById(int id);
+
+    int getBookingsCountByEmail(String email);
+
+    int getBookingsCountByUserAndMonth(String email, LocalDate date);
+
+    int getBookingsCountByDate(int cid, LocalDate date);
+
+    int checkForDuplicateBookings(String userEmail, LocalDate date);
 
     //UPDATE
     Bookings updateBookings(int id, Bookings bookings);
+
+    void autoUpdateBookings(int cid, LocalDate date);
 
     //DELETE
     void delete(Bookings bookings);
 
     void deleteById(int id);
 
-    boolean bookingExists(int id);
-
-    ArrayList<Bookings> getBookingByUser(String email);
-
-    List<Bookings> getAllMyBookings(String email);
-
-    int getBookingsCountByEmail(String email);
-
-    List<Bookings> getAllMyUpcomingBookings(User u);
-
-    void autoUpdateBookings(int cid, LocalDate date);
-
-    int getBookingsCountByUserAndMonth(String email, LocalDate date);
-
-    int getBookingsCountByDate(int cid, LocalDate date);
-
-    List<Bookings> getAllMyPastBookings(User u);
 }

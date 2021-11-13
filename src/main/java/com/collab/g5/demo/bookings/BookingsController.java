@@ -36,8 +36,8 @@ public class BookingsController {
     }
 
     /**
-    /**
-     * List all bookings in the system, mainly for the administrator to view who is in the system.
+     * /**
+     * List all bookings in the system
      *
      * @return list of all bookings
      */
@@ -86,14 +86,13 @@ public class BookingsController {
     }
 
     /**
-     * Search for booking with the given email
-     * If there is no booking with the given "email", throw a BookingNotFoundException
+     * Retrieves the number of bookings that is associated with the email that is being accepted.
      *
      * @param email
-     * @return booking with the given email
+     * @return Number of booking associated with the given email
      */
     @GetMapping("/emp/{email}/")
-    public int getBookingsCountByEmail(@PathVariable String email) throws BookingNotFoundException {
+    public int getBookingsCountByEmail(@PathVariable String email) {
         System.out.println("BID is " + email);
         return bookingServiceImpl.getBookingsCountByEmail(email);
     }
@@ -107,9 +106,9 @@ public class BookingsController {
      * @throws UserNotFoundException
      */
     @GetMapping("/UserBookings/{email}")
-    public ArrayList<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException {
+    public List<Bookings> getBookingByUser(@PathVariable String email) throws UserNotFoundException {
 
-        ArrayList<Bookings> toReturn = bookingServiceImpl.getBookingByUser(email);
+        List<Bookings> toReturn = bookingServiceImpl.getBookingByUser(email);
         if (toReturn == null) {
             throw new UserNotFoundException();
         }
@@ -120,8 +119,10 @@ public class BookingsController {
      * Add a new booking with argument in <code>newBooking</code>
      * Stopping Conditions
      * 1) User is not vaccinated
-     * 2) User monthly quota exceeded.
-     * 3) Company daily limit exceeded.
+     * 2) User must not have a booking on the same day
+     * <p>
+     * If total number of bookings for that company for that particular date already exceeds the limit of the company,
+     * the booking will still go through but will be set to processing state.
      *
      * @param newBooking
      * @return the newly added booking
@@ -133,9 +134,7 @@ public class BookingsController {
     @Transactional
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody @Valid Bookings newBooking) {
-        System.out.println("new Booking is " + newBooking);
         User userResult = newBooking.getUser();
-        System.out.println("Returned user : " + userResult);
         if (bookingServiceImpl.checkForDuplicateBookings(newBooking.getUser().getEmail(), newBooking.getBDate()) > 0) {
             throw new BookingExistsException(newBooking);
         }
@@ -143,54 +142,33 @@ public class BookingsController {
             throw new UserNotFoundException();
         }
         //maximum number of users that can go back on this particular date
-        System.out.println("Line 86 " + newBooking);
         User tempUser = userServiceImpl.getUserByEmail(newBooking.getUser().getEmail());
-        System.out.println("Line 88 " + tempUser.getCompany());
         int cid = tempUser.getCompany().getCid();
 
-        //Company tempCompany = companyServiceImpl.getCompanyById()
-        System.out.println("Before going into the method: " + cid + " booking " + newBooking.getBDate());
         //limit variable will store the quota of company of that particular date => total quota
         int limit = companyServiceImpl.getCurrentQuota(cid, newBooking.getBDate());
-        System.out.println("The daily limit for this company on this day is " + limit);
 
-        System.out.println("Line 95 Company CID is " + cid + " booking date: " + newBooking.getBDate());
         //getCurrentQuota -> getting number of bookings for that particular date
         int getCurrentQuota = bookingServiceImpl.getBookingsCountByDate(cid, newBooking.getBDate());
-        System.out.println("This company have " + getCurrentQuota + " number of employees on " + newBooking.getBDate().toString());
 
         //userCountByMonth -> retrieve number of bookings made by user for that month.
         int userCountByMonth = bookingServiceImpl.getBookingsCountByUserAndMonth(newBooking.getUser().getEmail(), newBooking.getBDate());
-        System.out.println("User has " + userCountByMonth + " bookings");
-        System.out.println("Company Limit is " + limit);
         if (userCountByMonth >= 10) {
             throw new UserMonthlyQuotaExceeded(userResult);
         }
-        //dailyLimitForUser -> get each company user daily limit.
-//        Company tempCompany = companyServiceImpl.getCompanyById(cid);
-//        int dailyLimitForUser = tempCompany.getQuota();
-//        System.out.println("quota is " + dailyLimitForUser);
 
         boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
         if (!vaccineStatus) {
             throw new UserNotVaccinatedException(tempUser);
         }
 
-//        if (userCountByMonth >= dailyLimitForUser) {
-//            throw new CompanyDailyLimitExceeded();
-//        }
-
         if (limit <= getCurrentQuota) {
-            System.out.println("Pending");
             newBooking.setStatus("pending");
         } else {
-            System.out.println("Confirmed");
             newBooking.setStatus("Confirmed");
         }
-        System.out.println(newBooking);
         Bookings b = bookingServiceImpl.save(newBooking);
-        b.getUser().setUserRole(UserRole.HR);
-        System.out.println("Finalize is " + b);
+        b.getUser().setUserRole(tempUser.getUserRole());
         return b;
     }
 
@@ -205,37 +183,27 @@ public class BookingsController {
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@PathVariable int id) {
         //First i get the userEmail as i need it to
-        System.out.println("ID is " + id);
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
         LocalDate bookingsDate = bookings.getBDate();
-        System.out.println("Booking Date is " + bookingsDate);
-        System.out.println("current Booking is " + bookings);
         User tempUser = bookings.getUser();
-        System.out.println("current tempUser is " + tempUser);
         int cid = tempUser.getCompany().getCid();
-        System.out.println("Cid is " + cid);
         //i need to parse in the date too though, the date of the bookings that im deleting.
         int limit = companyServiceImpl.getCurrentQuota(cid, bookingsDate);
-        System.out.println("Limit is " + limit);
         //I have gotten my limit for this particular company.
 
         //Get the count of the number of bookings for this company in this particular month.
         int beforeDeleteBookingCount = bookingServiceImpl.getBookingsCountByDate(cid, bookingsDate);
-        System.out.println("Booking Count is " + beforeDeleteBookingCount);
 
 
         if (beforeDeleteBookingCount >= limit) {
-            System.out.println("Maxed out");
             //i need to do the auto approval stage.
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id)); //delete the current booking
 
             //set the next booking that is not approved.
-            //TODO have to implement this once I have set the other part.
             bookingServiceImpl.autoUpdateBookings(cid, bookingsDate);
         } else {
             bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }
-        System.out.println("Bid is " + id);
     }
 
 

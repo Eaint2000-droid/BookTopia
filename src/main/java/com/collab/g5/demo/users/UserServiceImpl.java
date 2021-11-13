@@ -14,13 +14,20 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
-
+    /**
+     * Declaring the variables.
+     */
     private UserRepository userRepository;
-
     private MailService mailService;
     private WebSecurityConfig webSecurityConfig;
 
-
+    /**
+     * Instantiating all the variables.
+     *
+     * @param userRepository
+     * @param mailService
+     * @param webSecurityConfig
+     */
     @Autowired
     public UserServiceImpl(UserRepository userRepository, MailService mailService, WebSecurityConfig webSecurityConfig) {
         this.userRepository = userRepository;
@@ -29,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * This function will get triggered when the user forgets his password.
+     * It will send an email and to the user and provides them with a link to reset their password.
+     *
+     * @param email
+     */
     @Override
     public void forgetPassword(String email) {
         User user = userRepository.getById(email);
@@ -53,7 +66,12 @@ public class UserServiceImpl implements UserService {
         mailService.sendEmail(mail);
     }
 
-
+    /**
+     * This is to persist a user into our database and an email will be sent out to them with the password.
+     *
+     * @param user
+     */
+    @Override
     public void addNewUser(User user) {
         Mail mail = new Mail();
         mail.setMailFrom("weloveis211@gmail.com");
@@ -86,11 +104,22 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    /**
+     * This will retrieve all the users from the database.
+     *
+     * @return a List of users that are in the database.
+     */
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * This will retrieve a user based on their email.
+     *
+     * @param Email
+     * @return Returns a user if it exists based on the email or else it will return null.
+     */
     @Override
     public User getUserByEmail(String Email) {
 
@@ -102,11 +131,11 @@ public class UserServiceImpl implements UserService {
         return optionalUser.get();
     }
 
-    @Override
-    public User save(User newUser) {
-        return userRepository.save(newUser);
-    }
-
+    /**
+     * Deletes a user based on the user object
+     *
+     * @param user
+     */
     @Override
     public void delete(User user) {
         userRepository.delete(user);
@@ -123,11 +152,25 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userEmail);
     }
 
+    /**
+     * Queries the databaase for the user vaccinated status
+     *
+     * @param email
+     * @return True or False depedning if the user is vaccinated.
+     */
     @Override
     public boolean getVaccinatedByEmail(String email) {
         return userRepository.getVaccinatedByEmail(email);
     }
 
+    /**
+     * This allows the user to update his password and will take in a string and a user object
+     * so as to uniquely identify each user from another.
+     *
+     * @param password
+     * @param user
+     * @return User object with the password updated.
+     */
     @Override
     public User updatePassword(String password, User user) {
         User userExist = userRepository.getById(user.getEmail());
@@ -141,6 +184,16 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    /**
+     * Updates the first name of the particular user.
+     * It will take in the first name and the user object, and will first query if the user exists.
+     * If the user exists, it will then update the first name of the user and persist this changes in the database
+     * Else it will return null.
+     *
+     * @param fName
+     * @param user
+     * @return User with the updated first name if it exists, else return null
+     */
     @Override
     public User updateFname(String fName, User user) {
         User userExist = userRepository.getById(user.getEmail());
@@ -154,6 +207,16 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    /**
+     * Updates the last name of the particular user.
+     * It will take in the last name and the user object, and will first query if the user exists.
+     * If the user exists, it will then update the last name of the user and persist this changes in the database
+     * Else it will return null.
+     *
+     * @param lName
+     * @param user
+     * @return User with the updated last name if it exists, else return null
+     */
     @Override
     public User updateLName(String lName, User user) {
         User userExist = userRepository.getById(user.getEmail());
@@ -167,6 +230,16 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    /**
+     * Updates the email of the particular user.
+     * It will take in the email and the user object, and will first query if the user exists.
+     * If the user exists, it will then update the email of the user and persist this changes in the database
+     * Else it will return null.
+     *
+     * @param email
+     * @param user
+     * @return User with the updated last name if it exists, or else return null.
+     */
     @Override
     public User updateEmail(String email, User user) {
         User userExist = userRepository.getById(user.getEmail());
@@ -180,6 +253,16 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    /**
+     * Updates the vaccination status of the particular user.
+     * It will take in the vaccination status and the user object, and will first query if the user exists.
+     * If the user exists, it will then update the vaccination status of the user and persist this changes in the database
+     * Else it will return null.
+     *
+     * @param vaccination
+     * @param user
+     * @return User with the updated last name if it exists, or else return null.
+     */
     @Override
     public User updateVaccination(boolean vaccination, User user) {
         User userExist = userRepository.getById(user.getEmail());
@@ -193,6 +276,16 @@ public class UserServiceImpl implements UserService {
         return userExist;
     }
 
+    /**
+     * Triggers when the user forgets his/her password
+     * Takes in a email and password,  and will first query if the user exists.
+     * If the user exists, proceeds to update the password
+     * Else, return null.
+     *
+     * @param email
+     * @param password
+     * @return User with the updated last name if it exists, or else return null.
+     */
     @Override
     public User setForgetPassword(String email, String password) {
 

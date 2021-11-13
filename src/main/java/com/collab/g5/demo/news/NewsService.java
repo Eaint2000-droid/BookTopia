@@ -3,18 +3,18 @@ package com.collab.g5.demo.news;
 import java.util.List;
 
 public interface NewsService {
+    //CREATE
+    News addNews(News news); //save
+
+    //READ
     List<News> getAllNews();
 
     News getNewsById(int nid);
 
-    News addNews(News news); //save
-
+    //UPDATE
     News updateNews(int nid, News news);
 
-    /**
-     * Change method's signature: do not return a value for delete operation
-     * @param nid
-     */
+    //DELETE
     void deleteNewsById(int nid);
 
     void delete(News news);

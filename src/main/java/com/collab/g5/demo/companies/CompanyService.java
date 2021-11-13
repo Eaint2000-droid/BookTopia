@@ -1,5 +1,6 @@
 package com.collab.g5.demo.companies;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CompanyService {
@@ -12,6 +13,8 @@ public interface CompanyService {
 
     Company getCompanyById(int cid);
 
+    int getCurrentQuota(int cid, LocalDate bookingsDate);
+
     //UPDATE
     Company updateCompany(int cid, Company bookings);
 
@@ -20,6 +23,7 @@ public interface CompanyService {
 
     /**
      * Change method's signature: do not return a value for delete operation
+     *
      * @param cid
      */
     void deleteById(int cid);

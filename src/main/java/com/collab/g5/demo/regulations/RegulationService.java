@@ -18,9 +18,5 @@ public interface RegulationService {
     Regulation updateRegulation(LocalDate startDate, Regulation newRegulation);
 
     //DELETE
-    /**
-     * Method's signature: do not return a value for delete operation
-     * @param startDate
-     */
     void deleteRegulationById(LocalDate startDate);
 }

@@ -12,31 +12,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/dailyForm")
 public class DailyFormController {
-
+    /**
+     * Declaring the variables.
+     */
     private DailyFormServiceImpl dailyFormServiceImpl;
 
+    /**
+     * Instantiaitng the variables by making use of Constructor based injection.
+     *
+     * @param dailyFormServiceImpl
+     */
     @Autowired
     public DailyFormController(DailyFormServiceImpl dailyFormServiceImpl) {
         this.dailyFormServiceImpl = dailyFormServiceImpl;
     }
 
-
+    /**
+     * Adds a new daily checkin form to the user.
+     *
+     * @param newDailyForm
+     * @throws EmailExistsException
+     */
     @PostMapping("/emp/new")
     public void newDailyForm(@RequestBody DailyForm newDailyForm) throws EmailExistsException {
-
-        System.out.println("CREATE");
-        System.out.println("_______________");
-        System.out.println(newDailyForm);
-        System.out.println("_______________");
         dailyFormServiceImpl.addDailyForm(newDailyForm);
-
     }
 
-
-
-
+    /**
+     * Retrieves all the forms/
+     *
+     * @return
+     * @throws DailyFormNotFoundException
+     */
     @GetMapping("/hr")
-
     public List<DailyForm> getAllDailyForms() throws DailyFormNotFoundException {
         List<DailyForm> toReturn = dailyFormServiceImpl.getAllDailyForms();
         if (toReturn.size() == 0) {
@@ -45,7 +53,12 @@ public class DailyFormController {
         return toReturn;
     }
 
-
+    /**
+     *
+     * @param email
+     * @return
+     * @throws DailyFormNotFoundException
+     */
     @GetMapping("hr/user/{email}")
     public List<DailyForm> getDailyFormsByUser(@PathVariable String email) throws DailyFormNotFoundException {
         List<DailyForm> toReturn = dailyFormServiceImpl.getDailyFormByUser(email);
@@ -55,7 +68,12 @@ public class DailyFormController {
         return toReturn;
     }
 
-
+    /**
+     * Gets all the daily form that is on this date.
+     * @param date
+     * @return
+     * @throws DailyFormNotFoundException
+     */
     @GetMapping("hr/date/{date}")
     public List<DailyForm> getDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws DailyFormNotFoundException {
 
@@ -86,25 +104,33 @@ public class DailyFormController {
      *
      * @param date
      */
-
-
     @GetMapping("emp/date/users/{date}")
-    public int getUniqueNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
+    public int getUniqueNumDailyFormsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws DailyFormNotFoundException {
 
 
         int toReturn = dailyFormServiceImpl.getUniqueNumDailyFormByDate(date);
         return toReturn;
     }
 
-
-
+    /**
+     *
+     * @param date
+     * @return
+     * @throws DailyFormNotFoundException
+     */
     @GetMapping("emp/date/users/week/{date}")
-    public int[] getUniqueNumDailyFormsByWeek(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate date) throws DailyFormNotFoundException {
+    public int[] getUniqueNumDailyFormsByWeek(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws DailyFormNotFoundException {
         System.out.println("Function Called");
         int[] toReturn = dailyFormServiceImpl.getUniqueNumDailyFormByWeek(date);
         return toReturn;
     }
 
+    /**
+     *
+     * @param email
+     * @return
+     * @throws DailyFormNotFoundException
+     */
     @GetMapping("emp/userToday/{email}")
     public Boolean getDailyFormsByUserToday(@PathVariable String email) throws DailyFormNotFoundException {
         return dailyFormServiceImpl.getDailyFormByUserToday(email);

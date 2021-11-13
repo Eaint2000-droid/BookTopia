@@ -12,11 +12,18 @@ import java.util.List;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
-
+    //Declaring the variables.
     private CompanyRepository companyRepository;
     private RegulationRepository regulationRepository;
     private RegulationLimitRepository regulationLimitRepository;
 
+    /**
+     * Instantiating the variables by making use of constructor injection.
+     *
+     * @param companyRepository
+     * @param regulationRepository
+     * @param regulationLimitRepository
+     */
     @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository, RegulationRepository regulationRepository, RegulationLimitRepository regulationLimitRepository) {
         this.companyRepository = companyRepository;
@@ -24,34 +31,56 @@ public class CompanyServiceImpl implements CompanyService {
         this.regulationLimitRepository = regulationLimitRepository;
     }
 
+    /**
+     * Getting all companies
+     *
+     * @return a list which will contain the list of Companies.
+     */
     @Override
     public List<Company> getAllCompanies() {
         return companyRepository.findAll();
     }
 
+    /**
+     * Retrieve a company based on Iits ID.
+     *
+     * @param cid
+     * @return the company with cid as cid or return null if nothing is found.
+     */
     @Override
     public Company getCompanyById(int cid) {
-        Company company = companyRepository.findById(cid).orElse(null);
-        return company;
+        return companyRepository.findById(cid).orElse(null);
     }
 
+    /**
+     * Checks if such company exists.
+     * @param cid
+     * @return either true or false depending if the company can be found.
+     */
     @Override
     public boolean containsCompany(int cid) {
-        return companyRepository.findById(cid) != null;
+        return companyRepository.findById(cid).isPresent();
     }
 
+    /**
+     * Adding a new company.
+     * @param newCompany
+     */
     @Override
     public void addNewCompany(Company newCompany) {
         companyRepository.save(newCompany);
     }
 
+    /**
+     * Deletes a company based on the param.
+     * @param company
+     */
     @Override
     public void delete(Company company) {
         companyRepository.delete(company);
     }
 
     @Override
-    //TODO
     public Company updateCompany(int cid, Company bookings) {
         return null;
     }
@@ -67,15 +96,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     //this is to retrieve the maximum number of users that can go back to the company at that particular date.
+
+    /**
+     * Given a specific date and the company ID, find out what is the daily limit
+     *
+     * @param cid
+     * @param bookingsDate
+     * @return the daily limit for that particular date and company.
+     */
+    @Override
     public int getCurrentQuota(int cid, LocalDate bookingsDate) {
-        //Based on this bookingsDate, ill have to find the starting date from the regulation table
-        //as that is the PK in the RegulationLimit.
-        Date d1 = new Date();
-        System.out.println("Line 74 " + bookingsDate);
         LocalDate startingDate = regulationRepository.findStartDateBasedCustomDate(bookingsDate);
-        System.out.println("Start Date is " + startingDate + " and my cid is " + cid);
         RegulationLimitKey tempLimitKey = new RegulationLimitKey(startingDate, cid);
-        System.out.println("tempLimitkey is " + tempLimitKey);
         return regulationLimitRepository.getById(tempLimitKey).getDailyLimit();
     }
 }
