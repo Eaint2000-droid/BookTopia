@@ -57,10 +57,9 @@ public class RegulationLimitController {
     }
 
     /**
-     * Search for regulation limit with the given startDate and cid
-     * If there is no regulation limit with the given "startDate" and "cid", throw a RegulationLimitNotFoundException
+     * Search for current regulation limit for a specific company
      * @param cid
-     * @return regulation limit with the given startDate and cid
+     * @return current regulation limit for specific company
      */
     @GetMapping("/emp/{cid}")
     public RegulationLimit getCurrentRegulationLimitById( @PathVariable int cid) throws RegulationLimitNotFoundException {
@@ -73,6 +72,12 @@ public class RegulationLimitController {
         }
         return getRegulationLimit;
     }
+
+    /**
+     * Search for current regulation limit relevant to specific user
+     * @param email
+     * @return current regulation limit relevant to user
+     */
 
     @GetMapping("/emp/num/{email}")
     public int getCurrentRegulationLimitByUser( @PathVariable String email) throws RegulationLimitNotFoundException {

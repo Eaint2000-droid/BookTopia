@@ -92,7 +92,6 @@ public class UserController {
      */
 
 
-
     @DeleteMapping("/hr/email/{email}")
     void deleteUser(@PathVariable String email) throws UserNotFoundException{
         User user = userServiceImpl.getUserByEmail(email);
@@ -104,10 +103,11 @@ public class UserController {
     }
 
     /**
-     * Search for user vax status with the given email
-     * If there is no user with the given "email", throw a UsernameNotFoundException
-     * @param email
-     * @return user with the given email
+     * Update user's first name with PUT request to "emp/lname/{lname}"
+     * If there is no user found within databse , throw a UserNotFoundException
+     * @param user
+     * @param fname
+     * @return user with updated first name
      */
 
     @PutMapping("emp/fname/{fname}")
@@ -126,10 +126,11 @@ public class UserController {
     }
 
     /**
-     * Search for user vax status with the given email
-     * If there is no user with the given "email", throw a UsernameNotFoundException
-     * @param email
-     * @return user with the given email
+     * Update user's last name with PUT request to "emp/lname/{lname}"
+     * If there is no user found within databse , throw a UserNotFoundException
+     * @param user
+     * @param lname
+     * @return user with updated last name
      */
 
     @PutMapping("emp/lname/{lname}")
@@ -149,10 +150,11 @@ public class UserController {
     }
 
     /**
-     * Search for user vax status with the given email
-     * If there is no user with the given "email", throw a UsernameNotFoundException
+     * Update user's email with PUT request to "emp/new/email/{email}"
+     * If there is no user found within databse , throw a UserNotFoundException
+     * @param user
      * @param email
-     * @return user with the given email
+     * @return user with updated email
      */
     @PutMapping("emp/new/email/{email}")
     User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
