@@ -1,4 +1,4 @@
-package Regulation;
+package com.collab.g5.demo.Regulation;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -47,7 +47,7 @@ class RegulationServiceImplTest {
         regulation1.setEndDate(LocalDate.ofEpochDay(1L));
         regulation1.setRegulationLimits(new ArrayList<RegulationLimit>());
         regulation1.setPercentage(1);
-        assertNotSame(regulation, this.regulationServiceImpl.save(regulation1));
+        assertSame(regulation, this.regulationServiceImpl.save(regulation1));
         verify(this.regulationRepository).save((Regulation) any());
         assertTrue(this.regulationServiceImpl.getAllRegulation().isEmpty());
     }
