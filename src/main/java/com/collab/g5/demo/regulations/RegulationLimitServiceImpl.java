@@ -98,14 +98,12 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     /**
-     * This will get the current regulation based on the cid //TODO Can help with this ?
+     * This will get the current regulation limit based on the cid //TODO Charlene can help comfirm?
      * @param cid
-     * @return
+     * @return TODO Charlene?
      */
     @Override
     public RegulationLimit getCurrentRegulationLimitById(int cid) {
-
-
         List<RegulationLimit> list = regulationLimitRepository.findAll();
         Collections.sort(list, (x, y) -> x.getRegulation().getStartDate().compareTo(x.getRegulation().getStartDate()));
         if (list.size() == 0) {
@@ -115,9 +113,9 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     /**
-     * TODO Help with this too.
+     * This will get the current regulation based on the company id that the user is in //TODO Charlene can help comfirm?
      * @param email
-     * @return
+     * @return TODO Charlene?
      */
     @Override
     public RegulationLimit getCurrentRegulationLimitByUser(String email) {

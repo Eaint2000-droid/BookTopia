@@ -92,9 +92,9 @@ public class NewsController {
     }
 
     /**
-     * Scrape this website for cna news and display it returns the TODO Nicole help me add.
+     * Scrape this cna news website returns the news articles in the top news headline
      *
-     * @return a list containing TODO Nicole here too.
+     * @return a list containing the news article title, article URL and image source
      */
     @GetMapping("/emp/cna")
     public List<HashMap<String, String>> getCnaNews() {
@@ -125,7 +125,7 @@ public class NewsController {
     }
 
     /**
-     * Scrape this website and returns the number of covid cases, total deaths and total recovered TODO Nicole help me confirm.
+     * Scrape this website and returns the number of covid cases, total deaths and total recovered
      *
      * @return a HashMap containing the above 3 mentioned values
      */

@@ -43,6 +43,11 @@ public class RegulationController {
         return regulationServiceImpl.getAllRegulation();
     }
 
+    /**
+     * Search for all regulations and daily limit (from regulation limit) in the system that match user's company id
+     *
+     * @return list of all regulations with the matching daily limit from regulation limit
+     */
     @GetMapping("/emp/limit/{userEmail}/")
     public List<HashMap<String, String>> getRegulationsWithLimit(@PathVariable String userEmail) {
         List<List<String>> result = regulationServiceImpl.getAllRegulationWithLimit(userEmail);
@@ -83,10 +88,9 @@ public class RegulationController {
     }
 
     /**
-     * Add a new regulation with POST request to "/hr"
+     * Add a new regulation and daily limit (in regulation limit) with POST request to "/hr"
      *
      * @param regulation
-     * @return the newly added regulation
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hr")

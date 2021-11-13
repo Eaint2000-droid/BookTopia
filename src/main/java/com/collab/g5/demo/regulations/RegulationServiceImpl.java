@@ -43,10 +43,9 @@ public class RegulationServiceImpl implements RegulationService {
     }
 
     /**
-     * Returns a nested list of strings which contains the regulation limits? TODO Can help with this? HAHAHA
-     *
+     * Returns a nested list of strings which contains the details of the regulations and the daily limit implemented by the user's company
      * @param userEmail
-     * @return TODO here tooo.
+     * @return regulations and the daily limit implemented by the user's company
      */
     @Override
     public List<List<String>> getAllRegulationWithLimit(String userEmail) {
