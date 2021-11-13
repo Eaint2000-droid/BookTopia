@@ -47,7 +47,7 @@ class RegulationServiceImplTest {
         regulation1.setEndDate(LocalDate.ofEpochDay(1L));
         regulation1.setRegulationLimits(new ArrayList<RegulationLimit>());
         regulation1.setPercentage(1);
-        assertSame(regulation, this.regulationServiceImpl.save(regulation1));
+        assertNotSame(regulation, this.regulationServiceImpl.save(regulation1));
         verify(this.regulationRepository).save((Regulation) any());
         assertTrue(this.regulationServiceImpl.getAllRegulation().isEmpty());
     }
