@@ -67,7 +67,6 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
             return null;
     }
 
-
     /**
      * Uniquely Identify a regulation Limit based on the start date and CID which forms a regulation limit key and
      * updates its values to the new Regulation Limit data
