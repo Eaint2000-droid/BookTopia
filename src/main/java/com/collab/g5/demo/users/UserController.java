@@ -111,7 +111,7 @@ public class UserController {
      */
 
     @PutMapping("emp/fname/{fname}")
-    User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updateFname(@PathVariable String fname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
         User checkUser= userServiceImpl.updateFname(fname, user);
@@ -134,7 +134,7 @@ public class UserController {
      */
 
     @PutMapping("emp/lname/{lname}")
-    User updateLName(@PathVariable String lname, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updateLName(@PathVariable String lname, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
         User checkUser= userServiceImpl.updateLName(lname, user);
@@ -157,7 +157,7 @@ public class UserController {
      * @return user with updated email
      */
     @PutMapping("emp/new/email/{email}")
-    User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updateEmail(@PathVariable String email, @Valid @RequestBody User user) throws UserNotFoundException {
 
 
 
@@ -180,7 +180,7 @@ public class UserController {
      * @return user with updated password
      */
     @PutMapping("emp/new/Password/{password}")
-    User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updatePassword(@PathVariable String password, @Valid @RequestBody User user) throws UserNotFoundException {
 
         User checkUser = userServiceImpl.updatePassword(password, user);
 
@@ -203,7 +203,7 @@ public class UserController {
      */
 
     @PutMapping("hr/new/vaccination/{vaccination}")
-    User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updateVaccination(@PathVariable boolean vaccination, @Valid @RequestBody User user) throws UserNotFoundException {
 
         System.out.println("Update Vax");
         System.out.println(user);
