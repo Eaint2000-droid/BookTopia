@@ -1,6 +1,5 @@
 package com.collab.g5.demo.users;
 
-import com.collab.g5.demo.bookings.BookingVetting;
 import com.collab.g5.demo.bookings.Bookings;
 import com.collab.g5.demo.companies.Company;
 import com.collab.g5.demo.news.News;
@@ -53,10 +52,6 @@ public class User implements UserDetails {
     @JsonIgnoreProperties({"name", "size", "users"})
     @JoinColumn(name = "cid", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
-
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BookingVetting> bookingVetting;
 
     @JsonIgnore
     @JsonIgnoreProperties({"user"})

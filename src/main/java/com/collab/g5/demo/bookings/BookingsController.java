@@ -134,40 +134,34 @@ public class BookingsController {
     @Transactional
     @PostMapping("/emp/")
     public Bookings addBooking(@RequestBody @Valid Bookings newBooking) {
-        User userResult = newBooking.getUser();
-        if (bookingServiceImpl.checkForDuplicateBookings(newBooking.getUser().getEmail(), newBooking.getBDate()) > 0) {
+
+        Bookings tempBooking = newBooking; //setting a tempBooking so that we do not interfere with the newBooking variable.
+        User tempUser = userServiceImpl.getUserByEmail(newBooking.getUser().getEmail()); //getting the whole user object out.
+
+        if (tempUser == null)
+            throw new UserNotFoundException(newBooking.getUser().getEmail()); //if user does not exist, throw an exception
+
+        //if user already have a booking for the same date, throw a BookingExistsException
+        if (bookingServiceImpl.checkForDuplicateBookings(tempUser.getEmail(), newBooking.getBDate()) > 0)
             throw new BookingExistsException(newBooking);
-        }
-        if (userResult == null) {
-            throw new UserNotFoundException();
-        }
-        //maximum number of users that can go back on this particular date
-        User tempUser = userServiceImpl.getUserByEmail(newBooking.getUser().getEmail());
-        int cid = tempUser.getCompany().getCid();
 
-        //limit variable will store the quota of company of that particular date => total quota
-        int limit = companyServiceImpl.getCurrentQuota(cid, newBooking.getBDate());
-
-        //getCurrentQuota -> getting number of bookings for that particular date
-        int getCurrentQuota = bookingServiceImpl.getBookingsCountByDate(cid, newBooking.getBDate());
-
-        //userCountByMonth -> retrieve number of bookings made by user for that month.
-        int userCountByMonth = bookingServiceImpl.getBookingsCountByUserAndMonth(newBooking.getUser().getEmail(), newBooking.getBDate());
-        if (userCountByMonth >= 10) {
-            throw new UserMonthlyQuotaExceeded(userResult);
-        }
-
-        boolean vaccineStatus = userServiceImpl.getVaccinatedByEmail(newBooking.getUser().getEmail());
-        if (!vaccineStatus) {
+        //if user is not vaccinated, throw a UserNotVaccinatedException
+        if (!(userServiceImpl.getVaccinatedByEmail(tempUser.getEmail()))) {
             throw new UserNotVaccinatedException(tempUser);
         }
-
-        if (limit <= getCurrentQuota) {
-            newBooking.setStatus("pending");
-        } else {
-            newBooking.setStatus("Confirmed");
+        //if the user quota has exceeded, we will throw a UserMonthlyQuotaExceededException
+        if (bookingServiceImpl.getBookingsCountByUserAndMonth(tempUser.getEmail(), newBooking.getBDate()) >= 10) {
+            throw new UserMonthlyQuotaExceeded(tempUser);
         }
-        Bookings b = bookingServiceImpl.save(newBooking);
+        //limit variable will store the quota of company of that particular date => total quota
+        int limit = companyServiceImpl.getCurrentQuota(tempUser.getCompany().getCid(), newBooking.getBDate());
+
+        //getCurrentQuota -> getting number of bookings for that particular date
+        int getCurrentQuota = bookingServiceImpl.getBookingsCountByDate(tempUser.getCompany().getCid(), newBooking.getBDate());
+
+        tempBooking.setStatus(limit <= getCurrentQuota ? "pending" : "Confirmed");
+
+        Bookings b = bookingServiceImpl.save(tempBooking);
         b.getUser().setUserRole(tempUser.getUserRole());
         return b;
     }
