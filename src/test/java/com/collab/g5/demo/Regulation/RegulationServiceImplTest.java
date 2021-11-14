@@ -47,7 +47,7 @@ class RegulationServiceImplTest {
         regulation1.setPercentage(1);
         assertSame(regulation, this.regulationServiceImpl.save(regulation1));
         verify(this.regulationRepository).save((Regulation) any());
-        assertFalse(this.regulationServiceImpl.getAllRegulation().isEmpty());
+        assertTrue(this.regulationServiceImpl.getAllRegulation().isEmpty());
     }
 
     @Test
