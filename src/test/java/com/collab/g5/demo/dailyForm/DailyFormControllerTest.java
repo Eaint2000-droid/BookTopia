@@ -186,14 +186,7 @@ class DailyFormControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "[{\"dateTime\":[1970,1,2],\"dateExactTime\":\"2020-03-01\",\"temperature\":10.0,\"symptoms\":true,\"user\":{\"email"
-                                        + "\":\"jane.doe@example.org\",\"fname\":\"?\",\"lname\":\"?\",\"password\":\"iloveyou\",\"vaccinated\":true,\"userRole\":"
-                                        + "\"EMPLOYEE\",\"locked\":true,\"enabled\":true,\"name\":\"? ?\",\"username\":\"jane.doe@example.org\",\"authorities\""
-                                        + ":[{\"authority\":\"EMPLOYEE\"}],\"accountNonLocked\":false,\"accountNonExpired\":true,\"credentialsNonExpired"
-                                        + "\":true},\"fid\":1}]"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 
     @Test
@@ -237,14 +230,7 @@ class DailyFormControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "[{\"dateTime\":[1970,1,2],\"dateExactTime\":\"2020-03-01\",\"temperature\":10.0,\"symptoms\":true,\"user\":{\"email"
-                                        + "\":\"jane.doe@example.org\",\"fname\":\"?\",\"lname\":\"?\",\"password\":\"iloveyou\",\"vaccinated\":true,\"userRole\":"
-                                        + "\"EMPLOYEE\",\"locked\":true,\"enabled\":true,\"name\":\"? ?\",\"username\":\"jane.doe@example.org\",\"authorities\""
-                                        + ":[{\"authority\":\"EMPLOYEE\"}],\"accountNonLocked\":false,\"accountNonExpired\":true,\"credentialsNonExpired"
-                                        + "\":true},\"fid\":1}]"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 
     @Test
@@ -288,14 +274,7 @@ class DailyFormControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "[{\"dateTime\":[1970,1,2],\"dateExactTime\":\"2020-03-01\",\"temperature\":10.0,\"symptoms\":true,\"user\":{\"email"
-                                        + "\":\"jane.doe@example.org\",\"fname\":\"?\",\"lname\":\"?\",\"password\":\"iloveyou\",\"vaccinated\":true,\"userRole\":"
-                                        + "\"EMPLOYEE\",\"locked\":true,\"enabled\":true,\"name\":\"? ?\",\"username\":\"jane.doe@example.org\",\"authorities\""
-                                        + ":[{\"authority\":\"EMPLOYEE\"}],\"accountNonLocked\":false,\"accountNonExpired\":true,\"credentialsNonExpired"
-                                        + "\":true},\"fid\":1}]"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 
     @Test

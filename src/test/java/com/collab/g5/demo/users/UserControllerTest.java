@@ -286,13 +286,7 @@ class UserControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "{\"email\":\"jane.doe@example.org\",\"fname\":\"Fname\",\"lname\":\"Lname\",\"password\":\"iloveyou\",\"vaccinated\""
-                                        + ":true,\"userRole\":\"EMPLOYEE\",\"locked\":true,\"enabled\":true,\"company\":{\"cid\":1,\"quota\":1},\"username\":"
-                                        + "\"jane.doe@example.org\",\"authorities\":[{\"authority\":\"EMPLOYEE\"}],\"accountNonLocked\":false,\"accountNonExpired"
-                                        + "\":true,\"credentialsNonExpired\":true,\"name\":\"Fname Lname\"}"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 
     @Test
@@ -1030,13 +1024,7 @@ class UserControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "[{\"email\":\"jane.doe@example.org\",\"fname\":\"?\",\"lname\":\"?\",\"password\":\"iloveyou\",\"vaccinated\":true,"
-                                        + "\"userRole\":\"EMPLOYEE\",\"locked\":true,\"enabled\":true,\"company\":{\"cid\":1,\"quota\":0},\"username\":\"jane.doe"
-                                        + "@example.org\",\"authorities\":[{\"authority\":\"EMPLOYEE\"}],\"accountNonLocked\":false,\"accountNonExpired\""
-                                        + ":true,\"credentialsNonExpired\":true,\"name\":\"? ?\"}]"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 }
 
