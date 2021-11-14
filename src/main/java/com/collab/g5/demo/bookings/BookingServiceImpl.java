@@ -139,6 +139,9 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public void autoUpdateBookings(int cid, LocalDate date) {
+
+
+
         List<User> userList = userServiceImpl.getAllUsers();
         userList.removeIf(temp -> temp.getCompany().getCid() != cid);
         //remove all bookings that does not have the same date as the date mentioned.

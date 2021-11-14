@@ -97,9 +97,9 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     /**
-     * This will get the current regulation limit based on the cid //TODO Charlene can help comfirm?
+     * This will get the current(latest) regulation limit based on the cid
      * @param cid
-     * @return TODO Charlene?
+     * @return corresponding regulation limit
      */
     @Override
     public RegulationLimit getCurrentRegulationLimitById(int cid) {
@@ -112,9 +112,10 @@ public class RegulationLimitServiceImpl implements RegulationLimitService {
     }
 
     /**
-     * This will get the current regulation based on the company id that the user is in //TODO Charlene can help comfirm?
+     * This will get the current regulation that is relevant to the specific user
+     * based on their company
      * @param email
-     * @return TODO Charlene?
+     * @return corresponding regulation limit
      */
     @Override
     public RegulationLimit getCurrentRegulationLimitByUser(String email) {
