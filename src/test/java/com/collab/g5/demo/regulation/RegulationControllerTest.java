@@ -1,4 +1,4 @@
-package com.collab.g5.demo.regulations;
+package com.collab.g5.demo.regulation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
