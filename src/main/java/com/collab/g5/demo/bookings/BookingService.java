@@ -42,4 +42,6 @@ public interface BookingService {
 
     void deleteById(int id);
 
+    //helper methods
+    List<Bookings> removeDuplicates(List<Bookings> bookingsList, List<User> userList);
 }

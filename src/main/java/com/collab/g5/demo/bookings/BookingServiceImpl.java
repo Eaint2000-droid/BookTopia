@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -139,23 +140,41 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public void autoUpdateBookings(int cid, LocalDate date) {
-
-
-
         List<User> userList = userServiceImpl.getAllUsers();
+        //removing all the users that is not from the same company
         userList.removeIf(temp -> temp.getCompany().getCid() != cid);
-        //remove all bookings that does not have the same date as the date mentioned.
+
         List<Bookings> bookingsList = bookingsRepository.findAll();
-        Iterator<Bookings> bookingsIterator = bookingsList.iterator();
-//        while (bookingsIterator.hasNext()) {
-//            System.out.println();
-//        }
+        //remove all the bookings that does not have the same booking date
         bookingsList.removeIf(temp -> !temp.getBDate().toString().equals(date.toString()));
+        //remove all the bookings that have its status to be set to "Confirmed"
         bookingsList.removeIf(temp -> temp.getStatus().equals("Confirmed"));
-        bookingsList.forEach(temp -> System.out.println(temp.getBid()));
+
         //so now my bookingsList will only contain those that are pending on that date.
-        bookingsIterator = bookingsList.iterator();
-        int smallestBID = Integer.MAX_VALUE;
+
+        //removing all entries from the bookingsList as long as they are from the same company
+        bookingsList = removeDuplicates(bookingsList, userList);
+
+        //Getting the smallest BID
+        List<Integer> bookingListBID = new ArrayList<>();
+        bookingsList.forEach(temp -> bookingListBID.add(temp.getBid()));
+        int smallestBID = Collections.min(bookingListBID);
+
+        //so now i will update the smallestBID's status to be Confirmed.
+        bookingsRepository.updateBookings(smallestBID);
+    }
+
+    /**
+     * Takes in a bookingsList and a user list and will check if they are in the same company.
+     * if they are not from the same company, will then remove that entry from the booking list.
+     *
+     * @param bookingsList
+     * @param userList
+     * @return List of bookings made by the same company
+     */
+    @Override
+    public List<Bookings> removeDuplicates(List<Bookings> bookingsList, List<User> userList) {
+        Iterator<Bookings> bookingsIterator = bookingsList.iterator();
         while (bookingsIterator.hasNext()) {
             Boolean isFromSameCompany = false;
             Bookings temp = bookingsIterator.next();
@@ -169,18 +188,7 @@ public class BookingServiceImpl implements BookingService {
             }
 
         }
-        //this will just contain all the bookings that are pending and from the same company.
-        //have to get the smallest BID.
-        bookingsIterator = bookingsList.iterator();
-        while (bookingsIterator.hasNext()) {
-            Bookings temp = bookingsIterator.next();
-            System.out.println(temp.getBid());
-            if (temp.getBid() < smallestBID) {
-                smallestBID = temp.getBid();
-            }
-        }
-        //so now i will update the smallestBID's status to be Confirmed.
-        bookingsRepository.updateBookings(smallestBID);
+        return bookingsList;
     }
 
     /**

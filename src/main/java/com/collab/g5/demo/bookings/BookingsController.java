@@ -176,28 +176,24 @@ public class BookingsController {
      */
     @DeleteMapping("/hr/del/{id}")
     public void deleteBooking(@PathVariable int id) {
-        //First i get the userEmail as i need it to
+
         Bookings bookings = bookingServiceImpl.getBookingsById(id);
         LocalDate bookingsDate = bookings.getBDate();
         User tempUser = bookings.getUser();
         int cid = tempUser.getCompany().getCid();
-        //i need to parse in the date too though, the date of the bookings that im deleting.
-        int limit = companyServiceImpl.getCurrentQuota(cid, bookingsDate);
-        //I have gotten my limit for this particular company.
 
-        //Get the count of the number of bookings for this company in this particular month.
+        //Limit variable will store the company's daily limit on that day itself
+        int limit = companyServiceImpl.getCurrentQuota(cid, bookingsDate);
+
+        //beforeDeleteBookingCount will store the number of bookings that the company has for that date before the deletion takes place
         int beforeDeleteBookingCount = bookingServiceImpl.getBookingsCountByDate(cid, bookingsDate);
 
 
         if (beforeDeleteBookingCount >= limit) {
-            //i need to do the auto approval stage.
-            bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id)); //delete the current booking
-
             //set the next booking that is not approved.
             bookingServiceImpl.autoUpdateBookings(cid, bookingsDate);
-        } else {
-            bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
         }
+        bookingServiceImpl.delete(bookingServiceImpl.getBookingsById(id));
     }
 
 
