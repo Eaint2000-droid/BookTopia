@@ -1,4 +1,4 @@
-package com.collab.g5.demo.dailyForm;
+package com.collab.g5.demo.exceptions.dailyForm;
 
 import java.time.LocalDate;
 

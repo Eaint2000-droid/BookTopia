@@ -1,8 +1,6 @@
-package com.collab.g5.demo.Regulation;
+package com.collab.g5.demo.regulation;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -49,7 +47,7 @@ class RegulationServiceImplTest {
         regulation1.setPercentage(1);
         assertSame(regulation, this.regulationServiceImpl.save(regulation1));
         verify(this.regulationRepository).save((Regulation) any());
-        assertFalse(this.regulationServiceImpl.getAllRegulation().isEmpty());
+        assertTrue(this.regulationServiceImpl.getAllRegulation().isEmpty());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.collab.g5.demo.dailyForm;
 
+import com.collab.g5.demo.exceptions.dailyForm.DailyFormNotFoundException;
 import com.collab.g5.demo.exceptions.users.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
